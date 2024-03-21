@@ -81,7 +81,7 @@ public class OpenAiService {
      * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      */
     public OpenAiService(final String token) {
-        this(token, DEFAULT_TIMEOUT, DEFAULT_BASE_URL);
+        this(token, DEFAULT_TIMEOUT, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
     }
 
     /**
@@ -91,7 +91,7 @@ public class OpenAiService {
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public OpenAiService(final String token, final Duration timeout) {
-        this(token, timeout, DEFAULT_BASE_URL);
+        this(token, timeout, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
     }
 
     /**
@@ -581,7 +581,7 @@ public class OpenAiService {
     }
 
     public static OpenAiApi buildApi(String token, Duration timeout) {
-        return buildApi(token, timeout, DEFAULT_BASE_URL);
+        return buildApi(token, timeout, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
     }
 
     public static OpenAiApi buildApi(String token, Duration timeout,String baseUrl) {
