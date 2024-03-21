@@ -41,3 +41,5 @@ build
 
 # Ignore the macOS folder attribute file
 **/.DS_Store
+
+**/target/*
