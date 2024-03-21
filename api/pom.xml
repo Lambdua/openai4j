@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.theokanning.openai-gpt3-java</groupId>
+        <groupId>io.github.lambdua</groupId>
         <artifactId>openai-java</artifactId>
         <version>0.18.2</version>
     </parent>

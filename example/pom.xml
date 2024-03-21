@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>com.theokanning.openai-gpt3-java</groupId>
+    <groupId>io.github.lambdua</groupId>
     <artifactId>example</artifactId>
     <version>0.18.2</version>
     <name>example</name>
@@ -15,7 +15,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.theokanning.openai-gpt3-java</groupId>
+            <groupId>io.github.lambdua</groupId>
             <artifactId>service</artifactId>
             <version>0.18.2</version>
         </dependency>
