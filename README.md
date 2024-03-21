@@ -1,35 +1,36 @@
-![Maven Central](https://img.shields.io/maven-central/v/com.theokanning.openai-gpt3-java/client?color=blue)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.lambdua/service?color=blue)
 
-> ⚠️OpenAI has deprecated all Engine-based APIs. See [Deprecated Endpoints](https://github.com/TheoKanning/openai-java#deprecated-endpoints) below for more info.
+> ⚠️ 这个项目是[openai Java](https://github.com/TheoKanning/openai-java)项目的分叉,原项目作者似乎已经停止维护,无法满足我的需求，所以我决定继续维护这个项目,并添加新功能。
 
+[english](README-EN.md)
 # OpenAI-Java
-Java libraries for using OpenAI's GPT apis. Supports GPT-3, ChatGPT, and GPT-4.
+用于使用OpenAI的GPT API的Java库。支持GPT-3、ChatGPT和GPT-4。
 
-Includes the following artifacts:
-- `api` : request/response POJOs for the GPT APIs.
-- `client` : a basic retrofit client for the GPT endpoints, includes the `api` module
-- `service` : A basic service class that creates and calls the client. This is the easiest way to get started.
+包括以下工件:
+- `api` : GPT API的请求/响应POJO。
+- `client` : 一个基本的Retrofit客户端,用于GPT终端,包含`api`模块。
+- `service` : 一个基本的服务类,用于创建和调用客户端。这是开始使用的最简单方式。
 
-as well as an example project using the service.
+以及使用service的示例项目。
 
-## Supported APIs
-- [Models](https://platform.openai.com/docs/api-reference/models)
-- [Completions](https://platform.openai.com/docs/api-reference/completions)
-- [Chat Completions](https://platform.openai.com/docs/api-reference/chat/create)
-- [Edits](https://platform.openai.com/docs/api-reference/edits)
-- [Embeddings](https://platform.openai.com/docs/api-reference/embeddings)
-- [Audio](https://platform.openai.com/docs/api-reference/audio)
-- [Files](https://platform.openai.com/docs/api-reference/files)
-- [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning)
-- [Images](https://platform.openai.com/docs/api-reference/images)
-- [Moderations](https://platform.openai.com/docs/api-reference/moderations)
-- [Assistants](https://platform.openai.com/docs/api-reference/assistants)
+## 支持的API
+- [模型](https://platform.openai.com/docs/api-reference/models)
+- [补全](https://platform.openai.com/docs/api-reference/completions)
+- [聊天](https://platform.openai.com/docs/api-reference/chat/create)
+- [编辑](https://platform.openai.com/docs/api-reference/edits)
+- [嵌入](https://platform.openai.com/docs/api-reference/embeddings)
+- [音频](https://platform.openai.com/docs/api-reference/audio)
+- [文件](https://platform.openai.com/docs/api-reference/files)
+- [微调](https://platform.openai.com/docs/api-reference/fine-tuning)
+- [图像](https://platform.openai.com/docs/api-reference/images)
+- [审核](https://platform.openai.com/docs/api-reference/moderations)
+- [助手](https://platform.openai.com/docs/api-reference/assistants)
 
-#### Deprecated by OpenAI
+#### 已被OpenAI弃用
 - [Engines](https://platform.openai.com/docs/api-reference/engines)
-- [Legacy Fine-Tunes](https://platform.openai.com/docs/guides/legacy-fine-tuning)
+- [旧版微调](https://platform.openai.com/docs/guides/legacy-fine-tuning)
 
-## Importing
+## 导入
 
 ### Gradle
 `implementation 'io.github.lambdua:<api|client|service>:<version>'`
@@ -39,37 +40,38 @@ as well as an example project using the service.
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>{api|client|service}</artifactId>
-    <version>version</version>       
+    <version>版本号</version>       
    </dependency>
 ```
 
-## Usage
-### Data classes only
-If you want to make your own client, just import the POJOs from the `api` module.
-Your client will need to use snake case to work with the OpenAI API.
+# 使用方法
+## 仅数据类
+如果您想要创建自己的客户端，只需从 api 模块导入 POJOs。
+您的客户端需要使用蛇形命名来与 OpenAI API 协作。
 
-### Retrofit client
-If you're using retrofit, you can import the `client` module and use the [OpenAiApi](client/src/main/java/com/theokanning/openai/OpenAiApi.java).  
-You'll have to add your auth token as a header (see [AuthenticationInterceptor](client/src/main/java/com/theokanning/openai/AuthenticationInterceptor.java))
-and set your converter factory to use snake case and only include non-null fields.
+## Retrofit 客户端
+如果您正在使用 retrofit，可以导入 client 模块并使用 OpenAiApi。
+您需要添加您的身份验证令牌作为头部（参见 AuthenticationInterceptor）
+并设置您的转换器工厂以使用蛇形命名并仅包含非空字段。
 
-### OpenAiService
-If you're looking for the fastest solution, import the `service` module and use [OpenAiService](service/src/main/java/com/theokanning/openai/service/OpenAiService.java).  
+## OpenAiService
+如果您正在寻找最快的解决方案，请导入 service 模块并使用 OpenAiService。
 
-> ⚠️The OpenAiService in the client module is deprecated, please switch to the new version in the service module.
+> ⚠️ client模块中的OpenAiService已被弃用,请切换到service模块中的新版本。
+
 ```java
-OpenAiService service = new OpenAiService("your_token");
+OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url");
 CompletionRequest completionRequest = CompletionRequest.builder()
-        .prompt("Somebody once told me the world is gonna roll me")
+        .prompt("曾经有人告诉我这个世界会离开我")
         .model("babbage-002"")
         .echo(true)
         .build();
 service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
 ```
 
-### Customizing OpenAiService
-If you need to customize OpenAiService, create your own Retrofit client and pass it in to the constructor.
-For example, do the following to add request logging (after adding the logging gradle dependency):
+### 自定义OpenAiService
+如果你需要自定义OpenAiService,创建你自己的Retrofit客户端并将其传递到构造函数中。
+例如,按照以下步骤添加请求日志记录(在添加日志记录gradle依赖项之后):
 
 ```java
 ObjectMapper mapper = defaultObjectMapper();
@@ -81,26 +83,11 @@ Retrofit retrofit = defaultRetrofit(client, mapper);
 
 OpenAiApi api = retrofit.create(OpenAiApi.class);
 OpenAiService service = new OpenAiService(api);
-```
 
-### Adding a Proxy
-To use a proxy, modify the OkHttp client as shown below:
-```java
-ObjectMapper mapper = defaultObjectMapper();
-Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
-OkHttpClient client = defaultClient(token, timeout)
-        .newBuilder()
-        .proxy(proxy)
-        .build();
-Retrofit retrofit = defaultRetrofit(client, mapper);
-OpenAiApi api = retrofit.create(OpenAiApi.class);
-OpenAiService service = new OpenAiService(api);
 ```
-
 ### Functions
-You can create your functions and define their executors easily using the ChatFunction class, along with any of your custom classes that will serve to define their available parameters. You can also process the functions with ease, with the help of an executor called FunctionExecutor.
-
-First we declare our function parameters:
+您可以使用ChatFunction类轻松创建您的函数并定义它们的执行器,以及任何将用于定义其可用参数的自定义类。您还可以使用名为FunctionExecutor的执行器轻松处理函数。
+首先我们声明函数参数:
 ```java
 public class Weather {
     @JsonPropertyDescription("City and state, for example: León, Guanajuato")
@@ -122,7 +109,7 @@ public static class WeatherResponse {
 }
 ```
 
-Next, we declare the function itself and associate it with an executor, in this example we will fake a response from some API:
+接下来,我们声明函数本身并将其与一个执行器相关联,在本例中,我们将模拟来自某个API的响应:
 ```java
 ChatFunction.builder()
         .name("get_weather")
@@ -131,7 +118,7 @@ ChatFunction.builder()
         .build()
 ```
 
-Then, we employ the FunctionExecutor object from the 'service' module to assist with execution and transformation into an object that is ready for the conversation:
+然后,我们使用'service'模块中的FunctionExecutor对象来协助执行和转换为一个准备好进行对话的对象:
 ```java
 List<ChatFunction> functionList = // list with functions
 FunctionExecutor functionExecutor = new FunctionExecutor(functionList);
@@ -154,59 +141,39 @@ ChatFunctionCall functionCall = responseMessage.getFunctionCall(); // might be n
 ChatMessage functionResponseMessage = functionExecutor.executeAndConvertToMessageHandlingExceptions(functionCall);
 messages.add(response);
 ```
-> **Note:** The `FunctionExecutor` class is part of the 'service' module.
+> **Note:** 注意: FunctionExecutor类是'service'模块的一部分。
 
-You can also create your own function executor. The return object of `ChatFunctionCall.getArguments()` is a JsonNode for simplicity and should be able to help you with that.
+您还可以创建自己的函数执行器。ChatFunctionCall.getArguments()的返回对象是JsonNode,出于简单性考虑,它应该可以帮助您实现这一点。
 
-For a more in-depth look, refer to a conversational example that employs functions in: [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java).
-Or for an example using functions and stream: [OpenAiApiFunctionsWithStreamExample.java](example/src/main/java/example/OpenAiApiFunctionsWithStreamExample.java)
+要深入了解,请参考: OpenAiApiFunctionsExample.java 中使用函数的对话示例。 或者使用函数和流的示例: OpenAiApiFunctionsWithStreamExample.java
 
-### Streaming thread shutdown
-If you want to shut down your process immediately after streaming responses, call `OpenAiService.shutdownExecutor()`.  
-This is not necessary for non-streaming calls.
+### 流线程关闭
+如果你想在流响应后立即关闭你的进程,请调用OpenAiService.shutdownExecutor()。
+对于非流调用,这是不必要的。
 
-## Running the example project
-All the [example](example/src/main/java/example/OpenAiApiExample.java) project requires is your OpenAI api token
+
+## 运行示例项目
+所有的 [示例项目](example/src/main/java/example/OpenAiApiExample.java) 都需要你有openai-token
 ```bash
 export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ```
-You can try all the capabilities of this project using:
-```bash
-./gradlew runExampleOne
-```
-And you can also try the new capability of using functions:
-```bash
-./gradlew runExampleTwo
-```
-Or functions with 'stream' mode enabled:
-```bash
-./gradlew runExampleThree
+
+## 常见问题
+### 支持自定义openai-url或代理url吗?
+是的,你可以在OpenAiService构造函数中传递一个url,它将被用作基础url。
+```java
+OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url");
 ```
 
-## FAQ
-### Does this support GPT-4?
-Yes! GPT-4 uses the ChatCompletion Api, and you can see the latest model options [here](https://platform.openai.com/docs/models/gpt-4).  
-GPT-4 is currently in a limited beta (as of 4/1/23), so make sure you have access before trying to use it.
+### 这支持函数吗?
+当然!使用自己的函数而不必担心做脏活累活是非常容易的。你可以参考OpenAiApiFunctionsExample.java或OpenAiApiFunctionsWithStreamExample.java项目中的示例。
 
-### Does this support functions?
-Absolutely! It is very easy to use your own functions without worrying about doing the dirty work.
-As mentioned above, you can refer to [OpenAiApiFunctionsExample.java](example/src/main/java/example/OpenAiApiFunctionsExample.java) or 
-[OpenAiApiFunctionsWithStreamExample.java](example/src/main/java/example/OpenAiApiFunctionsWithStreamExample.java) projects for an example. 
+### 为什么我会遇到连接超时?
+请确认你的网络连接是稳定的,并且你的OpenAI服务器是可用的。如果你的网络连接不稳定,你可以尝试增加超时时间。
 
-### Why am I getting connection timeouts?
-Make sure that OpenAI is available in your country.
+## 许可证
+按MIT许可证发布
 
-### Why doesn't OpenAiService support x configuration option?
-Many projects use OpenAiService, and in order to support them best I've kept it extremely simple.  
-You can create your own OpenAiApi instance to customize headers, timeouts, base urls etc.  
-If you want features like retry logic and async calls, you'll have to make an `OpenAiApi` instance and call it directly instead of using `OpenAiService`
 
-## Deprecated Endpoints
-OpenAI has deprecated engine-based endpoints in favor of model-based endpoints. 
-For example, instead of using `v1/engines/{engine_id}/completions`, switch to `v1/completions` and specify the model in the `CompletionRequest`.
-The code includes upgrade instructions for all deprecated endpoints.
 
-I won't remove the old endpoints from this library until OpenAI shuts them down.
 
-## License
-Published under the MIT License
