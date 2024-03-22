@@ -1,9 +1,6 @@
 package com.theokanning.openai.service;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -44,8 +41,10 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
                 return null;
             }
 
-            // encode to valid JSON escape otherwise we will lose quotes
-            json = MAPPER.writeValueAsString(json);
+            if (!isValidJson(json)) {
+                // encode to valid JSON escape otherwise we will lose quotes
+                json = MAPPER.writeValueAsString(json);
+            }
 
             try {
                 JsonNode node = null;
@@ -60,6 +59,16 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return null;
+            }
+        }
+
+        private boolean isValidJson(String jsonString) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                objectMapper.readTree(jsonString);
+                return true;
+            } catch (JsonProcessingException e) {
+                return false;
             }
         }
     }
