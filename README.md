@@ -40,7 +40,7 @@
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>{api|client|service}</artifactId>
-    <version>0.18.3</version>       
+    <version>0.18.4</version>       
    </dependency>
 ```
 
