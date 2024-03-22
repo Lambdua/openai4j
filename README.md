@@ -2,7 +2,7 @@
 
 > ⚠️ 这个项目是[openai Java](https://github.com/TheoKanning/openai-java)项目的分叉,原项目作者似乎已经停止维护,无法满足我的需求，所以我决定继续维护这个项目,并添加新功能。
 
-[english](README-EN.md)
+[english doc](README-EN.md)
 # OpenAI-Java
 用于使用OpenAI的GPT API的Java库。支持GPT-3、ChatGPT和GPT-4。
 
@@ -63,7 +63,7 @@
 OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url");
 CompletionRequest completionRequest = CompletionRequest.builder()
         .prompt("曾经有人告诉我这个世界会离开我")
-        .model("babbage-002"")
+        .model("babbage-002")
         .echo(true)
         .build();
 service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
@@ -115,7 +115,7 @@ ChatFunction.builder()
         .name("get_weather")
         .description("Get the current weather of a location")
         .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
-        .build()
+        .build();
 ```
 
 然后,我们使用'service'模块中的FunctionExecutor对象来协助执行和转换为一个准备好进行对话的对象:
