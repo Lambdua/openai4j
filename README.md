@@ -1,6 +1,7 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.lambdua/service?color=blue)
 
 > ⚠️ 这个项目是[openai Java](https://github.com/TheoKanning/openai-java)项目的分叉,原项目作者似乎已经停止维护,无法满足我的需求，所以我决定继续维护这个项目,并添加新功能。
+> [版本变化详情](https://github.com/Lambdua/openai4j/releases)
 
 [english doc](README-EN.md)
 # OpenAI-Java
@@ -45,19 +46,11 @@
 ```
 
 # 使用方法
-## 仅数据类
-如果您想要创建自己的客户端，只需从 api 模块导入 POJOs。
-您的客户端需要使用蛇形命名来与 OpenAI API 协作。
-
-## Retrofit 客户端
-如果您正在使用 retrofit，可以导入 client 模块并使用 OpenAiApi。
-您需要添加您的身份验证令牌作为头部（参见 AuthenticationInterceptor）
-并设置您的转换器工厂以使用蛇形命名并仅包含非空字段。
-
 ## OpenAiService
 如果您正在寻找最快的解决方案，请导入 service 模块并使用 OpenAiService。
 
-> ⚠️ client模块中的OpenAiService已被弃用,请切换到service模块中的新版本。
+> ⚠️ client模块中的OpenAiService已被弃用,请切换到service模块中的新版本,将在0.19版本中删除,请尽快切换。
+> 更多使用方法请参考example包下的示例代码。
 
 ```java
 OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url");
@@ -151,12 +144,16 @@ messages.add(response);
 如果你想在流响应后立即关闭你的进程,请调用OpenAiService.shutdownExecutor()。
 对于非流调用,这是不必要的。
 
+## 仅数据类
 
-## 运行示例项目
-所有的 [示例项目](example/src/main/java/example/OpenAiApiExample.java) 都需要你有openai-token
-```bash
-export OPENAI_TOKEN="sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-```
+如果您想要创建自己的客户端，只需从 api 模块导入 POJOs。
+您的客户端需要使用蛇形命名来与 OpenAI API 协作。
+
+## Retrofit 客户端
+
+如果您正在使用 retrofit，可以导入 client 模块并使用 OpenAiApi。
+您需要添加您的身份验证令牌作为头部（参见 AuthenticationInterceptor）
+并设置您的转换器工厂以使用蛇形命名并仅包含非空字段。
 
 ## 常见问题
 ### 支持自定义openai-url或代理url吗?
