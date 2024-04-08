@@ -15,21 +15,8 @@
 以及使用service的示例项目。
 
 ## 支持的API
-- [模型](https://platform.openai.com/docs/api-reference/models)
-- [补全](https://platform.openai.com/docs/api-reference/completions)
-- [聊天](https://platform.openai.com/docs/api-reference/chat/create)
-- [编辑](https://platform.openai.com/docs/api-reference/edits)
-- [嵌入](https://platform.openai.com/docs/api-reference/embeddings)
-- [音频](https://platform.openai.com/docs/api-reference/audio)
-- [文件](https://platform.openai.com/docs/api-reference/files)
-- [微调](https://platform.openai.com/docs/api-reference/fine-tuning)
-- [图像](https://platform.openai.com/docs/api-reference/images)
-- [审核](https://platform.openai.com/docs/api-reference/moderations)
-- [助手](https://platform.openai.com/docs/api-reference/assistants)
 
-#### 已被OpenAI弃用
-- [Engines](https://platform.openai.com/docs/api-reference/engines)
-- [旧版微调](https://platform.openai.com/docs/guides/legacy-fine-tuning)
+[模型](https://platform.openai.com/docs/api-reference/models)  [补全](https://platform.openai.com/docs/api-reference/completions) [聊天](https://platform.openai.com/docs/api-reference/chat/create) [编辑](https://platform.openai.com/docs/api-reference/edits) [嵌入](https://platform.openai.com/docs/api-reference/embeddings) [音频](https://platform.openai.com/docs/api-reference/audio) [文件](https://platform.openai.com/docs/api-reference/files) [微调](https://platform.openai.com/docs/api-reference/fine-tuning) [图像](https://platform.openai.com/docs/api-reference/images) [审核](https://platform.openai.com/docs/api-reference/moderations) [助手](https://platform.openai.com/docs/api-reference/assistants)
 
 ## 导入
 
@@ -48,9 +35,6 @@
 # 使用方法
 ## OpenAiService
 如果您正在寻找最快的解决方案，请导入 service 模块并使用 OpenAiService。
-
-> ⚠️ client模块中的OpenAiService已被弃用,请切换到service模块中的新版本,将在0.19版本中删除,请尽快切换。
-> 更多使用方法请参考example包下的示例代码。
 
 ```java
 OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url");
@@ -144,13 +128,11 @@ messages.add(response);
 如果你想在流响应后立即关闭你的进程,请调用OpenAiService.shutdownExecutor()。
 对于非流调用,这是不必要的。
 
-## 仅数据类
-
+## 仅使用pojo
 如果您想要创建自己的客户端，只需从 api 模块导入 POJOs。
 您的客户端需要使用蛇形命名来与 OpenAI API 协作。
 
 ## Retrofit 客户端
-
 如果您正在使用 retrofit，可以导入 client 模块并使用 OpenAiApi。
 您需要添加您的身份验证令牌作为头部（参见 AuthenticationInterceptor）
 并设置您的转换器工厂以使用蛇形命名并仅包含非空字段。
@@ -163,14 +145,11 @@ OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url
 ```
 
 ### 这支持函数吗?
-当然!使用自己的函数而不必担心做脏活累活是非常容易的。你可以参考OpenAiApiFunctionsExample.java或OpenAiApiFunctionsWithStreamExample.java项目中的示例。
+
+支持,使用自己的函数而不必担心做脏活累活是非常容易的。你可以参考OpenAiApiFunctionsExample.java或OpenAiApiFunctionsWithStreamExample.java项目中的示例。
 
 ### 为什么我会遇到连接超时?
 请确认你的网络连接是稳定的,并且你的OpenAI服务器是可用的。如果你的网络连接不稳定,你可以尝试增加超时时间。
 
 ## 许可证
 按MIT许可证发布
-
-
-
-

@@ -25,9 +25,6 @@ as well as an example project using the service.
 - [Moderations](https://platform.openai.com/docs/api-reference/moderations)
 - [Assistants](https://platform.openai.com/docs/api-reference/assistants)
 
-#### Deprecated by OpenAI
-- [Engines](https://platform.openai.com/docs/api-reference/engines)
-- [Legacy Fine-Tunes](https://platform.openai.com/docs/guides/legacy-fine-tuning)
 
 ## Importing
 
@@ -56,7 +53,6 @@ and set your converter factory to use snake case and only include non-null field
 ### OpenAiService
 If you're looking for the fastest solution, import the `service` module and use [OpenAiService](service/src/main/java/com/theokanning/openai/service/OpenAiService.java).
 
-> ⚠️The OpenAiService in the client module is deprecated, please switch to the new version in the service module.
 ```java
 OpenAiService service = new OpenAiService("your_token");
 CompletionRequest completionRequest = CompletionRequest.builder()
@@ -185,13 +181,6 @@ Make sure that OpenAI is available in your country.
 Many projects use OpenAiService, and in order to support them best I've kept it extremely simple.  
 You can create your own OpenAiApi instance to customize headers, timeouts, base urls etc.  
 If you want features like retry logic and async calls, you'll have to make an `OpenAiApi` instance and call it directly instead of using `OpenAiService`
-
-## Deprecated Endpoints
-OpenAI has deprecated engine-based endpoints in favor of model-based endpoints.
-For example, instead of using `v1/engines/{engine_id}/completions`, switch to `v1/completions` and specify the model in the `CompletionRequest`.
-The code includes upgrade instructions for all deprecated endpoints.
-
-I won't remove the old endpoints from this library until OpenAI shuts them down.
 
 ## License
 Published under the MIT License
