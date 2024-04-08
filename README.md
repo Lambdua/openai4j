@@ -28,7 +28,7 @@
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>{api|client|service}</artifactId>
-    <version>0.18.4</version>       
+    <version>0.19.0</version>       
    </dependency>
 ```
 
