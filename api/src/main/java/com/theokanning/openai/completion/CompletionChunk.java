@@ -1,6 +1,7 @@
 package com.theokanning.openai.completion;
 
 import lombok.Data;
+
 import java.util.List;
 
 /**

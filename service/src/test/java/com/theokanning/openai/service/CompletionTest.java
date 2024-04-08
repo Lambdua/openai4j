@@ -3,7 +3,6 @@ package com.theokanning.openai.service;
 import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
-import com.theokanning.openai.service.OpenAiService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

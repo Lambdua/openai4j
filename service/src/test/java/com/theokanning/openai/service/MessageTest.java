@@ -6,7 +6,6 @@ import com.theokanning.openai.messages.Message;
 import com.theokanning.openai.messages.MessageFile;
 import com.theokanning.openai.messages.MessageRequest;
 import com.theokanning.openai.messages.ModifyMessageRequest;
-import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

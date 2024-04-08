@@ -1,7 +1,7 @@
 package com.theokanning.openai;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -10,13 +10,10 @@ import com.theokanning.openai.edit.EditRequest;
 import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
-import com.theokanning.openai.engine.Engine;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.fine_tuning.FineTuningEvent;
 import com.theokanning.openai.fine_tuning.FineTuningJob;
 import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
-import com.theokanning.openai.finetune.FineTuneEvent;
-import com.theokanning.openai.finetune.FineTuneResult;
 import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.messages.Message;
 import com.theokanning.openai.model.Model;
@@ -28,7 +25,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsonTest {
 
@@ -41,10 +39,7 @@ public class JsonTest {
             EditResult.class,
             EmbeddingRequest.class,
             EmbeddingResult.class,
-            Engine.class,
             File.class,
-            FineTuneEvent.class,
-            FineTuneResult.class,
             FineTuningEvent.class,
             FineTuningJob.class,
             FineTuningJobRequest.class,

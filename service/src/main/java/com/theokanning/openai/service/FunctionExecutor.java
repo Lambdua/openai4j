@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatFunction;
+import com.theokanning.openai.completion.chat.ChatFunctionCall;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 
 import java.util.*;
 

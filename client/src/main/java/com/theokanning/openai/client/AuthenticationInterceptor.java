@@ -1,10 +1,10 @@
 package com.theokanning.openai.client;
 
-import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import java.io.IOException;
 
 /**
  * OkHttp Interceptor that adds an authorization token header

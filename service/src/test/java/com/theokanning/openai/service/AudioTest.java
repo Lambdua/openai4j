@@ -1,17 +1,12 @@
 package com.theokanning.openai.service;
 
-import com.theokanning.openai.audio.CreateSpeechRequest;
-import com.theokanning.openai.audio.CreateTranscriptionRequest;
-import com.theokanning.openai.audio.CreateTranslationRequest;
-import com.theokanning.openai.audio.TranscriptionResult;
-import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.audio.*;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
-
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
 
 import static org.junit.jupiter.api.Assertions.*;
 

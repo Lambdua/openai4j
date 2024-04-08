@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ThreadTest {
@@ -44,7 +46,7 @@ public class ThreadTest {
         System.out.println(thread.getMetadata());
         assertEquals("thread", thread.getObject());
     }
-    
+
     @Test
     @Order(3)
     void modifyThread() {
@@ -57,7 +59,7 @@ public class ThreadTest {
         assertEquals("thread", thread.getObject());
         assertEquals("modify", thread.getMetadata().get("action"));
     }
-    
+
     @Test
     @Order(4)
     void deleteThread() {
