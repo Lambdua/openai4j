@@ -33,6 +33,7 @@ public class TikTokensUtil {
         modelMap.put(ModelEnum.GPT_4_32K_0314.getName(), registry.getEncodingForModel(ModelType.GPT_4));
         modelMap.put(ModelEnum.GPT_4_0314.getName(), registry.getEncodingForModel(ModelType.GPT_4));
         modelMap.put(ModelEnum.GPT_4_1106_preview.getName(), registry.getEncodingForModel(ModelType.GPT_4));
+        modelMap.put(ModelEnum.GPT_4_TURBO.getName(), registry.getEncodingForModel(ModelType.GPT_4));
     }
 
     /**
@@ -186,7 +187,7 @@ public class TikTokensUtil {
         int sum = 0;
         for (ChatMessage msg : messages) {
             sum += tokensPerMessage;
-            sum += tokens(encoding, msg.getContent());
+            sum += tokens(encoding, msg.getTextContent());
             sum += tokens(encoding, msg.getRole());
             sum += tokens(encoding, msg.getName());
             if (isNotBlank(msg.getName())) {
@@ -223,7 +224,9 @@ public class TikTokensUtil {
         if (ModelEnum.GPT_4.getName().equals(name)
                 || ModelEnum.GPT_4_32K.getName().equals(name)
                 || ModelEnum.GPT_4_32K_0314.getName().equals(name)
-                || ModelEnum.GPT_4_0314.getName().equals(name)) {
+                || ModelEnum.GPT_4_0314.getName().equals(name)
+                || ModelEnum.GPT_4_1106_preview.getName().equals(name)
+        ) {
             return ModelType.GPT_4;
         }
 
@@ -266,7 +269,16 @@ public class TikTokensUtil {
         /**
          * Temporary model, not recommended for use.
          */
-        GPT_4_1106_preview("gpt-4-1106-preview");
+        GPT_4_1106_preview("gpt-4-1106-preview"),
+
+        /**
+         * gpt-4-turbo The latest GPT-4 Turbo model with vision capabilities. Vision requests can now use JSON mode and function calling. Currently points to gpt-4-turbo-2024-04-09.
+         */
+        GPT_4_TURBO("gpt-4-turbo");
+
+
+
+
         private String name;
     }
 

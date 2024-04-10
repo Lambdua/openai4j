@@ -59,7 +59,8 @@ public class JsonTest {
         byte[] bytes = Files.readAllBytes(Paths.get(path));
         String json = new String(bytes);
 
-        String actual = mapper.writeValueAsString(mapper.readValue(json, clazz));
+        Object value = mapper.readValue(json, clazz);
+        String actual = mapper.writeValueAsString(value);
 
         // Convert to JsonNodes to avoid any json formatting differences
         assertEquals(mapper.readTree(json), mapper.readTree(actual));

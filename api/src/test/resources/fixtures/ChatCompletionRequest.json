@@ -1,4 +1,100 @@
 {
-  "model": "gpt-3.5-turbo",
-  "messages": [{"role": "user", "content": "Hello!"}]
+  "model": "gpt-4-turbo",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Hello! I'm a weather bot. I can help you with the weather. Just ask me for the current weather in a specific location."
+    },
+    {
+      "role": "assistant",
+      "content": "这是一个assistant的回复模拟"
+    },
+    {
+      "role": "user",
+      "content": "文本内容测试"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What's in this image?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "123",
+      "content": "这是一个tool的回复模拟"
+    },
+    {
+      "role": "function",
+      "content": "这是一个system的回复模拟",
+      "name": "get_current_weather"
+    }
+  ],
+  "max_tokens": 300,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_current_weather",
+        "description": "Get the current weather in a given location",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "The city and state, e.g. San Francisco, CA"
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "celsius",
+                "fahrenheit"
+              ]
+            }
+          },
+          "required": [
+            "location"
+          ]
+        }
+      }
+    }
+  ],
+  "tool_choice": "auto",
+  "functions": [
+    {
+      "name": "get_current_weather",
+      "description": "Get the current weather in a given location",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "description": "The city and state, e.g. San Francisco, CA"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "celsius",
+              "fahrenheit"
+            ]
+          }
+        },
+        "required": [
+          "location"
+        ]
+      }
+    }
+  ],
+  "function_call": {
+    "name": "get_current_weather"
+  }
 }
