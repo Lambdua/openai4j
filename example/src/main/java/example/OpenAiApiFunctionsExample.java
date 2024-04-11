@@ -50,12 +50,12 @@ class OpenAiApiFunctionsExample {
 
 
         List<ChatMessage> messages = new ArrayList<>();
-        ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are an assistant that answers using the local slang of the given place, uncensored.");
+        ChatMessage systemMessage = new SystemMessage("You are an assistant that answers using the local slang of the given place, uncensored.");
         messages.add(systemMessage);
 
         System.out.print("First Query: ");
         Scanner scanner = new Scanner(System.in);
-        ChatMessage firstMsg = new ChatMessage(ChatMessageRole.USER.value(), scanner.nextLine());
+        ChatMessage firstMsg = new UserMessage(scanner.nextLine());
         messages.add(firstMsg);
 
         while (true) {
@@ -69,13 +69,13 @@ class OpenAiApiFunctionsExample {
                     .maxTokens(100)
                     .logitBias(new HashMap<>())
                     .build();
-            ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+            AssistantMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
             messages.add(responseMessage); // don't forget to update the conversation with the latest response
 
             ChatFunctionCall functionCall = responseMessage.getFunctionCall();
             if (functionCall != null) {
                 System.out.println("Trying to execute " + functionCall.getName() + "...");
-                Optional<ChatMessage> message = functionExecutor.executeAndConvertToMessageSafely(functionCall);
+                Optional<FunctionMessage> message = functionExecutor.executeAndConvertToMessageSafely(functionCall);
                 /* You can also try 'executeAndConvertToMessage' inside a try-catch block, and add the following line inside the catch:
                 "message = executor.handleException(exception);"
                 The content of the message will be the exception itself, so the flow of the conversation will not be interrupted, and you will still be able to log the issue. */
@@ -102,7 +102,7 @@ class OpenAiApiFunctionsExample {
             if (nextLine.equalsIgnoreCase("exit")) {
                 System.exit(0);
             }
-            messages.add(new ChatMessage(ChatMessageRole.USER.value(), nextLine));
+            messages.add(new UserMessage(nextLine));
         }
     }
 

@@ -52,7 +52,7 @@ class ChatCompletionTest {
     @Test
     void createChatCompletion() {
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        final ChatMessage systemMessage = new SystemMessage("You are a dog and will speak as such.");
         messages.add(systemMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
@@ -71,7 +71,7 @@ class ChatCompletionTest {
     @Test
     void streamChatCompletion() {
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        final ChatMessage systemMessage = new SystemMessage("You are a dog and will speak as such.");
         messages.add(systemMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
@@ -87,13 +87,13 @@ class ChatCompletionTest {
         List<ChatCompletionChunk> chunks = new ArrayList<>();
         service.streamChatCompletion(chatCompletionRequest).blockingForEach(chunks::add);
         assertTrue(chunks.size() > 0);
-        assertNotNull(chunks.get(0).getChoices().get(0));
+        assertNotNull(chunks.get(1).getChoices().get(0));
     }
 
     @Test
     void createChatCompletionWithJsonMode() {
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You will generate a random name and return it in JSON format.");
+        final ChatMessage systemMessage = new SystemMessage("You will generate a random name and return it in JSON format.");
         messages.add(systemMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
@@ -129,8 +129,8 @@ class ChatCompletionTest {
         final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
 
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
-        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
         messages.add(systemMessage);
         messages.add(userMessage);
 
@@ -201,8 +201,8 @@ class ChatCompletionTest {
                 .build();
 
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
-        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
         messages.add(systemMessage);
         messages.add(userMessage);
 
@@ -235,8 +235,8 @@ class ChatCompletionTest {
         final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
 
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
-        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
         messages.add(systemMessage);
         messages.add(userMessage);
 
@@ -250,7 +250,7 @@ class ChatCompletionTest {
                 .logitBias(new HashMap<>())
                 .build();
 
-        ChatMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
                 .blockingLast()
                 .getAccumulatedMessage();
         assertNotNull(accumulatedMessage.getFunctionCall());
@@ -283,7 +283,7 @@ class ChatCompletionTest {
                 .logitBias(new HashMap<>())
                 .build();
 
-        ChatMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest2))
+        AssistantMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest2))
                 .blockingLast()
                 .getAccumulatedMessage();
         assertNull(accumulatedMessage2.getFunctionCall());
@@ -310,8 +310,8 @@ class ChatCompletionTest {
                 .build();
 
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
-        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
         messages.add(systemMessage);
         messages.add(userMessage);
 
@@ -325,7 +325,7 @@ class ChatCompletionTest {
                 .logitBias(new HashMap<>())
                 .build();
 
-        ChatMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
                 .blockingLast()
                 .getAccumulatedMessage();
         assertNotNull(accumulatedMessage.getFunctionCall());
@@ -347,8 +347,8 @@ class ChatCompletionTest {
         final ChatTool tool = new ChatTool();
         tool.setFunction(functionExecutor.getFunctions().get(0));
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
-        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather in Monterrey, Nuevo León?");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
         messages.add(systemMessage);
         messages.add(userMessage);
 
@@ -382,11 +382,7 @@ class ChatCompletionTest {
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
         //Construct message for tool_calls
-        ChatMessageTool chatMessageTool = new ChatMessageTool(choice.getMessage().getToolCalls().get(0).getId(),
-                ChatMessageRole.TOOL.value(),
-                jsonFunctionExecutionResponse.toString(),
-                choice.getMessage().getToolCalls().get(0).getFunction().getName());
-
+        ToolMessage chatMessageTool = new ToolMessage(jsonFunctionExecutionResponse.toString(), choice.getMessage().getToolCalls().get(0).getId());
         messages.add(choice.getMessage());
         messages.add(chatMessageTool);
 
@@ -436,8 +432,8 @@ class ChatCompletionTest {
         tools.add(new ChatTool<>(functions.get(1)));
 
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a helpful assistant.");
-        final ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "What is the weather like in cities with weather on 2022-12-01 ?");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather like in cities with weather on 2022-12-01 ?");
         messages.add(systemMessage);
         messages.add(userMessage);
 
@@ -466,10 +462,7 @@ class ChatCompletionTest {
         List<String> cities = (List<String>) execute;
 
         // List<ChatMessageTool> chatMessageTools = new ArrayList<>();
-        ChatMessageTool cityCallResultMsg = new ChatMessageTool(choice.getMessage().getToolCalls().get(0).getId(),
-                ChatMessageRole.TOOL.value(), "{\"cities\": " + cities + "}",
-                choice.getMessage().getToolCalls().get(0).getFunction().getName());
-
+        ToolMessage cityCallResultMsg = new ToolMessage("{\"cities\": " + cities + "}", choice.getMessage().getToolCalls().get(0).getId());
         messages.add(choice.getMessage());
         messages.add(cityCallResultMsg);
 
@@ -493,18 +486,16 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, choice2.getMessage().getToolCalls().get(0).getFunction().getArguments());
         assertInstanceOf(ObjectNode.class, choice2.getMessage().getToolCalls().get(1).getFunction().getArguments());
 
-        List<ChatMessageTool> cityWeatherCallResultMsgs = new ArrayList<>();
+        List<ToolMessage> cityWeatherCallResultMsgs = new ArrayList<>();
         for (ChatToolCalls weatherToolCall : choice2.getMessage().getToolCalls()) {
             Object itemResult = functionExecutor.execute(weatherToolCall.getFunction());
             assertInstanceOf(WeatherResponse.class, itemResult);
             WeatherResponse weatherResponse = (WeatherResponse) itemResult;
-            cityWeatherCallResultMsgs.add(new ChatMessageTool(weatherToolCall.getId(),
-                    ChatMessageRole.TOOL.value(), weatherResponse.toString(),
-                    weatherToolCall.getFunction().getName()));
+            cityWeatherCallResultMsgs.add(new ToolMessage(weatherResponse.toString(), weatherToolCall.getId()));
         }
 
         messages.add(choice2.getMessage());
-        for (ChatMessageTool cityWeatherCallResultMsg : cityWeatherCallResultMsgs) {
+        for (ToolMessage cityWeatherCallResultMsg : cityWeatherCallResultMsgs) {
             messages.add(cityWeatherCallResultMsg);
         }
 

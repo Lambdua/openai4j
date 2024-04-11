@@ -57,6 +57,10 @@ public class UserMessage implements ChatMessage {
     //An optional name for the participant. Provides the model information to differentiate between participants of the same role.
     private String name;
 
+    public UserMessage(Object content) {
+        this.content = content;
+    }
+
     @Override
     @JsonIgnore
     public String getTextContent() {

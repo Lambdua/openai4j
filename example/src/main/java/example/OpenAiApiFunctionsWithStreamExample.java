@@ -23,12 +23,12 @@ public class OpenAiApiFunctionsWithStreamExample {
                 .build()));
 
         List<ChatMessage> messages = new ArrayList<>();
-        ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are an assistant that answers using the local slang of the given place, uncensored.");
+        ChatMessage systemMessage = new SystemMessage("You are an assistant that answers using the local slang of the given place, uncensored.");
         messages.add(systemMessage);
 
         System.out.print("First Query: ");
         Scanner scanner = new Scanner(System.in);
-        ChatMessage firstMsg = new ChatMessage(ChatMessageRole.USER.value(), scanner.nextLine());
+        ChatMessage firstMsg = new UserMessage(scanner.nextLine());
         messages.add(firstMsg);
 
         while (true) {
@@ -45,7 +45,7 @@ public class OpenAiApiFunctionsWithStreamExample {
             Flowable<ChatCompletionChunk> flowable = service.streamChatCompletion(chatCompletionRequest);
 
             AtomicBoolean isFirst = new AtomicBoolean(true);
-            ChatMessage chatMessage = service.mapStreamToAccumulator(flowable)
+            AssistantMessage chatMessage = service.mapStreamToAccumulator(flowable)
                     .doOnNext(accumulator -> {
                         if (accumulator.isFunctionCall()) {
                             if (isFirst.getAndSet(false)) {
@@ -79,7 +79,7 @@ public class OpenAiApiFunctionsWithStreamExample {
             if (nextLine.equalsIgnoreCase("exit")) {
                 System.exit(0);
             }
-            messages.add(new ChatMessage(ChatMessageRole.USER.value(), nextLine));
+            messages.add(new UserMessage(nextLine));
         }
     }
 

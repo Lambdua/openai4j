@@ -1,7 +1,7 @@
 package com.theokanning.openai.service;
 
+import com.theokanning.openai.completion.chat.AssistantMessage;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
-import com.theokanning.openai.completion.chat.ChatMessage;
 
 /**
  * Class that accumulates chat messages and provides utility methods for
@@ -12,16 +12,16 @@ import com.theokanning.openai.completion.chat.ChatMessage;
  */
 public class ChatMessageAccumulator {
 
-    private final ChatMessage messageChunk;
-    private final ChatMessage accumulatedMessage;
+    private final AssistantMessage messageChunk;
+    private final AssistantMessage accumulatedMessage;
 
     /**
      * Constructor that initializes the message chunk and accumulated message.
      *
-     * @param messageChunk The message chunk.
+     * @param messageChunk       The message chunk.
      * @param accumulatedMessage The accumulated message.
      */
-    public ChatMessageAccumulator(ChatMessage messageChunk, ChatMessage accumulatedMessage) {
+    public ChatMessageAccumulator(AssistantMessage messageChunk, AssistantMessage accumulatedMessage) {
         this.messageChunk = messageChunk;
         this.accumulatedMessage = accumulatedMessage;
     }
@@ -32,7 +32,9 @@ public class ChatMessageAccumulator {
      * @return true if the accumulated message contains a function call, false otherwise.
      */
     public boolean isFunctionCall() {
-        return getAccumulatedMessage().getFunctionCall() != null && getAccumulatedMessage().getFunctionCall().getName() != null;
+        AssistantMessage asstMsg = getAccumulatedMessage();
+        return (asstMsg.getFunctionCall() != null && asstMsg.getFunctionCall().getName() != null) ||
+                (asstMsg.getToolCalls() != null && !asstMsg.getToolCalls().isEmpty());
     }
 
     /**
@@ -49,7 +51,7 @@ public class ChatMessageAccumulator {
      *
      * @return the message chunk.
      */
-    public ChatMessage getMessageChunk() {
+    public AssistantMessage getMessageChunk() {
         return messageChunk;
     }
 
@@ -58,7 +60,7 @@ public class ChatMessageAccumulator {
      *
      * @return the accumulated message.
      */
-    public ChatMessage getAccumulatedMessage() {
+    public AssistantMessage getAccumulatedMessage() {
         return accumulatedMessage;
     }
 
@@ -69,7 +71,12 @@ public class ChatMessageAccumulator {
      * @return the function call from the message chunk.
      */
     public ChatFunctionCall getChatFunctionCallChunk() {
-        return getMessageChunk().getFunctionCall();
+        AssistantMessage msC = (AssistantMessage) getMessageChunk();
+        ChatFunctionCall functionCall = msC.getFunctionCall();
+        if (functionCall == null) {
+            functionCall = msC.getToolCalls().get(0).getFunction();
+        }
+        return functionCall;
     }
 
     /**

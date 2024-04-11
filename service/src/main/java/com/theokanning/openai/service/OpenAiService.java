@@ -591,12 +591,16 @@ public class OpenAiService {
                 .build();
     }
 
+    /**
+     * @deprecated will use tools to accumulate messages in the future
+     */
+    @Deprecated
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
-        ChatMessage accumulatedMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), null);
+        AssistantMessage accumulatedMessage = new AssistantMessage();
 
         return flowable.map(chunk -> {
-            ChatMessage messageChunk = chunk.getChoices().get(0).getMessage();
+            AssistantMessage messageChunk = chunk.getChoices().get(0).getMessage();
             if (messageChunk.getFunctionCall() != null) {
                 if (messageChunk.getFunctionCall().getName() != null) {
                     String namePart = messageChunk.getFunctionCall().getName();

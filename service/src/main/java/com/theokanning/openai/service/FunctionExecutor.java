@@ -7,11 +7,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.completion.chat.ChatFunction;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.completion.chat.ChatMessageRole;
+import com.theokanning.openai.completion.chat.FunctionMessage;
 
 import java.util.*;
 
+/**
+ * @deprecated Use {@link ToolExecutor} instead
+ */
+@Deprecated
 public class FunctionExecutor {
 
     private ObjectMapper MAPPER = new ObjectMapper();
@@ -26,7 +29,7 @@ public class FunctionExecutor {
         setObjectMapper(objectMapper);
     }
 
-    public Optional<ChatMessage> executeAndConvertToMessageSafely(ChatFunctionCall call) {
+    public Optional<FunctionMessage> executeAndConvertToMessageSafely(ChatFunctionCall call) {
         try {
             return Optional.ofNullable(executeAndConvertToMessage(call));
         } catch (Exception ignored) {
@@ -34,7 +37,7 @@ public class FunctionExecutor {
         }
     }
 
-    public ChatMessage executeAndConvertToMessageHandlingExceptions(ChatFunctionCall call) {
+    public FunctionMessage executeAndConvertToMessageHandlingExceptions(ChatFunctionCall call) {
         try {
             return executeAndConvertToMessage(call);
         } catch (Exception exception) {
@@ -43,13 +46,13 @@ public class FunctionExecutor {
         }
     }
 
-    public ChatMessage convertExceptionToMessage(Exception exception) {
+    public FunctionMessage convertExceptionToMessage(Exception exception) {
         String error = exception.getMessage() == null ? exception.toString() : exception.getMessage();
-        return new ChatMessage(ChatMessageRole.FUNCTION.value(), "{\"error\": \"" + error + "\"}", "error");
+        return new FunctionMessage("{\"error\": \"" + error + "\"}", "error");
     }
 
-    public ChatMessage executeAndConvertToMessage(ChatFunctionCall call) {
-        return new ChatMessage(ChatMessageRole.FUNCTION.value(), executeAndConvertToJson(call).toPrettyString(), call.getName());
+    public FunctionMessage executeAndConvertToMessage(ChatFunctionCall call) {
+        return new FunctionMessage(executeAndConvertToJson(call).toPrettyString(), call.getName());
     }
 
     public JsonNode executeAndConvertToJson(ChatFunctionCall call) {

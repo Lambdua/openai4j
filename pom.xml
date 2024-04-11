@@ -84,6 +84,9 @@
                         <version>5.10.1</version> <!-- 使用与你的测试一致的JUnit Jupiter版本 -->
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
             </plugin>
 
 

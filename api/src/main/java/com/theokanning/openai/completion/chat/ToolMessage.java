@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ToolMessage implements ChatMessage {
+
     private final String role = ChatMessageRole.TOOL.value();
 
     private String content;

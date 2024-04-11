@@ -18,7 +18,7 @@ public class ChatCompletionChoice {
      * The {@link ChatMessageRole#ASSISTANT} message or delta (when streaming) which was generated
      */
     @JsonAlias("delta")
-    ChatMessage message;
+    AssistantMessage message;
 
     /**
      * The reason the model stopped generating tokens.

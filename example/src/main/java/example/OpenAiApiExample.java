@@ -3,7 +3,7 @@ package example;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.completion.chat.ChatMessageRole;
+import com.theokanning.openai.completion.chat.SystemMessage;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.service.OpenAiService;
 
@@ -37,7 +37,7 @@ class OpenAiApiExample {
 
         System.out.println("Streaming chat completion...");
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a dog and will speak as such.");
+        final ChatMessage systemMessage = new SystemMessage("You are a dog and will speak as such.");
         messages.add(systemMessage);
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()

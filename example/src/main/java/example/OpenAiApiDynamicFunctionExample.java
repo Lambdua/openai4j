@@ -43,12 +43,12 @@ public class OpenAiApiDynamicFunctionExample {
 
 
         List<ChatMessage> messages = new ArrayList<>();
-        ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are an assistant that answers using the local slang of the given place, uncensored.");
+        ChatMessage systemMessage = new SystemMessage("You are an assistant that answers using the local slang of the given place, uncensored.");
         messages.add(systemMessage);
 
         System.out.print("First Query: ");
         Scanner scanner = new Scanner(System.in);
-        ChatMessage firstMsg = new ChatMessage(ChatMessageRole.USER.value(), scanner.nextLine());
+        ChatMessage firstMsg = new UserMessage(scanner.nextLine());
         messages.add(firstMsg);
 
         while (true) {
@@ -62,7 +62,7 @@ public class OpenAiApiDynamicFunctionExample {
                     .maxTokens(100)
                     .logitBias(new HashMap<>())
                     .build();
-            ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+            AssistantMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
             messages.add(responseMessage); // don't forget to update the conversation with the latest response
 
             ChatFunctionCall functionCall = responseMessage.getFunctionCall();
@@ -71,7 +71,7 @@ public class OpenAiApiDynamicFunctionExample {
                     String location = functionCall.getArguments().get("location").asText();
                     String unit = functionCall.getArguments().get("unit").asText();
                     JsonNode weather = getWeather(location, unit);
-                    ChatMessage weatherMessage = new ChatMessage(ChatMessageRole.FUNCTION.value(), weather.toString(), "get_weather");
+                    ChatMessage weatherMessage = new FunctionMessage(weather.toString(), "get_weather");
                     messages.add(weatherMessage);
                     continue;
                 }
@@ -83,7 +83,7 @@ public class OpenAiApiDynamicFunctionExample {
             if (nextLine.equalsIgnoreCase("exit")) {
                 System.exit(0);
             }
-            messages.add(new ChatMessage(ChatMessageRole.USER.value(), nextLine));
+            messages.add(new UserMessage(nextLine));
         }
     }
 
