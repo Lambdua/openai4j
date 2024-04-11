@@ -96,5 +96,11 @@
   ],
   "function_call": {
     "name": "get_current_weather"
-  }
+  },
+  "logprobs": true,
+  "top_logprobs": 2,
+  "stop": [
+    "test",
+    "other"
+  ]
 }

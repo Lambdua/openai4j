@@ -116,6 +116,22 @@ public class ChatCompletionRequest {
     @Deprecated
     ChatCompletionRequestFunctionCall functionCall;
 
+    /**
+     * This feature is in Beta. If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend.
+     */
+    Integer seed;
+
+    /**
+     * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the content of message.
+     */
+    Boolean logprobs;
+
+    /**
+     * An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. logprobs must be set to true if this parameter is used.
+     */
+    @JsonProperty("top_logprobs")
+    Integer topLogprobs;
+
     @Data
     @Builder
     @AllArgsConstructor
