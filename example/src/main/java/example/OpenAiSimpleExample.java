@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-class OpenAiApiExample {
+/**
+ * 简单使用
+ **/
+class OpenAiSimpleExample {
     public static void main(String... args) {
         String token = System.getenv("OPENAI_TOKEN");
         OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
