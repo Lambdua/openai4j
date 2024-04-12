@@ -65,8 +65,8 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
         private boolean isValidJson(String jsonString) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
-                objectMapper.readTree(jsonString);
-                return true;
+                JsonNode tree = objectMapper.readTree(jsonString);
+                return tree != null && (tree.isObject() || tree.isArray());
             } catch (JsonProcessingException e) {
                 return false;
             }
