@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatToolCalls {
+public class ChatToolCall {
 
     /**
      * The ID of the tool call
