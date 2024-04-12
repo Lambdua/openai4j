@@ -5,66 +5,121 @@
 
 [english doc](README-EN.md)
 # OpenAI-Java
-用于使用OpenAI的GPT API的Java库。支持GPT-3、ChatGPT和GPT-4。
 
-包括以下工件:
-- `api` : GPT API的请求/响应POJO。
+用于使用OpenAI的GPT API的Java库。支持openAi所有的模型,支持最新的gpt4-trubo识图模型
+
+项目结构:
+
+- `api` : GPT API的请求/响应POJO对象,用于与OpenAI API交互。
 - `client` : 一个基本的Retrofit客户端,用于GPT终端,包含`api`模块。
-- `service` : 一个基本的服务类,用于创建和调用客户端。这是开始使用的最简单方式。
+- `service` : 一个基本的服务类,用于创建和调用客户端。这是接入openai的java最简单的方式。
+- `example` : 一些示例代码,用于展示如何使用这个库。
 
-以及使用service的示例项目。
 
 ## 支持的API
-
 [模型](https://platform.openai.com/docs/api-reference/models)  [补全](https://platform.openai.com/docs/api-reference/completions) [聊天](https://platform.openai.com/docs/api-reference/chat/create) [编辑](https://platform.openai.com/docs/api-reference/edits) [嵌入](https://platform.openai.com/docs/api-reference/embeddings) [音频](https://platform.openai.com/docs/api-reference/audio) [文件](https://platform.openai.com/docs/api-reference/files) [微调](https://platform.openai.com/docs/api-reference/fine-tuning) [图像](https://platform.openai.com/docs/api-reference/images) [审核](https://platform.openai.com/docs/api-reference/moderations) [助手](https://platform.openai.com/docs/api-reference/assistants)
 
+# 快速开始
 ## 导入
-
 ### Gradle
-`implementation 'io.github.lambdua:<api|client|service>:<version>'`
 
+`implementation 'io.github.lambdua:<api|client|service>:0.19.0'`
 ### Maven
 ```xml
    <dependency>
     <groupId>io.github.lambdua</groupId>
-    <artifactId>{api|client|service}</artifactId>
+    <artifactId>service</artifactId>
     <version>0.19.0</version>       
    </dependency>
 ```
 
-# 使用方法
-## OpenAiService
+如果你只是单纯的想使用pojo,你可以导入api模块
+
+```xml
+   <dependency>
+    <groupId>io.github.lambdua</groupId>
+    <artifactId>api</artifactId>
+    <version>0.19.0</version>       
+   </dependency>
+```
+
+## OpenAiService 使用
 如果您正在寻找最快的解决方案，请导入 service 模块并使用 OpenAiService。
-
 ```java
-OpenAiService service = new OpenAiService("你的令牌","baseUrl或者代理url");
-CompletionRequest completionRequest = CompletionRequest.builder()
-        .prompt("曾经有人告诉我这个世界会离开我")
-        .model("babbage-002")
-        .echo(true)
+OpenAiService openAiService = new OpenAiService(API_KEY);
+//开始流式对话
+List<ChatMessage> messages = new ArrayList<>();
+ChatMessage systemMessage = new SystemMessage("You are a dog and will speak as such.");
+messages.add(systemMessage);
+ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest .builder()
+        .model("gpt-3.5-turbo")
+        .messages(messages)
+        .n(1)
+        .maxTokens(50)
         .build();
-service.createCompletion(completionRequest).getChoices().forEach(System.out::println);
+service.streamChatCompletion(chatCompletionRequest).blockingForEach(System.out::println);
 ```
 
-### 自定义OpenAiService
-如果你需要自定义OpenAiService,创建你自己的Retrofit客户端并将其传递到构造函数中。
-例如,按照以下步骤添加请求日志记录(在添加日志记录gradle依赖项之后):
+## 自定义OpenAiService
+
+openAiService支持多种方式创建,你可以参考example包中的`example.ServiceCreateExample`示例
 
 ```java
-ObjectMapper mapper = defaultObjectMapper();
-OkHttpClient client = defaultClient(token, timeout)
-        .newBuilder()
-        .interceptor(HttpLoggingInterceptor())
+//1.使用默认的baseUrl,默认配置service,这里会默认先从环境变量中获取BaseURL(key:OPENAI_API_BASE_URL),如果没有则使用默认的"https://api.openai.com/";
+OpenAiService openAiService = new OpenAiService(API_KEY);
+//2. 使用自定义的baseUrl,默认配置配置service
+OpenAiService openAiService1 = new OpenAiService(API_KEY, BASE_URL);
+//3.自定义过期时间
+OpenAiService openAiService2 = new OpenAiService(API_KEY, Duration.ofSeconds(10));
+//4. 更灵活的自定义
+//4.1. 自定义okHttpClient
+OkHttpClient client = new OkHttpClient.Builder()
+        //连接池
+        .connectionPool(new ConnectionPool(Runtime.getRuntime().availableProcessors() * 2, 30, TimeUnit.SECONDS))
+        //自定义的拦截器,如重试拦截器,日志拦截器,负载均衡拦截器等
+        // .addInterceptor(new RetryInterceptor())
+        // .addInterceptor(new LogInterceptor())
+        // .addInterceptor(new LoadBalanceInterceptor())
+        //添加代理
+        // .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxyHost", 8080)))
+        .connectTimeout(2, TimeUnit.SECONDS)
+        .writeTimeout(3, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
         .build();
-Retrofit retrofit = defaultRetrofit(client, mapper);
-
-OpenAiApi api = retrofit.create(OpenAiApi.class);
-OpenAiService service = new OpenAiService(api);
-
+//4.2 自定义Retorfit配置
+Retrofit retrofit = OpenAiService.defaultRetrofit(client, OpenAiService.defaultObjectMapper(), BASE_URL);
+OpenAiApi openAiApi = retrofit.create(OpenAiApi.class);
+OpenAiService openAiService3 = new OpenAiService(openAiApi);
 ```
-### Functions
-您可以使用ChatFunction类轻松创建您的函数并定义它们的执行器,以及任何将用于定义其可用参数的自定义类。您还可以使用名为FunctionExecutor的执行器轻松处理函数。
+
+## gpt-4-turbo/gpt-vision 识图支持
+
+```java
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        //这里的imageMessage是一个识图消息
+        final ChatMessage imageMessage = UserMessage.buildImageMessage("What'\''s in this image?",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
+        messages.add(systemMessage);
+        messages.add(imageMessage);
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(200)
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        System.out.println(choice.getText());
+```
+
+## Tools or Functions
+
+本库支持已经过时的function调用,同时支持最新的tool调用.
 首先我们声明函数参数:
+
 ```java
 public class Weather {
     @JsonPropertyDescription("City and state, for example: León, Guanajuato")
@@ -87,37 +142,57 @@ public static class WeatherResponse {
 ```
 
 接下来,我们声明函数本身并将其与一个执行器相关联,在本例中,我们将模拟来自某个API的响应:
+
 ```java
-ChatFunction.builder()
+//首先声明一个function,获取天气
+ChatFunction function = ChatFunction.builder()
         .name("get_weather")
-        .description("Get the current weather of a location")
-        .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
+        .description("Get the current weather in a given location")
+        //这里的executor是一个lambda表达式,这个lambda表达式接受一个Weather对象,返回一个WeatherResponse对象
+        .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
         .build();
 ```
 
-然后,我们使用'service'模块中的FunctionExecutor对象来协助执行和转换为一个准备好进行对话的对象:
+## Tools
+
+然后使用service进行chatCompletion请求,并传入tool
+
 ```java
-List<ChatFunction> functionList = // list with functions
-FunctionExecutor functionExecutor = new FunctionExecutor(functionList);
+        //声明一个工具,目前openai-tool只支持function类型的tool
+        final ChatTool tool = new ChatTool(function);
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
 
-List<ChatMessage> messages = new ArrayList<>();
-ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), "Tell me the weather in Barcelona.");
-messages.add(userMessage);
-ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
-        .builder()
-        .model("gpt-3.5-turbo-0613")
-        .messages(messages)
-        .functions(functionExecutor.getFunctions())
-        .functionCall(new ChatCompletionRequestFunctionCall("auto"))
-        .maxTokens(256)
-        .build();
-
-ChatMessage responseMessage = service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
-ChatFunctionCall functionCall = responseMessage.getFunctionCall(); // might be null, but in this case it is certainly a call to our 'get_weather' function.
-
-ChatMessage functionResponseMessage = functionExecutor.executeAndConvertToMessageHandlingExceptions(functionCall);
-messages.add(response);
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                //这里的tools是一个list,可以传入多个tool
+                .tools(Arrays.asList(tool))
+                .toolChoice("auto")
+                .n(1)
+                .maxTokens(100)
+                .build();
+        //发送请求
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
 ```
+
+你还可以使用名为FunctionExecutor的执行器轻松处理函数。
+
+```java
+        FunctionExecutor toolExecutor = new FunctionExecutor(Arrays.asList(function));
+        Object functionExecutionResponse = toolExecutor.execute(toolCall.getFunction());
+```
+
+> 更多有关于tool的使用,可以参考我们的测试用例`ChatCompletionTest`。
+
+### Functions
+
+functions已经是过时的调用方式,不过我们仍然支持它,你可以参考example包中找到更多示例,也可以查看我们的测试用例`ChatCompletionTest`.
+
 > **Note:** 注意: FunctionExecutor类是'service'模块的一部分。
 
 您还可以创建自己的函数执行器。ChatFunctionCall.getArguments()的返回对象是JsonNode,出于简单性考虑,它应该可以帮助您实现这一点。

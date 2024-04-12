@@ -83,7 +83,7 @@ public class UserMessage implements ChatMessage {
     }
 
     /**
-     * 构件一个图片识别请求消息
+     * 构件一个图片识别请求消息,支持多个图片
      *
      * @param text      query text
      * @param imageUrls image urls

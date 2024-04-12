@@ -339,15 +339,16 @@ class ChatCompletionTest {
 
     @Test
     void createChatCompletionWithToolFunctions() {
-
-        final List<ChatFunction> functions = Collections.singletonList(ChatFunction.builder()
+        //首先声明一个function,获取天气
+        ChatFunction function = ChatFunction.builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")
+                //这里的executor是一个lambda表达式,这个lambda表达式接受一个Weather对象,返回一个WeatherResponse对象
                 .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
-                .build());
-        final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
-        final ChatTool tool = new ChatTool();
-        tool.setFunction(toolExecutor.getFunctions().get(0));
+                .build();
+
+        //声明一个工具,目前openai-tool只支持function类型的tool
+        final ChatTool tool = new ChatTool(function);
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
         final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
@@ -358,21 +359,21 @@ class ChatCompletionTest {
                 .builder()
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
+                //这里的tools是一个list,可以传入多个tool
                 .tools(Arrays.asList(tool))
                 .toolChoice("auto")
                 .n(1)
                 .maxTokens(100)
-                .logitBias(new HashMap<>())
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertEquals("tool_calls", choice.getFinishReason());
-
         assertEquals("get_weather", choice.getMessage().getToolCalls().get(0).getFunction().getName());
         assertInstanceOf(ObjectNode.class, choice.getMessage().getToolCalls().get(0).getFunction().getArguments());
 
         ChatToolCall toolCall = choice.getMessage().getToolCalls().get(0);
 
+        FunctionExecutor toolExecutor = new FunctionExecutor(Arrays.asList(function));
         Object functionExecutionResponse = toolExecutor.execute(toolCall.getFunction());
         assertInstanceOf(WeatherResponse.class, functionExecutionResponse);
         assertEquals(25, ((WeatherResponse) functionExecutionResponse).temperature);
