@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatToolCall {
 
+    int index;
+
     /**
      * The ID of the tool call
      */

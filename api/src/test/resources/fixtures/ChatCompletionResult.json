@@ -293,6 +293,24 @@
         ]
       },
       "finish_reason": "stop"
+    },
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_abc123",
+            "type": "function",
+            "index": 0,
+            "function": {
+              "name": "get_current_weather",
+              "arguments": "{\n\"location\": \"Boston, MA\"\n}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
     }
   ],
   "usage": {
