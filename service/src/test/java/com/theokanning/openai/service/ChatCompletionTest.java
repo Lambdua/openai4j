@@ -544,4 +544,130 @@ class ChatCompletionTest {
         assertNotNull(choice.getMessage().getContent());
     }
 
+
+    /**
+     * 流式请求中使用多个tool调用场景下的测试
+     */
+    @Test
+    void streamChatMultipleToolCalls() {
+        final List<ChatFunction> functions = Arrays.asList(
+                //1. 天气查询
+                ChatFunction.builder()
+                        .name("get_weather")
+                        .description("Get the current weather in a given location")
+                        .executor(Weather.class, w -> {
+                            switch (w.location) {
+                                case "tokyo":
+                                    return new WeatherResponse(w.location, w.unit, 10, "cloudy");
+                                case "san francisco":
+                                    return new WeatherResponse(w.location, w.unit, 72, "sunny");
+                                case "paris":
+                                    return new WeatherResponse(w.location, w.unit, 22, "sunny");
+                                default:
+                                    return new WeatherResponse(w.location, w.unit, 0, "unknown");
+                            }
+                        }).build(),
+                //2. 城市查询
+                ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(City.class, v -> {
+                    assertEquals("2022-12-01", v.time);
+                    return Arrays.asList("tokyo", "paris");
+                }).build()
+        );
+        final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
+
+        List<ChatTool> tools = new ArrayList<>();
+        tools.add(new ChatTool<>(functions.get(0)));
+        tools.add(new ChatTool<>(functions.get(1)));
+
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What is the weather like in cities with weather on 2022-12-01 ?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                .tools(tools)
+                .toolChoice("auto")
+                .n(1)
+                .maxTokens(200)
+                .build();
+
+        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast()
+                .getAccumulatedMessage();
+
+        List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
+
+        //这里应该只有一个工具调用
+        assertEquals(1, toolCalls.size());
+        assertEquals("getCities", toolCalls.get(0).getFunction().getName());
+        assertInstanceOf(ObjectNode.class, toolCalls.get(0).getFunction().getArguments());
+
+        ChatToolCall toolCall = toolCalls.get(0);
+        Object execute = toolExecutor.execute(toolCall.getFunction());
+        assertInstanceOf(List.class, execute);
+
+
+        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(toolCall.getFunction());
+        assertInstanceOf(ArrayNode.class, jsonNode);
+
+
+        ToolMessage toolMessage = toolExecutor.executeAndConvertToMessageHandlingExceptions(toolCall.getFunction(), toolCall.getId());
+        assertNotEquals("error", toolMessage.getName());
+
+        messages.add(accumulatedMessage);
+        messages.add(toolMessage);
+
+        ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
+                .builder()
+                //3.5 there may be logical issues
+                .model("gpt-3.5-turbo-0125")
+                .messages(messages)
+                .tools(tools)
+                .toolChoice("auto")
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+
+        // ChatCompletionChoice choice2 = service.createChatCompletion(chatCompletionRequest2).getChoices().get(0);
+        AssistantMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest2))
+                .blockingLast()
+                .getAccumulatedMessage();
+        //这里应该有两个工具调用
+        assertEquals(2, accumulatedMessage2.getToolCalls().size());
+        assertEquals("get_weather", accumulatedMessage2.getToolCalls().get(0).getFunction().getName());
+        assertEquals("get_weather", accumulatedMessage2.getToolCalls().get(1).getFunction().getName());
+        assertInstanceOf(ObjectNode.class, accumulatedMessage2.getToolCalls().get(0).getFunction().getArguments());
+        assertInstanceOf(ObjectNode.class, accumulatedMessage2.getToolCalls().get(1).getFunction().getArguments());
+        messages.add(accumulatedMessage2);
+
+        for (ChatToolCall weatherToolCall : accumulatedMessage2.getToolCalls()) {
+            Object itemResult = toolExecutor.execute(weatherToolCall.getFunction());
+            assertInstanceOf(WeatherResponse.class, itemResult);
+            messages.add(toolExecutor.executeAndConvertToMessage(weatherToolCall.getFunction(), weatherToolCall.getId()));
+        }
+
+        ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo-0613")
+                .messages(messages)
+                .tools(tools)
+                .toolChoice("auto")
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+
+        AssistantMessage accumulatedMessage3 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest3))
+                .blockingLast()
+                .getAccumulatedMessage();
+        assertNull(accumulatedMessage3.getToolCalls());
+        assertNotNull(accumulatedMessage3.getContent());
+    }
+
+
 }

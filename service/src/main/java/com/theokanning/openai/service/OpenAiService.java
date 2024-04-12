@@ -52,10 +52,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -98,10 +95,10 @@ public class OpenAiService {
      * @param timeout http read timeout, Duration.ZERO means no timeout
      * @param baseUrl OpenAi API base URL, default is "https://api.openai.com/"
      */
-    public OpenAiService(final String token, final Duration timeout,String baseUrl) {
+    public OpenAiService(final String token, final Duration timeout, String baseUrl) {
         ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
-        Retrofit retrofit = defaultRetrofit(client, mapper,baseUrl);
+        Retrofit retrofit = defaultRetrofit(client, mapper, baseUrl);
 
         this.api = retrofit.create(OpenAiApi.class);
         this.executorService = client.dispatcher().executorService();
@@ -219,7 +216,6 @@ public class OpenAiService {
     public CompletionResult createFineTuneCompletion(CompletionRequest request) {
         return execute(api.createFineTuneCompletion(request));
     }
-
 
 
     public DeleteResult deleteFineTune(String fineTuneId) {
@@ -559,10 +555,10 @@ public class OpenAiService {
         return buildApi(token, timeout, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
     }
 
-    public static OpenAiApi buildApi(String token, Duration timeout,String baseUrl) {
+    public static OpenAiApi buildApi(String token, Duration timeout, String baseUrl) {
         ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
-        Retrofit retrofit = defaultRetrofit(client, mapper,baseUrl);
+        Retrofit retrofit = defaultRetrofit(client, mapper, baseUrl);
 
         return retrofit.create(OpenAiApi.class);
     }
@@ -586,7 +582,7 @@ public class OpenAiService {
                 .build();
     }
 
-    public static Retrofit defaultRetrofit(OkHttpClient client, ObjectMapper mapper,String baseUrl) {
+    public static Retrofit defaultRetrofit(OkHttpClient client, ObjectMapper mapper, String baseUrl) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(client)
@@ -595,16 +591,13 @@ public class OpenAiService {
                 .build();
     }
 
-    /**
-     * @deprecated will use tools to accumulate messages in the future
-     */
-    @Deprecated
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
         AssistantMessage accumulatedMessage = new AssistantMessage();
 
         return flowable.map(chunk -> {
-            AssistantMessage messageChunk = chunk.getChoices().get(0).getMessage();
+            ChatCompletionChoice firstChoice = chunk.getChoices().get(0);
+            AssistantMessage messageChunk = firstChoice.getMessage();
             if (messageChunk.getFunctionCall() != null) {
                 if (messageChunk.getFunctionCall().getName() != null) {
                     String namePart = messageChunk.getFunctionCall().getName();
@@ -615,15 +608,48 @@ public class OpenAiService {
                     functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
                 }
                 accumulatedMessage.setFunctionCall(functionCall);
+            } else if (messageChunk.getToolCalls() != null) {
+                List<ChatToolCall> toolCalls = messageChunk.getToolCalls();
+                ChatToolCall partToolCall = toolCalls.get(0);
+                ChatFunctionCall partFunction = partToolCall.getFunction();
+                int index = partToolCall.getIndex();
+                List<ChatToolCall> accumulatedChatTools = accumulatedMessage.getToolCalls();
+                if (accumulatedChatTools == null) {
+                    accumulatedChatTools = new ArrayList<>();
+                    accumulatedMessage.setToolCalls(accumulatedChatTools);
+                }
+                ChatToolCall accumelatedToolCall = accumulatedChatTools.stream().filter(chatToolCall -> chatToolCall.getIndex() == index).findFirst().orElse(null);
+                if (accumelatedToolCall == null) {
+                    accumelatedToolCall = new ChatToolCall(index, partToolCall.getId(), partToolCall.getType());
+                    accumulatedChatTools.add(accumelatedToolCall);
+                }
+                ChatFunctionCall function = accumelatedToolCall.getFunction();
+                if (partFunction.getName() != null) {
+                    function.setName((function.getName() == null ? "" : function.getName()) + partFunction.getName());
+                }
+                if (partFunction.getArguments() != null) {
+                    function.setArguments(new TextNode((function.getArguments() == null ? "" : function.getArguments().asText()) + partFunction.getArguments().asText()));
+                }
+                accumelatedToolCall.setFunction(function);
             } else {
                 accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) + (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
             }
 
-            if (chunk.getChoices().get(0).getFinishReason() != null) { // last
-                if (functionCall.getArguments() != null) {
+            if (firstChoice.getFinishReason() != null) { // last
+                if ("function_call".equals(firstChoice.getFinishReason()) && functionCall.getArguments() != null) {
                     functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
                     accumulatedMessage.setFunctionCall(functionCall);
                 }
+                if ("tool_calls".equals(firstChoice.getFinishReason()) && accumulatedMessage.getToolCalls() != null) {
+                    //按照index重新排序
+                    accumulatedMessage.getToolCalls().sort(Comparator.comparingInt(ChatToolCall::getIndex));
+                    for (ChatToolCall chatToolCall : accumulatedMessage.getToolCalls()) {
+                        if (chatToolCall.getFunction().getArguments() != null) {
+                            chatToolCall.getFunction().setArguments(mapper.readTree(chatToolCall.getFunction().getArguments().asText()));
+                        }
+                    }
+                }
+
             }
 
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);

@@ -21,9 +21,16 @@ public class ChatToolCall {
      */
     String type;
 
+
     /**
      * The function that the model called.
      */
     ChatFunctionCall function;
 
+    public ChatToolCall(int index, String id, String type) {
+        this.index = index;
+        this.id = id;
+        this.type = type;
+        this.function = new ChatFunctionCall();
+    }
 }
