@@ -77,6 +77,10 @@ public class OpenAiService {
         this(token, DEFAULT_TIMEOUT, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
     }
 
+    public OpenAiService(final String token, final String baseUrl) {
+        this(token, DEFAULT_TIMEOUT, baseUrl);
+    }
+
     /**
      * Creates a new OpenAiService that wraps OpenAiApi
      *
