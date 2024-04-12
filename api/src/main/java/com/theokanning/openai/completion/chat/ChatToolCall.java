@@ -1,6 +1,6 @@
 package com.theokanning.openai.completion.chat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatToolCall {
 
-    @JsonIgnore
+    /**
+     * @see https://community.openai.com/t/gpt-4-turbo-model-function-call-doesnt-work/712218
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     int index;
 
     /**
