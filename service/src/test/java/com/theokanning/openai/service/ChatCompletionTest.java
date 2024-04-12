@@ -518,4 +518,30 @@ class ChatCompletionTest {
         assertNotNull(choice3.getMessage().getContent());
     }
 
+    /**
+     * 创建gpt4-turbo模型的图片识别
+     *
+     * @author liangtao
+     * @date 2024/4/12
+     **/
+    @Test
+    void createImageChatCompletion() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage imageMessage = UserMessage.buildImageMessage("What'\''s in this image?",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
+        messages.add(systemMessage);
+        messages.add(imageMessage);
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(200)
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        assertNotNull(choice.getMessage().getContent());
+    }
+
 }

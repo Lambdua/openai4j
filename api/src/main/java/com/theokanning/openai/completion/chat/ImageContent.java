@@ -15,6 +15,10 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageContent {
+
+    /**
+     * The type of the content. Either "text" or "image_url".
+     */
     @NonNull
     private String type;
 
@@ -35,4 +39,5 @@ public class ImageContent {
         this.type = "image_url";
         this.imageUrl = imageUrl;
     }
+
 }
