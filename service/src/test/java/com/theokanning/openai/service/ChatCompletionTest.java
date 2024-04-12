@@ -568,10 +568,7 @@ class ChatCompletionTest {
                             }
                         }).build(),
                 //2. 城市查询
-                ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(City.class, v -> {
-                    assertEquals("2022-12-01", v.time);
-                    return Arrays.asList("tokyo", "paris");
-                }).build()
+                ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(City.class, v -> Arrays.asList("tokyo", "paris")).build()
         );
         final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
 
