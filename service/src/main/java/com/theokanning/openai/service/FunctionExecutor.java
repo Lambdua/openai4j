@@ -8,13 +8,10 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.completion.chat.ChatFunction;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.completion.chat.FunctionMessage;
+import com.theokanning.openai.completion.chat.ToolMessage;
 
 import java.util.*;
 
-/**
- * @deprecated Use {@link ToolExecutor} instead
- */
-@Deprecated
 public class FunctionExecutor {
 
     private ObjectMapper MAPPER = new ObjectMapper();
@@ -29,6 +26,10 @@ public class FunctionExecutor {
         setObjectMapper(objectMapper);
     }
 
+    /**
+     * @deprecated Use {@link #executeAndConvertToMessageHandlingExceptions(ChatFunctionCall)} instead
+     */
+    @Deprecated
     public Optional<FunctionMessage> executeAndConvertToMessageSafely(ChatFunctionCall call) {
         try {
             return Optional.ofNullable(executeAndConvertToMessage(call));
@@ -37,6 +38,20 @@ public class FunctionExecutor {
         }
     }
 
+    public Optional<ToolMessage> executeAndConvertToMessageSafely(ChatFunctionCall call, String toolId) {
+        try {
+            return Optional.ofNullable(executeAndConvertToMessage(call, toolId));
+        } catch (Exception ignored) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * @author liangtao
+     * @date 2024/4/12
+     * @deprecated Use {@link #executeAndConvertToMessageHandlingExceptions(ChatFunctionCall)} instead
+     **/
+    @Deprecated
     public FunctionMessage executeAndConvertToMessageHandlingExceptions(ChatFunctionCall call) {
         try {
             return executeAndConvertToMessage(call);
@@ -46,13 +61,40 @@ public class FunctionExecutor {
         }
     }
 
+    public ToolMessage executeAndConvertToMessageHandlingExceptions(ChatFunctionCall call, String toolId) {
+        try {
+            return executeAndConvertToMessage(call, toolId);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return convertExceptionToMessage(exception, toolId);
+        }
+    }
+
+    /**
+     * @deprecated Use {@link #convertExceptionToMessage(Exception, String)} instead
+     */
+    @Deprecated
     public FunctionMessage convertExceptionToMessage(Exception exception) {
         String error = exception.getMessage() == null ? exception.toString() : exception.getMessage();
         return new FunctionMessage("{\"error\": \"" + error + "\"}", "error");
     }
 
+    public ToolMessage convertExceptionToMessage(Exception exception, String toolId) {
+        String error = exception.getMessage() == null ? exception.toString() : exception.getMessage();
+        return new ToolMessage("{\"error\": \"" + error + "\"}", toolId);
+    }
+
+
+    /**
+     * @deprecated Use {@link #executeAndConvertToMessage(ChatFunctionCall, String)} instead
+     */
+    @Deprecated
     public FunctionMessage executeAndConvertToMessage(ChatFunctionCall call) {
         return new FunctionMessage(executeAndConvertToJson(call).toPrettyString(), call.getName());
+    }
+
+    public ToolMessage executeAndConvertToMessage(ChatFunctionCall call, String toolId) {
+        return new ToolMessage(executeAndConvertToJson(call).toPrettyString(), toolId);
     }
 
     public JsonNode executeAndConvertToJson(ChatFunctionCall call) {
