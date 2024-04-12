@@ -3,7 +3,6 @@
 > ⚠️ 这个项目是[openai Java](https://github.com/TheoKanning/openai-java)项目的分叉,原项目作者似乎已经停止维护,无法满足我的需求，所以我决定继续维护这个项目,并添加新功能。
 > [版本变化详情](https://github.com/Lambdua/openai4j/releases)
 
-[english doc](README-EN.md)
 # OpenAI-Java
 
 用于使用OpenAI的GPT API的Java库。支持openAi所有的模型,支持最新的gpt4-trubo识图模型
