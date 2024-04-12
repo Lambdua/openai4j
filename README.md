@@ -22,13 +22,13 @@
 ## 导入
 ### Gradle
 
-`implementation 'io.github.lambdua:<api|client|service>:0.19.0'`
+`implementation 'io.github.lambdua:<api|client|service>:0.19.1'`
 ### Maven
 ```xml
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>service</artifactId>
-    <version>0.19.0</version>       
+    <version>0.19.1</version>       
    </dependency>
 ```
 
@@ -38,7 +38,7 @@
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>api</artifactId>
-    <version>0.19.0</version>       
+    <version>0.19.1</version>       
    </dependency>
 ```
 
