@@ -20,7 +20,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubmitToolOutputsRequest {
-    
+
+    Boolean stream;
+
     @JsonProperty("tool_outputs")
     private List<SubmitToolOutputRequestItem> toolOutputs;
 }

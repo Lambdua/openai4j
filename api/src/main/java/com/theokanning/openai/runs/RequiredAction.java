@@ -18,7 +18,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequiredAction {
-    
+
+    /**
+     * For now, this is always submit_tool_outputs.
+     */
     private String type;
 
     @JsonProperty("submit_tool_outputs")
