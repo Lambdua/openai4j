@@ -63,7 +63,7 @@ class AssistantFunctionTest {
                 .build();
 
         List<Tool> toolList = new ArrayList<>();
-        Tool funcTool = new Tool(AssistantToolsEnum.FUNCTION, function);
+        Tool funcTool = new FunctionTool(function);
         toolList.add(funcTool);
 
 

@@ -39,7 +39,7 @@ public class AssistantTest {
     @Test
     @Order(1)
     void createAssistant() {
-        AssistantRequest assistantRequest = AssistantRequest.builder().model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName()).name("Math Tutor").instructions("You are a personal Math Tutor.").tools(Collections.singletonList(new Tool(AssistantToolsEnum.CODE_INTERPRETER, null))).build();
+        AssistantRequest assistantRequest = AssistantRequest.builder().model(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName()).name("Math Tutor").instructions("You are a personal Math Tutor.").tools(Collections.singletonList(new CodeInterpreterTool())).build();
         Assistant assistant = service.createAssistant(assistantRequest);
 
         assistantId = assistant.getId();
