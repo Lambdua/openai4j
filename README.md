@@ -11,8 +11,8 @@
 
 A Java library for utilizing the GPT API from OpenAI. It supports all OpenAI models, including the latest gpt4-turbo
 vision model.
-Project structure:
 
+Project structure:
 - api: Objects for GPT API request/response handling, facilitating interaction with the OpenAI API.
 - client: A basic Retrofit client designed for GPT endpoints, including the api module.
 - service: A fundamental service class for creating and invoking the client, offering the most straightforward approach
@@ -209,8 +209,8 @@ streaming functions in OpenAiApiFunctionsWithStreamExample.java.
 
 ### Stream Thread Shutdown
 
-To immediately terminate your process following a stream response, invoke OpenAiService.shutdownExecutor(). This action
-is unnecessary for non-stream calls.
+To immediately terminate your process following a stream response, invoke OpenAiService.shutdownExecutor().
+This action is unnecessary for non-stream calls.
 
 ## Just Using POJO
 
@@ -234,8 +234,8 @@ OpenAiService service = new OpenAiService("your token", "baseUrl or proxy url");
 
 ### Why am I experiencing connection timeouts?
 
-Ensure your network is stable and your OpenAI server is accessible. If you face network instability, consider increasing
-the timeout duration.
+Ensure your network is stable and your OpenAI server is accessible.
+If you face network instability, consider increasing the timeout duration.
 
 ## License
 
