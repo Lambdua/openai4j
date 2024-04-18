@@ -20,15 +20,16 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ToolCall {
-    
+
     private String id;
-    
+
     private String type;
-    
+
     @JsonProperty("code_interpreter")
     private ToolCallCodeInterpreter codeInterpreter;
 
-    private Map<String, String> retrieval;
+    @JsonProperty("file_search")
+    private Map<String, String> fileSearch;
 
     private ToolCallFunction function;
 }

@@ -14,7 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class StepDetails {
 
-    
+
+    /**
+     * message_creation/tool_calls
+     */
     private String type;
 
     @JsonProperty("message_creation")
