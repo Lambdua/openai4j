@@ -1,6 +1,7 @@
 package com.theokanning.openai.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.threads.Attachment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +44,31 @@ public class Message {
     String threadId;
 
     /**
+     * The status of the message, which can be either in_progress, incomplete, or completed.
+     */
+    String status;
+
+    /**
+     * On an incomplete message, details about why the message is incomplete.
+     */
+    @JsonProperty("incomplete_details")
+    IncompleteDetails incompleteDetails;
+
+
+    /**
+     * The Unix timestamp (in seconds) for when the message was completed.
+     */
+    @JsonProperty("completed_at")
+    private Integer completedAt;
+
+    /**
+     * The Unix timestamp (in seconds) for when the message was marked as incomplete.
+     */
+    @JsonProperty("incomplete_at")
+    private Integer incompleteAt;
+
+
+    /**
      * The entity that produced the message. One of user or assistant.
      */
     String role;
@@ -59,18 +85,15 @@ public class Message {
     String assistantId;
 
     /**
-     * If applicable, the ID of the run associated with the authoring of this message.
+     *The ID of the run associated with the creation of this message. Value is null when messages are created manually using the create message or create thread endpoints.
      */
     @JsonProperty("run_id")
     String runId;
 
     /**
-     * A list of file IDs that the assistant should use.
-     * Useful for tools like retrieval and code_interpreter that can access files.
-     * A maximum of 10 files can be attached to a message.
+     * A list of files attached to the message, and the tools they were added to.
      */
-    @JsonProperty("file_ids")
-    List<String> fileIds;
+    List<Attachment> attachments;
 
     /**
      * Set of 16 key-value pairs that can be attached to an object.

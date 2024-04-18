@@ -1,8 +1,8 @@
 package com.theokanning.openai.messages;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.theokanning.openai.messages.content.ImageFile;
-import com.theokanning.openai.messages.content.Text;
+import com.theokanning.openai.messages.content.ImageFileWrapper;
+import com.theokanning.openai.messages.content.TextWrapper;
 import lombok.Data;
 
 
@@ -13,19 +13,15 @@ import lombok.Data;
  */
 @Data
 public class MessageContent {
-    /**
-     * The content type, either "text" or "image_file"
-     */
-    String type;
 
     /**
-     * Text content of the message. Only present if type == text
+     * The text content that is part of a message.
      */
-    Text text;
+    TextWrapper text;
 
     /**
-     * The image content of a message. Only present if type == image_file
+     * References an image File in the content of a message.
      */
     @JsonProperty("image_file")
-    ImageFile imageFile;
+    ImageFileWrapper imageFile;
 }

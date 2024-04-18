@@ -14,31 +14,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Annotation {
-    /**
-     * The type of annotation, either file_citation or file_path
-     */
-    String type;
 
     /**
-     * The text in the message content that needs to be replaced
-     */
-    String text;
-
-    /**
-     * File citation details, only present when type == file_citation
-     */
+     * A citation within the message that points to a specific quote from a specific File associated with the assistant or the message.
+     * Generated when the assistant uses the "file_search" tool to search files.
+     **/
     @JsonProperty("file_citation")
-    FileCitation fileCitation;
+    FileCitationWrapper fileCitation;
 
     /**
      * File path details, only present when type == file_path
      */
     @JsonProperty("file_path")
-    FilePath filePath;
+    FilePathWrapper filePath;
 
-    @JsonProperty("start_index")
-    int startIndex;
-
-    @JsonProperty("end_index")
-    int endIndex;
 }
