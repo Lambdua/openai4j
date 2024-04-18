@@ -32,6 +32,8 @@ import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.runs.*;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
+import com.theokanning.openai.vector.VectorStore;
+import com.theokanning.openai.vector.VectorStoreRequest;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -275,4 +277,9 @@ public interface OpenAiApi {
     @Headers("OpenAI-Beta: assistants=v1")
     @GET("/v1/threads/{thread_id}/runs/{run_id}/steps")
     Single<OpenAiResponse<RunStep>> listRunSteps(@Path("thread_id") String threadId, @Path("run_id") String runId, @QueryMap Map<String, String> listSearchParameters);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @POST("/v1/vector_stores")
+    Single<VectorStore> createVectorStore(@Body VectorStoreRequest request);
+
 }
