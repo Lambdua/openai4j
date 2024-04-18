@@ -302,7 +302,6 @@
           {
             "id": "call_abc123",
             "type": "function",
-            "index": 0,
             "function": {
               "name": "get_current_weather",
               "arguments": "{\n\"location\": \"Boston, MA\"\n}"
