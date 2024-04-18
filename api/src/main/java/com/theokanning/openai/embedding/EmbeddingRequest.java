@@ -1,5 +1,6 @@
 package com.theokanning.openai.embedding;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -33,7 +34,19 @@ public class EmbeddingRequest {
     List<String> input;
 
     /**
+     * The format to return the embeddings in. Can be either float or base64.
+     */
+    @JsonProperty("encoding_format")
+    String encodingFormat;
+
+    /**
+     * The number of dimensions the resulting output embeddings should have. Only supported in text-embedding-3 and later models.
+     */
+    Integer dimensions;
+
+    /**
      * A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
      */
     String user;
+
 }
