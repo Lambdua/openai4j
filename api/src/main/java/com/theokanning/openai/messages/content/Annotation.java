@@ -1,5 +1,6 @@
 package com.theokanning.openai.messages.content;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,18 +15,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Annotation {
+    /**
+     * file_citation/file_path
+     */
+    String type;
 
     /**
-     * A citation within the message that points to a specific quote from a specific File associated with the assistant or the message.
-     * Generated when the assistant uses the "file_search" tool to search files.
-     **/
-    @JsonProperty("file_citation")
-    FileCitationWrapper fileCitation;
+     * The text in the message content that needs to be replaced
+     */
+    String text;
 
     /**
      * File path details, only present when type == file_path
      */
     @JsonProperty("file_path")
-    FilePathWrapper filePath;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    FilePath filePath;
+
+    @JsonProperty("file_citation")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    FileCitation fileCitation;
+
+
+    @JsonProperty("start_index")
+    Integer startIndex;
+
+    @JsonProperty("end_index")
+    Integer endIndex;
+
 
 }
