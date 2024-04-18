@@ -19,7 +19,9 @@ public class ChatFunctionProperty {
     @JsonIgnore
     private Boolean required;
     private String description;
-    private ChatFunctionProperty items;
+
+    private ChatFunctionParameters items;
+
     @JsonProperty("enum")
     private Set<?> enumValues;
 }
