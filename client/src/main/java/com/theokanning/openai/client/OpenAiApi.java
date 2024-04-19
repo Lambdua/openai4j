@@ -32,6 +32,7 @@ import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.runs.*;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
+import com.theokanning.openai.vector.file.VectorStoreFile;
 import com.theokanning.openai.vector.store.ModifyVectorStoreRequest;
 import com.theokanning.openai.vector.store.VectorStore;
 import com.theokanning.openai.vector.store.VectorStoreRequest;
@@ -298,5 +299,17 @@ public interface OpenAiApi {
     @Headers("OpenAI-Beta: assistants=v1")
     @DELETE("/v1/vector_stores/{vector_store_id}")
     Single<DeleteResult> deleteVectorStore(@Path("vector_store_id") String vectorStoreId);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @POST("/v1/vector_stores/{vector_store_id}/files")
+    Single<VectorStoreFile> createVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Body AssistantFileRequest fileRequest);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @GET("/v1/vector_stores/{vector_store_id}/files")
+    Single<OpenAiResponse<VectorStoreFile>> listVectorStoreFiles(@Path("vector_store_id") String vectorStoreId, @QueryMap Map<String, Object> filterRequest);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @DELETE("/v1/vector_stores/{vector_store_id}/files/{file_id}")
+    Single<DeleteResult> deleteVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Path("file_id") String fileId);
 
 }
