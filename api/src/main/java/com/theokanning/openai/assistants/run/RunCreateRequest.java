@@ -20,6 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class RunCreateRequest {
+    @JsonProperty("assistant_id")
     String assistantId;
 
     /**
@@ -112,9 +113,10 @@ public class RunCreateRequest {
      * Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.
      * Also note that the message content may be partially cut off if finish_reason="length", which indicates the generation exceeded max_tokens or the conversation exceeded the max context length.
      * <p>
-     * !! default String : auto,Here, directly reuse the Chat Response Format under the Chat package. If it is auto, do not pass the response format !!
      */
     @JsonProperty("response_format")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    ChatResponseFormat responseFormat;
+    @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
+    @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
+    Object responseFormat;
 }

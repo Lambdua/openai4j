@@ -372,7 +372,9 @@ public class OpenAiService {
     }
 
     public AssistantFile createAssistantFile(String assistantId, AssistantFileRequest fileRequest) {
-        return execute(api.createAssistantFile(assistantId, fileRequest));
+        //todo
+        return null;
+        // return execute(api.createAssistantFile(assistantId, fileRequest));
     }
 
     public AssistantFile retrieveAssistantFile(String assistantId, String fileId) {
@@ -418,7 +420,7 @@ public class OpenAiService {
     }
 
     public OpenAiResponse<Message> listMessages(String threadId) {
-        return execute(api.listMessages(threadId));
+        return execute(api.listMessages(threadId, Collections.emptyMap()));
     }
 
     public OpenAiResponse<Message> listMessages(String threadId, ListSearchParameters params) {

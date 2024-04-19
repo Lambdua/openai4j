@@ -3,6 +3,8 @@ package com.theokanning.openai.assistants.assistant;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
 import lombok.*;
 
@@ -73,10 +75,12 @@ public class AssistantRequest {
      * Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.
      * Also note that the message content may be partially cut off if finish_reason="length", which indicates the generation exceeded max_tokens or the conversation exceeded the max context length.
      * <p>
-     * default String : auto,Here, directly reuse the Chat Response Format under the Chat package. If it is auto, do not pass the response format
      */
     @JsonProperty("response_format")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
+    @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
+
     ChatResponseFormat responseFormat;
 
 }
