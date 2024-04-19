@@ -29,18 +29,13 @@
             "start_index": 1,
             "end_index": 2
           }
+
         ]
-      }
-    },
-    {
-      "type": "image_file",
-      "image_file": {
-        "file_id": "image file id"
       }
     }
   ],
-  "file_ids": [],
   "assistant_id": "asst_abc123",
   "run_id": "run_abc123",
+  "attachments": [],
   "metadata": {}
 }

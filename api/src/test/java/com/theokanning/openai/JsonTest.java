@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
+import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageRequest;
+import com.theokanning.openai.assistants.message.ModifyMessageRequest;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
@@ -78,7 +81,10 @@ public class JsonTest {
             Assistant.class,
             ModifyAssistantRequest.class,
             ThreadRequest.class,
-            Thread.class
+            Thread.class,
+            MessageRequest.class,
+            Message.class,
+            ModifyMessageRequest.class
     })
     void assistantObjectMatchesJson(Class<?> clazz) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

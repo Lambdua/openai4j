@@ -184,9 +184,6 @@ public interface OpenAiApi {
 
     //----
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @POST("assistants/{assistant_id}/files")
-    Single<AssistantFile> createAssistantFile(@Path("assistant_id") String assistantId, @Body AssistantFileRequest fileRequest);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("assistants/{assistant_id}/files/{file_id}")
@@ -219,7 +216,6 @@ public interface OpenAiApi {
     @DELETE("threads/{thread_id}")
     Single<DeleteResult> deleteThread(@Path("thread_id") String threadId);
 
-
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("threads/{thread_id}/messages")
     Single<Message> createMessage(@Path("thread_id") String threadId, @Body MessageRequest request);
@@ -232,13 +228,6 @@ public interface OpenAiApi {
     @POST("threads/{thread_id}/messages/{message_id}")
     Single<Message> modifyMessage(@Path("thread_id") String threadId, @Path("message_id") String messageId, @Body ModifyMessageRequest request);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @GET("threads/{thread_id}/messages")
-    Single<OpenAiResponse<Message>> listMessages(@Path("thread_id") String threadId);
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @GET("threads/{thread_id}/messages")
-    Single<OpenAiResponse<Message>> listMessages(@Path("thread_id") String threadId, @QueryMap Map<String, Object> filterRequest);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("threads/{thread_id}/messages/{message_id}/files/{file_id}")
