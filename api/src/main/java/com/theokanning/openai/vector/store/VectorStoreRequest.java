@@ -1,4 +1,4 @@
-package com.theokanning.openai.vector;
+package com.theokanning.openai.vector.store;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

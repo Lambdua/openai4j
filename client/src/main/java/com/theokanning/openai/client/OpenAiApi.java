@@ -32,8 +32,9 @@ import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.runs.*;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
-import com.theokanning.openai.vector.VectorStore;
-import com.theokanning.openai.vector.VectorStoreRequest;
+import com.theokanning.openai.vector.store.ModifyVectorStoreRequest;
+import com.theokanning.openai.vector.store.VectorStore;
+import com.theokanning.openai.vector.store.VectorStoreRequest;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -281,5 +282,21 @@ public interface OpenAiApi {
     @Headers("OpenAI-Beta: assistants=v1")
     @POST("/v1/vector_stores")
     Single<VectorStore> createVectorStore(@Body VectorStoreRequest request);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @GET("/v1/vector_stores")
+    Single<OpenAiResponse<VectorStore>> listVectorStores(@QueryMap Map<String, Object> filterRequest);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @GET("/v1/vector_stores/{vector_store_id}")
+    Single<VectorStore> retrieveVectorStore(@Path("vector_store_id") String vectorStoreId);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @POST("/v1/vector_stores/{vector_store_id}")
+    Single<VectorStore> modifyVectorStore(@Path("vector_store_id") String vectorStoreId, @Body ModifyVectorStoreRequest request);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @DELETE("/v1/vector_stores/{vector_store_id}")
+    Single<DeleteResult> deleteVectorStore(@Path("vector_store_id") String vectorStoreId);
 
 }

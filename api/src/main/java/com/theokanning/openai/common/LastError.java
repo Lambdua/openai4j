@@ -17,8 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LastError {
-    
+
+    /**
+     * One of server_error or rate_limit_exceeded.
+     */
     private String code;
-    
+
     private String message;
 }

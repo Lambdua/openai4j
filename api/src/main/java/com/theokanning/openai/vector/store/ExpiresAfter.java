@@ -1,4 +1,4 @@
-package com.theokanning.openai.vector;
+package com.theokanning.openai.vector.store;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
