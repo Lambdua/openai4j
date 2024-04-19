@@ -1,0 +1,16 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, what is AI?"
+    },
+    {
+      "role": "user",
+      "content": "How does AI work? Explain it in simple terms."
+    }
+  ],
+  "metadata": {
+    "modified": "true",
+    "user": "abc123"
+  }
+}

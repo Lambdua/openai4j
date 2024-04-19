@@ -197,6 +197,9 @@ public interface OpenAiApi {
     @GET("/v1/assistants/{assistant_id}/files")
     Single<OpenAiResponse<AssistantFile>> listAssistantFiles(@Path("assistant_id") String assistantId, @QueryMap Map<String, Object> filterRequest);
 
+    //---
+
+
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/threads")
     Single<Thread> createThread(@Body ThreadRequest request);
