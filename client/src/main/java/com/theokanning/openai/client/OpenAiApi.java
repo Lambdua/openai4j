@@ -32,6 +32,8 @@ import com.theokanning.openai.moderation.ModerationResult;
 import com.theokanning.openai.runs.*;
 import com.theokanning.openai.threads.Thread;
 import com.theokanning.openai.threads.ThreadRequest;
+import com.theokanning.openai.vector.batch.VectorStoreFilesBatch;
+import com.theokanning.openai.vector.batch.VectorStoreFilesBatchRequest;
 import com.theokanning.openai.vector.file.VectorStoreFile;
 import com.theokanning.openai.vector.store.ModifyVectorStoreRequest;
 import com.theokanning.openai.vector.store.VectorStore;
@@ -312,4 +314,19 @@ public interface OpenAiApi {
     @DELETE("/v1/vector_stores/{vector_store_id}/files/{file_id}")
     Single<DeleteResult> deleteVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Path("file_id") String fileId);
 
+    @Headers("OpenAI-Beta: assistants=v1")
+    @POST("/v1/vector_stores/{vector_store_id}/file_batches")
+    Single<VectorStoreFilesBatch> createVectorStoreFileBatch(@Path("vector_store_id") String vectorStoreId, @Body VectorStoreFilesBatchRequest request);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @GET("/v1/vector_stores/{vector_store_id}/file_batches/{batch_id}")
+    Single<VectorStoreFilesBatch> retrieveVectorStoreFileBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @POST("/v1/vector_stores/{vector_store_id}/file_batches/{batch_id}/cancel")
+    Single<VectorStoreFilesBatch> cancelVectorStoreFileBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId);
+
+    @Headers("OpenAI-Beta: assistants=v1")
+    @GET("/v1/vector_stores/{vector_store_id}/file_batches/{batch_id}/files")
+    Single<OpenAiResponse<VectorStoreFile>> listVectorStoreFilesInBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId, @QueryMap Map<String, Object> filterRequest);
 }
