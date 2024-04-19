@@ -187,14 +187,17 @@ public interface OpenAiApi {
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("assistants/{assistant_id}/files/{file_id}")
+    @Deprecated
     Single<AssistantFile> retrieveAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @DELETE("assistants/{assistant_id}/files/{file_id}")
+    @Deprecated
     Single<DeleteResult> deleteAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("assistants/{assistant_id}/files")
+    @Deprecated
     Single<OpenAiResponse<AssistantFile>> listAssistantFiles(@Path("assistant_id") String assistantId, @QueryMap Map<String, Object> filterRequest);
 
     //---
@@ -220,6 +223,11 @@ public interface OpenAiApi {
     @POST("threads/{thread_id}/messages")
     Single<Message> createMessage(@Path("thread_id") String threadId, @Body MessageRequest request);
 
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("threads/{thread_id}/messages")
+    Single<OpenAiResponse<Message>> listMessages(@Path("thread_id") String threadId, @QueryMap Map<String, Object> filterRequest);
+
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("threads/{thread_id}/messages/{message_id}")
     Single<Message> retrieveMessage(@Path("thread_id") String threadId, @Path("message_id") String messageId);
@@ -230,14 +238,17 @@ public interface OpenAiApi {
 
 
     @Headers({"OpenAI-Beta: assistants=v1"})
+    @Deprecated
     @GET("threads/{thread_id}/messages/{message_id}/files/{file_id}")
     Single<MessageFile> retrieveMessageFile(@Path("thread_id") String threadId, @Path("message_id") String messageId, @Path("file_id") String fileId);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
+    @Deprecated
     @GET("threads/{thread_id}/messages/{message_id}/files")
     Single<OpenAiResponse<MessageFile>> listMessageFiles(@Path("thread_id") String threadId, @Path("message_id") String messageId);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
+    @Deprecated
     @GET("threads/{thread_id}/messages/{message_id}/files")
     Single<OpenAiResponse<MessageFile>> listMessageFiles(@Path("thread_id") String threadId, @Path("message_id") String messageId, @QueryMap Map<String, Object> filterRequest);
 
