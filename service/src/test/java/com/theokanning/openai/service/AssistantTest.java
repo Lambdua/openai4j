@@ -3,7 +3,7 @@ package com.theokanning.openai.service;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
-import com.theokanning.openai.assistants.*;
+import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.*;

@@ -1,9 +1,9 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.DeleteResult;
-import com.theokanning.openai.messages.MessageRequest;
-import com.theokanning.openai.threads.Thread;
-import com.theokanning.openai.threads.ThreadRequest;
+import com.theokanning.openai.assistants.message.MessageRequest;
+import com.theokanning.openai.assistants.thread.Thread;
+import com.theokanning.openai.assistants.thread.ThreadRequest;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

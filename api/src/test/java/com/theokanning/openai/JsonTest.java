@@ -2,6 +2,7 @@ package com.theokanning.openai;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -15,7 +16,6 @@ import com.theokanning.openai.fine_tuning.FineTuningEvent;
 import com.theokanning.openai.fine_tuning.FineTuningJob;
 import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.image.ImageResult;
-import com.theokanning.openai.messages.Message;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;

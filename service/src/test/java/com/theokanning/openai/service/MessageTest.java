@@ -1,12 +1,12 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.ListSearchParameters;
+import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageFile;
+import com.theokanning.openai.assistants.message.MessageRequest;
+import com.theokanning.openai.assistants.message.ModifyMessageRequest;
+import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.file.File;
-import com.theokanning.openai.messages.Message;
-import com.theokanning.openai.messages.MessageFile;
-import com.theokanning.openai.messages.MessageRequest;
-import com.theokanning.openai.messages.ModifyMessageRequest;
-import com.theokanning.openai.threads.ThreadRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

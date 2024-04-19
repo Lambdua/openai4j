@@ -1,14 +1,14 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.OpenAiResponse;
-import com.theokanning.openai.assistants.Assistant;
-import com.theokanning.openai.assistants.AssistantRequest;
-import com.theokanning.openai.messages.Message;
-import com.theokanning.openai.messages.MessageRequest;
-import com.theokanning.openai.runs.Run;
-import com.theokanning.openai.runs.RunCreateRequest;
-import com.theokanning.openai.threads.Thread;
-import com.theokanning.openai.threads.ThreadRequest;
+import com.theokanning.openai.assistants.assistant.Assistant;
+import com.theokanning.openai.assistants.assistant.AssistantRequest;
+import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageRequest;
+import com.theokanning.openai.assistants.run.Run;
+import com.theokanning.openai.assistants.run.RunCreateRequest;
+import com.theokanning.openai.assistants.thread.Thread;
+import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
