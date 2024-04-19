@@ -3,6 +3,8 @@ package com.theokanning.openai.assistants.assistant;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -76,7 +78,9 @@ public class ModifyAssistantRequest {
      */
     @JsonProperty("response_format")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    ChatResponseFormat responseFormat;
+    @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
+    @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
+    Object responseFormat;
 
     /**
      * Set of 16 key-value pairs that can be attached to an object.

@@ -2,6 +2,8 @@ package com.theokanning.openai.assistants.assistant;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
 import lombok.*;
 
@@ -57,7 +59,7 @@ public class Assistant {
     List<Tool> tools;
 
     @JsonProperty("tool_resources")
-    List<ToolResources> toolResources;
+    ToolResources toolResources;
 
     /**
      * Set of 16 key-value pairs that can be attached to a vector store. This can be useful for storing additional information about the vector store in a structured format. Keys can be a maximum of 64 characters long and values can be a maxium of 512 characters long.
@@ -84,12 +86,12 @@ public class Assistant {
      * Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.
      * Also note that the message content may be partially cut off if finish_reason="length", which indicates the generation exceeded max_tokens or the conversation exceeded the max context length.
      * <p>
-     * default String : auto,Here, directly reuse the Chat Response Format under the Chat package. If it is auto, do not pass the response format
      */
     @JsonProperty("response_format")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    ChatResponseFormat responseFormat;
-
+    @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
+    @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
+    Object responseFormat;
 
 
 }

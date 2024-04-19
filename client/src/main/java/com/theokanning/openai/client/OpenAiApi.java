@@ -159,9 +159,16 @@ public interface OpenAiApi {
     @GET("v1/dashboard/billing/usage")
     Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
 
+
     @Headers({"OpenAI-Beta: assistants=v1"})
     @POST("/v1/assistants")
     Single<Assistant> createAssistant(@Body AssistantRequest request);
+
+
+    @Headers({"OpenAI-Beta: assistants=v1"})
+    @GET("/v1/assistants")
+    Single<OpenAiResponse<Assistant>> listAssistants(@QueryMap Map<String, Object> filterRequest);
+
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("/v1/assistants/{assistant_id}")
@@ -175,13 +182,8 @@ public interface OpenAiApi {
     @DELETE("/v1/assistants/{assistant_id}")
     Single<DeleteResult> deleteAssistant(@Path("assistant_id") String assistantId);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @GET("/v1/assistants")
-    Single<OpenAiResponse<Assistant>> listAssistants(@QueryMap Map<String, Object> filterRequest);
+    //----
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @POST("/v1/assistants/{assistant_id}/files")
-    Single<AssistantFile> createAssistantFile(@Path("assistant_id") String assistantId, @Body AssistantFileRequest fileRequest);
 
     @Headers({"OpenAI-Beta: assistants=v1"})
     @GET("/v1/assistants/{assistant_id}/files/{file_id}")

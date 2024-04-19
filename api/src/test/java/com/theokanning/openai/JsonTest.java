@@ -2,7 +2,9 @@ package com.theokanning.openai;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.assistant.Assistant;
+import com.theokanning.openai.assistants.assistant.AssistantRequest;
+import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -46,7 +48,6 @@ public class JsonTest {
             ImageResult.class,
             TranscriptionResult.class,
             TranslationResult.class,
-            Message.class,
             Model.class,
             ModerationRequest.class,
             ModerationResult.class
@@ -65,4 +66,29 @@ public class JsonTest {
         // Convert to JsonNodes to avoid any json formatting differences
         assertEquals(mapper.readTree(json), mapper.readTree(actual));
     }
+
+    /**
+     * assistant packageTest
+     */
+    @ParameterizedTest
+    @ValueSource(classes = {
+            AssistantRequest.class,
+            Assistant.class,
+            ModifyAssistantRequest.class
+    })
+    void assistantObjectMatchesJson(Class<?> clazz) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        String path = "src/test/resources/assistants/" + clazz.getSimpleName() + ".json";
+        byte[] bytes = Files.readAllBytes(Paths.get(path));
+        String json = new String(bytes);
+
+        Object value = mapper.readValue(json, clazz);
+        String actual = mapper.writeValueAsString(value);
+
+        // Convert to JsonNodes to avoid any json formatting differences
+        assertEquals(mapper.readTree(json), mapper.readTree(actual));
+    }
+
 }
