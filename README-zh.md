@@ -80,7 +80,7 @@ blockingForEach(System.out::println);
 openAiService支持多种方式创建,你可以参考example包中的`example.ServiceCreateExample`示例
 
 ```java
-//1.使用默认的baseUrl,默认配置service,这里会默认先从环境变量中获取BaseURL(key:OPENAI_API_BASE_URL),如果没有则使用默认的"https://api.openai.com/";
+//1.使用默认的baseUrl,默认配置service,这里会默认先从环境变量中获取BaseURL(key:OPENAI_API_BASE_URL),如果没有则使用默认的"https://api.openai.com/v1/";
 OpenAiService openAiService = new OpenAiService(API_KEY);
 //2. 使用自定义的baseUrl,默认配置配置service
 OpenAiService openAiService1 = new OpenAiService(API_KEY, BASE_URL);
