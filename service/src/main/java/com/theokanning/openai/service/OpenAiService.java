@@ -58,7 +58,7 @@ import java.util.concurrent.TimeUnit;
 
 public class OpenAiService {
 
-    private static final String DEFAULT_BASE_URL = "https://api.openai.com/v1";
+    private static final String DEFAULT_BASE_URL = "https://api.openai.com/v1/";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
     private static final ObjectMapper mapper = defaultObjectMapper();
 
@@ -93,7 +93,7 @@ public class OpenAiService {
      *
      * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      * @param timeout http read timeout, Duration.ZERO means no timeout
-     * @param baseUrl OpenAi API base URL, default is "https://api.openai.com/v1"
+     * @param baseUrl OpenAi API base URL, default is "https://api.openai.com/v1/"
      */
     public OpenAiService(final String token, final Duration timeout, String baseUrl) {
         ObjectMapper mapper = defaultObjectMapper();

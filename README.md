@@ -73,7 +73,7 @@ OpenAiService is versatile in its setup options, as demonstrated in the `example
 example package.
 
 ```java
-//1. Use the default baseUrl, automatically configured service; initially fetches BaseURL from environment variable (key: OPENAI_API_BASE_URL), defaults to "https://api.openai.com/v1" if not found.
+//1. Use the default baseUrl, automatically configured service; initially fetches BaseURL from environment variable (key: OPENAI_API_BASE_URL), defaults to "https://api.openai.com/v1/" if not found.
 OpenAiService openAiService = new OpenAiService(API_KEY);
 //2. Use a custom baseUrl with the standard configuration
 OpenAiService openAiService1 = new OpenAiService(API_KEY, BASE_URL);
