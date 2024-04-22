@@ -1,0 +1,13 @@
+{
+  "name": "name",
+  "expires_after": {
+    "anchor": "last_active_at",
+    "days": 45
+  },
+  "metadata": {
+    "project": "Vector Analysis",
+    "version": "1.0",
+    "team": "Development",
+    "department": "Research"
+  }
+}

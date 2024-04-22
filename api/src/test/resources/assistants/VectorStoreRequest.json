@@ -1,0 +1,19 @@
+{
+  "file_ids": [
+    "file123",
+    "file456",
+    "file789"
+  ],
+  "name": "ExampleVectorStore",
+  "expires_after": {
+    "anchor": "last_active_at",
+    "days": 30
+  },
+  "metadata": {
+    "key1": "value1",
+    "key2": "value2",
+    "key3": "value3",
+    "key4": "value4",
+    "key5": "value5"
+  }
+}

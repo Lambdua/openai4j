@@ -275,23 +275,23 @@ public interface OpenAiApi {
     Single<RunStep> retrieveRunStep(@Path("thread_id") String threadId, @Path("run_id") String runId, @Path("step_id") String stepId);
 
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("vector_stores")
     Single<VectorStore> createVectorStore(@Body VectorStoreRequest request);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores")
     Single<OpenAiResponse<VectorStore>> listVectorStores(@QueryMap Map<String, Object> filterRequest);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores/{vector_store_id}")
     Single<VectorStore> retrieveVectorStore(@Path("vector_store_id") String vectorStoreId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("vector_stores/{vector_store_id}")
     Single<VectorStore> modifyVectorStore(@Path("vector_store_id") String vectorStoreId, @Body ModifyVectorStoreRequest request);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @DELETE("vector_stores/{vector_store_id}")
     Single<DeleteResult> deleteVectorStore(@Path("vector_store_id") String vectorStoreId);
 

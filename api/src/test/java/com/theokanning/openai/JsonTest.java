@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
+import com.theokanning.openai.assistants.assistant.VectorStore;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
@@ -15,6 +16,8 @@ import com.theokanning.openai.assistants.run.SubmitToolOutputsRequest;
 import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
+import com.theokanning.openai.assistants.vector_store.ModifyVectorStoreRequest;
+import com.theokanning.openai.assistants.vector_store.VectorStoreRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -94,7 +97,10 @@ public class JsonTest {
             Run.class,
             CreateThreadAndRunRequest.class,
             SubmitToolOutputsRequest.class,
-            RunStep.class
+            RunStep.class,
+            VectorStoreRequest.class,
+            VectorStore.class,
+            ModifyVectorStoreRequest.class
     })
     void assistantObjectMatchesJson(Class<?> clazz) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
