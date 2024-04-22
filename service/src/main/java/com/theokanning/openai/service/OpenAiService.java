@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.*;
-import com.theokanning.openai.assistants.assistant.*;
+import com.theokanning.openai.assistants.assistant.Assistant;
+import com.theokanning.openai.assistants.assistant.AssistantRequest;
+import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
 import com.theokanning.openai.assistants.message.Message;
-import com.theokanning.openai.assistants.message.MessageFile;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
 import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
@@ -375,26 +376,6 @@ public class OpenAiService {
         return execute(api.listAssistants(queryParameters));
     }
 
-    public AssistantFile createAssistantFile(String assistantId, VectoreStoreFileRequest fileRequest) {
-        //todo
-        return null;
-        // return execute(api.createAssistantFile(assistantId, fileRequest));
-    }
-
-    public AssistantFile retrieveAssistantFile(String assistantId, String fileId) {
-        return execute(api.retrieveAssistantFile(assistantId, fileId));
-    }
-
-    public DeleteResult deleteAssistantFile(String assistantId, String fileId) {
-        return execute(api.deleteAssistantFile(assistantId, fileId));
-    }
-
-    public OpenAiResponse<AssistantFile> listAssistantFiles(String assistantId, ListSearchParameters params) {
-        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
-        });
-        return execute(api.listAssistantFiles(assistantId, queryParameters));
-    }
-
     public Thread createThread(ThreadRequest request) {
         return execute(api.createThread(request));
     }
@@ -433,19 +414,6 @@ public class OpenAiService {
         return execute(api.listMessages(threadId, queryParameters));
     }
 
-    public MessageFile retrieveMessageFile(String threadId, String messageId, String fileId) {
-        return execute(api.retrieveMessageFile(threadId, messageId, fileId));
-    }
-
-    public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId) {
-        return execute(api.listMessageFiles(threadId, messageId));
-    }
-
-    public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId, ListSearchParameters params) {
-        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
-        });
-        return execute(api.listMessageFiles(threadId, messageId, queryParameters));
-    }
 
     public Run createRun(String threadId, RunCreateRequest runCreateRequest) {
         return execute(api.createRun(threadId, runCreateRequest));

@@ -1,23 +1,18 @@
 package com.theokanning.openai.service;
 
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.assistants.message.Message;
-import com.theokanning.openai.assistants.message.MessageFile;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
-import com.theokanning.openai.file.File;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class MessageTest {
@@ -45,24 +40,24 @@ public class MessageTest {
         }
     }
 
-    @Test
-    void createMessage() {
-        File file = service.uploadFile("assistants", "src/test/resources/penguin.png");
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("key", "value");
-
-        MessageRequest messageRequest = MessageRequest.builder()
-                .content("Hello")
-                .fileIds(Collections.singletonList(file.getId()))
-                .metadata(metadata)
-                .build();
-
-        Message message = service.createMessage(threadId, messageRequest);
-
-        assertNotNull(message.getId());
-        assertEquals("thread.message", message.getObject());
-        assertEquals(1, message.getFileIds().size());
-    }
+    // @Test
+    // void createMessage() {
+    //     File file = service.uploadFile("assistants", "src/test/resources/penguin.png");
+    //     Map<String, String> metadata = new HashMap<>();
+    //     metadata.put("key", "value");
+    //
+    //     MessageRequest messageRequest = MessageRequest.builder()
+    //             .content("Hello")
+    //             .fileIds(Collections.singletonList(file.getId()))
+    //             .metadata(metadata)
+    //             .build();
+    //
+    //     Message message = service.createMessage(threadId, messageRequest);
+    //
+    //     assertNotNull(message.getId());
+    //     assertEquals("thread.message", message.getObject());
+    //     assertEquals(1, message.getFileIds().size());
+    // }
 
     @Test
     void retrieveMessage() {
@@ -103,24 +98,24 @@ public class MessageTest {
         assertEquals(3, messages.size());
     }
 
-    @Test
-    void retrieveAndListMessageFile() {
-        File file = service.uploadFile("assistants", "src/test/resources/penguin.png");
-        MessageRequest messageRequest = MessageRequest.builder()
-                .content("Hello")
-                .fileIds(Collections.singletonList(file.getId()))
-                .build();
-
-        Message message = service.createMessage(threadId, messageRequest);
-
-        MessageFile messageFile = service.retrieveMessageFile(threadId, message.getId(), file.getId());
-
-        assertEquals(file.getId(), messageFile.getId());
-        assertEquals(message.getId(), messageFile.getMessageId());
-
-        List<MessageFile> messageFiles = service.listMessageFiles(threadId, message.getId(), new ListSearchParameters()).getData();
-        assertEquals(1, messageFiles.size());
-    }
+    // @Test
+    // void retrieveAndListMessageFile() {
+    //     File file = service.uploadFile("assistants", "src/test/resources/penguin.png");
+    //     MessageRequest messageRequest = MessageRequest.builder()
+    //             .content("Hello")
+    //             .fileIds(Collections.singletonList(file.getId()))
+    //             .build();
+    //
+    //     Message message = service.createMessage(threadId, messageRequest);
+    //
+    //     MessageFile messageFile = service.retrieveMessageFile(threadId, message.getId(), file.getId());
+    //
+    //     assertEquals(file.getId(), messageFile.getId());
+    //     assertEquals(message.getId(), messageFile.getMessageId());
+    //
+    //     List<MessageFile> messageFiles = service.listMessageFiles(threadId, message.getId(), new ListSearchParameters()).getData();
+    //     assertEquals(1, messageFiles.size());
+    // }
 
     Message createTestMessage() {
         return createTestMessage(threadId);
