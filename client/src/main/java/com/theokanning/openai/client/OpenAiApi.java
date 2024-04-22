@@ -259,13 +259,17 @@ public interface OpenAiApi {
     Single<Run> cancelRun(@Path("thread_id") String threadId, @Path("run_id") String runId);
 
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    /**
+     * Represents the steps (model and tool calls) taken during the run.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
+    @GET("threads/{thread_id}/runs/{run_id}/steps")
+    Single<OpenAiResponse<RunStep>> listRunSteps(@Path("thread_id") String threadId, @Path("run_id") String runId, @QueryMap Map<String, String> listSearchParameters);
+
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("threads/{thread_id}/runs/{run_id}/steps/{step_id}")
     Single<RunStep> retrieveRunStep(@Path("thread_id") String threadId, @Path("run_id") String runId, @Path("step_id") String stepId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
-    @GET("threads/{thread_id}/runs/{run_id}/steps")
-    Single<OpenAiResponse<RunStep>> listRunSteps(@Path("thread_id") String threadId, @Path("run_id") String runId, @QueryMap Map<String, String> listSearchParameters);
 
     @Headers("OpenAI-Beta: assistants=v1")
     @POST("vector_stores")
