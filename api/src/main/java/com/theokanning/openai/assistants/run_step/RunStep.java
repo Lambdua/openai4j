@@ -1,4 +1,4 @@
-package com.theokanning.openai.assistants.run;
+package com.theokanning.openai.assistants.run_step;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.Usage;

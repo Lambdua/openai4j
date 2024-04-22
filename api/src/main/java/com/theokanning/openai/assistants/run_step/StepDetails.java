@@ -1,6 +1,8 @@
-package com.theokanning.openai.assistants.run;
+package com.theokanning.openai.assistants.run_step;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.assistants.run.MessageCreation;
+import com.theokanning.openai.assistants.run.ToolCall;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
