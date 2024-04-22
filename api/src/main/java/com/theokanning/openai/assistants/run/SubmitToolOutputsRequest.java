@@ -23,6 +23,9 @@ public class SubmitToolOutputsRequest {
 
     Boolean stream;
 
+    /**
+     * A list of tools for which the outputs are being submitted.
+     */
     @JsonProperty("tool_outputs")
     private List<SubmitToolOutputRequestItem> toolOutputs;
 }

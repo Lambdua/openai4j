@@ -2,9 +2,11 @@ package com.theokanning.openai.client;
 
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
-import com.theokanning.openai.assistants.assistant.*;
+import com.theokanning.openai.assistants.assistant.Assistant;
+import com.theokanning.openai.assistants.assistant.AssistantFileRequest;
+import com.theokanning.openai.assistants.assistant.AssistantRequest;
+import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
 import com.theokanning.openai.assistants.message.Message;
-import com.theokanning.openai.assistants.message.MessageFile;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
 import com.theokanning.openai.assistants.run.*;
@@ -159,128 +161,103 @@ public interface OpenAiApi {
     @GET("dashboard/billing/usage")
     Single<BillingUsage> billingUsage(@Query("start_date") LocalDate starDate, @Query("end_date") LocalDate endDate);
 
+    /*assistant start */
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @POST("assistants")
     Single<Assistant> createAssistant(@Body AssistantRequest request);
 
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @GET("assistants")
     Single<OpenAiResponse<Assistant>> listAssistants(@QueryMap Map<String, Object> filterRequest);
 
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @GET("assistants/{assistant_id}")
     Single<Assistant> retrieveAssistant(@Path("assistant_id") String assistantId);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @POST("assistants/{assistant_id}")
     Single<Assistant> modifyAssistant(@Path("assistant_id") String assistantId, @Body ModifyAssistantRequest request);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @DELETE("assistants/{assistant_id}")
     Single<DeleteResult> deleteAssistant(@Path("assistant_id") String assistantId);
 
-    //----
 
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @GET("assistants/{assistant_id}/files/{file_id}")
-    @Deprecated
-    Single<AssistantFile> retrieveAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @DELETE("assistants/{assistant_id}/files/{file_id}")
-    @Deprecated
-    Single<DeleteResult> deleteAssistantFile(@Path("assistant_id") String assistantId, @Path("file_id") String fileId);
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @GET("assistants/{assistant_id}/files")
-    @Deprecated
-    Single<OpenAiResponse<AssistantFile>> listAssistantFiles(@Path("assistant_id") String assistantId, @QueryMap Map<String, Object> filterRequest);
-
-    //---
-
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @POST("threads")
     Single<Thread> createThread(@Body ThreadRequest request);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @GET("threads/{thread_id}")
     Single<Thread> retrieveThread(@Path("thread_id") String threadId);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @POST("threads/{thread_id}")
     Single<Thread> modifyThread(@Path("thread_id") String threadId, @Body ThreadRequest request);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @DELETE("threads/{thread_id}")
     Single<DeleteResult> deleteThread(@Path("thread_id") String threadId);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @POST("threads/{thread_id}/messages")
     Single<Message> createMessage(@Path("thread_id") String threadId, @Body MessageRequest request);
 
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @GET("threads/{thread_id}/messages")
     Single<OpenAiResponse<Message>> listMessages(@Path("thread_id") String threadId, @QueryMap Map<String, Object> filterRequest);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @GET("threads/{thread_id}/messages/{message_id}")
     Single<Message> retrieveMessage(@Path("thread_id") String threadId, @Path("message_id") String messageId);
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
+    @Headers({"OpenAI-Beta: assistants=v2"})
     @POST("threads/{thread_id}/messages/{message_id}")
     Single<Message> modifyMessage(@Path("thread_id") String threadId, @Path("message_id") String messageId, @Body ModifyMessageRequest request);
 
 
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @Deprecated
-    @GET("threads/{thread_id}/messages/{message_id}/files/{file_id}")
-    Single<MessageFile> retrieveMessageFile(@Path("thread_id") String threadId, @Path("message_id") String messageId, @Path("file_id") String fileId);
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @Deprecated
-    @GET("threads/{thread_id}/messages/{message_id}/files")
-    Single<OpenAiResponse<MessageFile>> listMessageFiles(@Path("thread_id") String threadId, @Path("message_id") String messageId);
-
-    @Headers({"OpenAI-Beta: assistants=v1"})
-    @Deprecated
-    @GET("threads/{thread_id}/messages/{message_id}/files")
-    Single<OpenAiResponse<MessageFile>> listMessageFiles(@Path("thread_id") String threadId, @Path("message_id") String messageId, @QueryMap Map<String, Object> filterRequest);
-
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("threads/{thread_id}/runs")
     Single<Run> createRun(@Path("thread_id") String threadId, @Body RunCreateRequest runCreateRequest);
 
-    @Headers("OpenAI-Beta: assistants=v1")
-    @GET("threads/{thread_id}/runs/{run_id}")
-    Single<Run> retrieveRun(@Path("thread_id") String threadId, @Path("run_id") String runId);
+    /**
+     * Create a thread and run it in one request.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
+    @POST("threads/runs")
+    Single<Run> createThreadAndRun(@Body CreateThreadAndRunRequest createThreadAndRunRequest);
 
-    @Headers("OpenAI-Beta: assistants=v1")
-    @POST("threads/{thread_id}/runs/{run_id}")
-    Single<Run> modifyRun(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body Map<String, String> metadata);
-
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("threads/{thread_id}/runs")
     Single<OpenAiResponse<Run>> listRuns(@Path("thread_id") String threadId, @QueryMap Map<String, String> listSearchParameters);
 
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
+    @GET("threads/{thread_id}/runs/{run_id}")
+    Single<Run> retrieveRun(@Path("thread_id") String threadId, @Path("run_id") String runId);
+
+    @Headers("OpenAI-Beta: assistants=v2")
+    @POST("threads/{thread_id}/runs/{run_id}")
+    Single<Run> modifyRun(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body Map<String, String> metadata);
+
+    /**
+     * When a run has the status: "requires_action" and required_action.type is submit_tool_outputs,
+     * this endpoint can be used to submit the outputs from the tool calls once they're all completed.
+     * All outputs must be submitted in a single request.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("threads/{thread_id}/runs/{run_id}/submit_tool_outputs")
     Single<Run> submitToolOutputs(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body SubmitToolOutputsRequest submitToolOutputsRequest);
 
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("threads/{thread_id}/runs/{run_id}/cancel")
     Single<Run> cancelRun(@Path("thread_id") String threadId, @Path("run_id") String runId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
-    @POST("threads/runs")
-    Single<Run> createThreadAndRun(@Body CreateThreadAndRunRequest createThreadAndRunRequest);
 
     @Headers("OpenAI-Beta: assistants=v1")
     @GET("threads/{thread_id}/runs/{run_id}/steps/{step_id}")

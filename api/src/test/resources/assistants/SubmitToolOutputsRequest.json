@@ -1,0 +1,9 @@
+{
+  "tool_outputs": [
+    {
+      "tool_call_id": "call_001",
+      "output": "70 degrees and sunny."
+    }
+  ],
+  "stream": true
+}
