@@ -21,13 +21,8 @@ import java.util.List;
 public class VectorStoreFilesBatchRequest {
 
     /**
-     * file_ids
-     * array
-     * <p>
-     * Required
      * A list of File IDs that the vector store should use. Useful for tools like file_search that can access files.
      */
-
     @JsonProperty("file_ids")
     List<String> fileIds;
 

@@ -16,6 +16,8 @@ import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.assistants.vector_store.ModifyVectorStoreRequest;
 import com.theokanning.openai.assistants.vector_store.VectorStoreRequest;
 import com.theokanning.openai.assistants.vector_store_file.VectorStoreFile;
+import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFilesBatch;
+import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFilesBatchRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -100,7 +102,9 @@ public class JsonTest {
             VectorStore.class,
             ModifyVectorStoreRequest.class,
             VectoreStoreFileRequest.class,
-            VectorStoreFile.class
+            VectorStoreFile.class,
+            VectorStoreFilesBatchRequest.class,
+            VectorStoreFilesBatch.class
     })
     void assistantObjectMatchesJson(Class<?> clazz) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

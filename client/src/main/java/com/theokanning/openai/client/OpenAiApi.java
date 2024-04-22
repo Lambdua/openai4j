@@ -313,19 +313,25 @@ public interface OpenAiApi {
     @DELETE("vector_stores/{vector_store_id}/files/{file_id}")
     Single<DeleteResult> deleteVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Path("file_id") String fileId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    /**
+     * Vector store file batches represent operations to add multiple files to a vector store.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("vector_stores/{vector_store_id}/file_batches")
     Single<VectorStoreFilesBatch> createVectorStoreFileBatch(@Path("vector_store_id") String vectorStoreId, @Body VectorStoreFilesBatchRequest request);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores/{vector_store_id}/file_batches/{batch_id}")
     Single<VectorStoreFilesBatch> retrieveVectorStoreFileBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as possible.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("vector_stores/{vector_store_id}/file_batches/{batch_id}/cancel")
     Single<VectorStoreFilesBatch> cancelVectorStoreFileBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores/{vector_store_id}/file_batches/{batch_id}/files")
     Single<OpenAiResponse<VectorStoreFile>> listVectorStoreFilesInBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId, @QueryMap Map<String, Object> filterRequest);
 }
