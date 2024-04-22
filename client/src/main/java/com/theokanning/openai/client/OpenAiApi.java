@@ -3,9 +3,9 @@ package com.theokanning.openai.client;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.Assistant;
-import com.theokanning.openai.assistants.assistant.AssistantFileRequest;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
+import com.theokanning.openai.assistants.assistant.VectoreStoreFileRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
@@ -295,15 +295,21 @@ public interface OpenAiApi {
     @DELETE("vector_stores/{vector_store_id}")
     Single<DeleteResult> deleteVectorStore(@Path("vector_store_id") String vectorStoreId);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    /**
+     * Vector store files represent files inside a vector store.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
     @POST("vector_stores/{vector_store_id}/files")
-    Single<VectorStoreFile> createVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Body AssistantFileRequest fileRequest);
+    Single<VectorStoreFile> createVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Body VectoreStoreFileRequest fileRequest);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores/{vector_store_id}/files")
     Single<OpenAiResponse<VectorStoreFile>> listVectorStoreFiles(@Path("vector_store_id") String vectorStoreId, @QueryMap Map<String, Object> filterRequest);
 
-    @Headers("OpenAI-Beta: assistants=v1")
+    /**
+     * Delete a vector store file. This will remove the file from the vector store but the file itself will not be deleted. To delete the file, use the delete file endpoint.
+     */
+    @Headers("OpenAI-Beta: assistants=v2")
     @DELETE("vector_stores/{vector_store_id}/files/{file_id}")
     Single<DeleteResult> deleteVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Path("file_id") String fileId);
 

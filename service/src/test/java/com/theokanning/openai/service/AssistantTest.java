@@ -81,7 +81,7 @@ public class AssistantTest {
         String filePath = "src/test/resources/assistants-data.html";
         File uploadedFile = service.uploadFile("assistants", filePath);
 
-        AssistantFile assistantFile = service.createAssistantFile(assistantId, new AssistantFileRequest(uploadedFile.getId()));
+        AssistantFile assistantFile = service.createAssistantFile(assistantId, new VectoreStoreFileRequest(uploadedFile.getId()));
 
         fileId = assistantFile.getId();
         assertNotNull(assistantFile);

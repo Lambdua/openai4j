@@ -375,7 +375,7 @@ public class OpenAiService {
         return execute(api.listAssistants(queryParameters));
     }
 
-    public AssistantFile createAssistantFile(String assistantId, AssistantFileRequest fileRequest) {
+    public AssistantFile createAssistantFile(String assistantId, VectoreStoreFileRequest fileRequest) {
         //todo
         return null;
         // return execute(api.createAssistantFile(assistantId, fileRequest));
