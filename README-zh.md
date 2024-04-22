@@ -187,13 +187,12 @@ final ChatTool tool = new ChatTool(function);
 final List<ChatMessage> messages = new ArrayList<>();
 final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
 final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
-        messages.
+messages.
 
 add(systemMessage);
-        messages.
+messages.
 
 add(userMessage);
-
 ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
         .builder()
         .model("gpt-3.5-turbo-0613")
