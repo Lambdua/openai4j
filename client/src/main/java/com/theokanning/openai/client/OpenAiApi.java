@@ -25,6 +25,8 @@ import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFile
 import com.theokanning.openai.audio.CreateSpeechRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.batch.Batch;
+import com.theokanning.openai.batch.BatchRequest;
 import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.completion.CompletionRequest;
@@ -334,4 +336,18 @@ public interface OpenAiApi {
     @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores/{vector_store_id}/file_batches/{batch_id}/files")
     Single<OpenAiResponse<VectorStoreFile>> listVectorStoreFilesInBatch(@Path("vector_store_id") String vectorStoreId, @Path("batch_id") String batchId, @QueryMap Map<String, Object> filterRequest);
+
+    @POST("batches")
+    Single<Batch> createBatch(@Body BatchRequest request);
+
+    @GET("batches/{batch_id}")
+    Single<Batch> retrieveBatch(@Path("batch_id") String batchId);
+
+    @POST("batches/{batch_id}/cancel")
+    Single<Batch> cancelBatch(@Path("batch_id") String batchId);
+
+    @GET("batches")
+    Single<OpenAiResponse<Batch>> listBatches(@QueryMap Map<String, Object> filterRequest);
+
 }
+

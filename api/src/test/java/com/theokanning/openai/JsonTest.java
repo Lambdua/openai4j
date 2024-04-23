@@ -20,6 +20,8 @@ import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFile
 import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFilesBatchRequest;
 import com.theokanning.openai.audio.TranscriptionResult;
 import com.theokanning.openai.audio.TranslationResult;
+import com.theokanning.openai.batch.Batch;
+import com.theokanning.openai.batch.BatchRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.edit.EditRequest;
@@ -63,7 +65,9 @@ public class JsonTest {
             TranslationResult.class,
             Model.class,
             ModerationRequest.class,
-            ModerationResult.class
+            ModerationResult.class,
+            BatchRequest.class,
+            Batch.class
     })
     void objectMatchesJson(Class<?> clazz) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
