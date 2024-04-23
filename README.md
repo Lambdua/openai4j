@@ -107,11 +107,12 @@ System.out.println(choice.getText());
 
 # Just Using POJO
 
-If you wish to develop your own client, simply import POJOs from the api module.
+If you wish to develop your own client, simply import POJOs from the api module.</br>
 Ensure your client adopts snake case naming for compatibility with the OpenAI API.
 
 # other examples:
-
+The sample code is all in the `example` package, which includes most of the functional usage. </br>
+You can refer to the code in the example package. Below are some commonly used feature usage examples
 <details>
 <summary>Customizing OpenAiService</summary>
 OpenAiService is versatile in its setup options, as demonstrated in the `example.ServiceCreateExample` within the
@@ -150,7 +151,6 @@ OpenAiService openAiService3 = new OpenAiService(openAiApi);
 ```
 
 </details>
-
 <details>
 <summary>Tools</summary>
 This library supports both the outdated method of function calls and the current tool-based approach.
@@ -324,7 +324,6 @@ class OpenAiApiFunctionsExample {
 ```
 
 </details>  
-
 <details>
 <summary>stream chat with tool call (support Concurrent tool call)</summary>
 
@@ -428,7 +427,6 @@ class OpenAiApiFunctionsExample {
 ```
 
 </details>
-
 <details>
 <summary>Token usage calculate</summary>
 
