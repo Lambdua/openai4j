@@ -1,13 +1,11 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.lambdua/service?color=blue)
-> ⚠️ This project is a fork of the [openai Java project](https://github.com/TheoKanning/openai-java).
-> That it’s an unofficial library.The original
-> author appears to have ceased maintenance, failing to meet my needs, prompting me to continue its development and
-> incorporate new features.
-> [Details on version changes](https://github.com/Lambdua/openai4j/releases)
+> That it’s an unofficial library.</br>
+> ⚠️ This project is a fork of the [openai Java project](https://github.com/TheoKanning/openai-java). </br>
+> The original author appears to have ceased maintenance, failing to meet my needs, prompting me to continue its
+> development and adapting to the new features of OpenAI API.
 
->
 
-[中文文档☕](README-zh.md)
+[中文文档-不是最新☕](README-zh.md)
 
 # OpenAI-Java
 
@@ -23,13 +21,17 @@ Project structure:
 
 # Supported APIs
 
-[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) , [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations) , [Assistants](https://platform.openai.com/docs/api-reference/assistants)
+[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) ,[Assistants-v1](https://platform.openai.com/docs/api-reference/assistants-v1), [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations)
+
+# Roadmap
+
+- [Assistants-v2](https://platform.openai.com/docs/api-reference/assistants),assistant-v1 will be removed in version
+  0.20.0
 
 # Quick Start
 
 ## Import
 ### Gradle
-
 `implementation 'io.github.lambdua:<api|client|service>:0.19.1'`
 ### Maven
 ```xml
@@ -55,7 +57,8 @@ To utilize pojos, import the api module:
 For a rapid deployment, import the service module and deploy OpenAiService.
 
 ```java
-OpenAiService openAiService = new OpenAiService(API_KEY);
+//api-key get from environment variable OPENAI_API_KEY
+OpenAiService openAiService = new OpenAiService();
 //Initiate a streaming conversation
 List<ChatMessage> messages = new ArrayList<>();
 ChatMessage systemMessage = a SystemMessage("You are a dog and will speak as such.");
