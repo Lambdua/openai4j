@@ -1,0 +1,16 @@
+{
+  "id": "msg_123",
+  "object": "thread.message.delta",
+  "delta": {
+    "content": [
+      {
+        "index": 0,
+        "type": "text",
+        "text": {
+          "value": "Hello",
+          "annotations": []
+        }
+      }
+    ]
+  }
+}

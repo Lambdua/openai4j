@@ -1,0 +1,20 @@
+{
+  "id": "step_123",
+  "object": "thread.run.step.delta",
+  "delta": {
+    "step_details": {
+      "type": "tool_calls",
+      "tool_calls": [
+        {
+          "index": 0,
+          "id": "call_123",
+          "type": "code_interpreter",
+          "code_interpreter": {
+            "input": "",
+            "outputs": []
+          }
+        }
+      ]
+    }
+  }
+}

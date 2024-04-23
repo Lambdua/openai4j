@@ -6,11 +6,13 @@ import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
+import com.theokanning.openai.assistants.message.content.MessageDelta;
 import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
 import com.theokanning.openai.assistants.run.Run;
 import com.theokanning.openai.assistants.run.RunCreateRequest;
 import com.theokanning.openai.assistants.run.SubmitToolOutputsRequest;
 import com.theokanning.openai.assistants.run_step.RunStep;
+import com.theokanning.openai.assistants.run_step.RunStepDelta;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.assistants.vector_store.ModifyVectorStoreRequest;
@@ -108,7 +110,9 @@ public class JsonTest {
             VectoreStoreFileRequest.class,
             VectorStoreFile.class,
             VectorStoreFilesBatchRequest.class,
-            VectorStoreFilesBatch.class
+            VectorStoreFilesBatch.class,
+            MessageDelta.class,
+            RunStepDelta.class
     })
     void assistantObjectMatchesJson(Class<?> clazz) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
