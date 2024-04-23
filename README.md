@@ -73,29 +73,32 @@ OpenAiService is versatile in its setup options, as demonstrated in the `example
 example package.
 
 ```java
-//1. Use the default baseUrl, automatically configured service; initially fetches BaseURL from environment variable (key: OPENAI_API_BASE_URL), defaults to "https://api.openai.com/v1/" if not found.
+        //0 Using the default configuration, read the environment variables OPENAI-API_KEY, OPENAI-API_BASE-URL as the default API_KEY and BASE-URL,
+//encourage the use of environment variables to load the OpenAI API key
+OpenAiService openAiService0 = new OpenAiService();
+//1.使用默认的baseUrl,默认配置service,这里会默认先从环境变量中获取BaseURL(key:OPENAI_API_BASE_URL),如果没有则使用默认的"https://api.openai.com/v1/";
 OpenAiService openAiService = new OpenAiService(API_KEY);
-//2. Use a custom baseUrl with the standard configuration
+//2. 使用自定义的baseUrl,默认配置配置service
 OpenAiService openAiService1 = new OpenAiService(API_KEY, BASE_URL);
-//3. Customize the expiration time
-OpenAiService openAiService2 = a OpenAiService(API_KEY, Duration.ofSeconds(10));
-//4. More advanced customizations
-//4.1 Custom okHttpClient
-OkHttpClient client = a OkHttpClient.Builder()
-// Connection pool
+//3.自定义过期时间
+OpenAiService openAiService2 = new OpenAiService(API_KEY, Duration.ofSeconds(10));
+//4. 更灵活的自定义
+//4.1. 自定义okHttpClient
+OkHttpClient client = new OkHttpClient.Builder()
+        //连接池
         .connectionPool(new ConnectionPool(Runtime.getRuntime().availableProcessors() * 2, 30, TimeUnit.SECONDS))
-        // Custom interceptors for retrying, logging, load balancing, etc.
+        //自定义的拦截器,如重试拦截器,日志拦截器,负载均衡拦截器等
         // .addInterceptor(new RetryInterceptor())
         // .addInterceptor(new LogInterceptor())
-        // .addInterceptor(new Load BalanceInterceptor())
-        // Adding a proxy
+        // .addInterceptor(new LoadBalanceInterceptor())
+        //添加代理
         // .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxyHost", 8080)))
         .connectTimeout(2, TimeUnit.SECONDS)
-        .writeTimeout 3, TimeUnit.SECONDS)
-        .readTimeout 10, TimeUnit.SECONDS)
+        .writeTimeout(3, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
         .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
         .build();
-//4.2 Custom Retrofit configuration
+//4.2 自定义Retorfit配置
 Retrofit retrofit = OpenAiService.defaultRetrofit(client, OpenAiService.defaultObjectMapper(), BASE_URL);
 OpenAiApi openAiApi = retrofit.create(OpenAiApi.class);
 OpenAiService openAiService3 = new OpenAiService(openAiApi);
