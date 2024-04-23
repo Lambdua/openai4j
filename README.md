@@ -21,9 +21,7 @@ Project structure:
 
 # Supported APIs
 
-[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) ,[
-~~
-Assistants-v1~~](https://platform.openai.com/docs/api-reference/assistants-v1), [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations)
+[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) ,[~~Assistants-v1~~](https://platform.openai.com/docs/api-reference/assistants-v1), [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations)
 
 # v0.20.0 will released feature
 
