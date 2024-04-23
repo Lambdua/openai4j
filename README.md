@@ -1,9 +1,11 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.lambdua/service?color=blue)
-> ⚠️ This project is a fork of the [openai Java project](https://github.com/TheoKanning/openai-java). The original
+> ⚠️ This project is a fork of the [openai Java project](https://github.com/TheoKanning/openai-java).
+> That it’s an unofficial library.The original
 > author appears to have ceased maintenance, failing to meet my needs, prompting me to continue its development and
 > incorporate new features.
 > [Details on version changes](https://github.com/Lambdua/openai4j/releases)
 
+>
 
 [中文文档☕](README-zh.md)
 
@@ -73,7 +75,7 @@ OpenAiService is versatile in its setup options, as demonstrated in the `example
 example package.
 
 ```java
-        //0 Using the default configuration, read the environment variables OPENAI-API_KEY, OPENAI-API_BASE-URL as the default API_KEY and BASE-URL,
+//0 Using the default configuration, read the environment variables OPENAI-API_KEY, OPENAI-API_BASE-URL as the default API_KEY and BASE-URL,
 //encourage the use of environment variables to load the OpenAI API key
 OpenAiService openAiService0 = new OpenAiService();
 //1.使用默认的baseUrl,默认配置service,这里会默认先从环境变量中获取BaseURL(key:OPENAI_API_BASE_URL),如果没有则使用默认的"https://api.openai.com/v1/";
