@@ -2,6 +2,7 @@ package example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest.ChatCompletionRequestFunctionCall;
 import com.theokanning.openai.service.FunctionExecutor;
@@ -11,6 +12,7 @@ import java.util.*;
 
 class OpenAiApiFunctionsExample {
 
+    @JsonSchemaDescription("Get the current weather of a location")
     public static class Weather {
         @JsonPropertyDescription("City and state, for example: León, Guanajuato")
         public String location;
@@ -18,6 +20,7 @@ class OpenAiApiFunctionsExample {
         @JsonPropertyDescription("The temperature unit, can be 'celsius' or 'fahrenheit'")
         @JsonProperty(required = true)
         public WeatherUnit unit;
+
     }
 
     public enum WeatherUnit {
