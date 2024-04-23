@@ -17,7 +17,7 @@ Project structure:
 - client: A basic Retrofit client designed for GPT endpoints, including the api module.
 - service: A fundamental service class for creating and invoking the client, offering the most straightforward approach
   to integrating OpenAI in Java.
-- example: Sample code demonstrating the library's utilization.
+- example: Sample code demonstrating the library's utilization. 
 
 # Supported APIs
 
@@ -65,52 +65,44 @@ To utilize pojos, import the api module:
 ## Using OpenAiService
 For a rapid deployment, import the service module and deploy OpenAiService.
 ```java
-//api-key get from environment variable OPENAI_API_KEY
-OpenAiService openAiService = new OpenAiService();
-//Initiate a streaming conversation
-List<ChatMessage> messages = new ArrayList<>();
-ChatMessage systemMessage = a SystemMessage("You are a dog and will speak as such.");
-messages.add(systemMessage);
-ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-        .model("gpt-3.5-turbo")
-        .messages(messages)
-        .n(1)
-        .maxTokens(50)
-        .build();
-service.streamChatCompletion(chatCompletionRequest).blockingForEach(System.out::println);
+void a() {
+    //api-key get from environment variable OPENAI_API_KEY
+    OpenAiService openAiService = new OpenAiService();
+    //Initiate a streaming conversation
+    List<ChatMessage> messages = new ArrayList<>();
+    ChatMessage systemMessage = new SystemMessage("You are a dog and will speak as such.");
+    messages.add(systemMessage);
+    ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+            .model("gpt-3.5-turbo")
+            .messages(messages)
+            .n(1)
+            .maxTokens(50)
+            .build();
+    service.streamChatCompletion(chatCompletionRequest).blockingForEach(System.out::println);
+}
 ```
 
 ## gpt-4-turbo/gpt-vision Image Recognition Support
 
 ```java
-final List<ChatMessage> messages = an ArrayList<>();
-final ChatMessage systemMessage = a
-
-SystemMessage("You are a helpful assistant.");
-
+void a(){
+final List<ChatMessage> messages = new ArrayList<>();
+final ChatMessage systemMessage = new  SystemMessage("You are a helpful assistant.");
 //Here, the imageMessage is intended for image recognition
 final ChatMessage imageMessage = UserMessage.buildImageMessage("What's in this image?",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
-        messages.
-
-add(systemMessage);
-        messages.
-
-add(imageMessage);
+messages.add(systemMessage);
+messages.add(imageMessage);
 
 ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
         .model("gpt-4-turbo")
         .messages(messages)
         .n(1)
-        .maxTokens 200)
-        .
-
-build();
-
+        .maxTokens (200)
+        .build();
 ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-System.out.
-
-println(choice.getText());
+System.out.println(choice.getText());
+}
 ```
 
 # Just Using POJO
@@ -201,12 +193,13 @@ Then, the service is used for a chatCompletion request, incorporating the tool:
 
 ```java
 //A tool is declared; currently, openai-tool only supports the function type.
+void a(){
 final ChatTool tool = new ChatTool(function);
-final List<ChatMessage> messages = an ArrayList<>();
-final ChatMessage systemMessage = a SystemMessage("You are a helpful assistant.");
-final ChatMessage userMessage = a UserMessage("What is the weather in Monterrey, Nuevo León?");
-        messages.add(systemMessage);
-        messages.add(userMessage);
+final List<ChatMessage> messages = new  ArrayList<>();
+final ChatMessage systemMessage = new  SystemMessage("You are a helpful assistant.");
+final ChatMessage userMessage = new UserMessage("What is the weather in Monterrey, Nuevo León?");
+messages.add(systemMessage);
+messages.add(userMessage);
 
 ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
         .model("gpt-3.5-turbo-0613")
@@ -215,10 +208,11 @@ ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
         .tools(Arrays.asList(tool))
         .toolChoice("auto")
         .n(1)
-        .maxTokens 100)
+        .maxTokens(100)
         .build();
 //Request is sent
 ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+}
 ```
 
 </details>
@@ -439,19 +433,15 @@ class OpenAiApiFunctionsExample {
 <summary>Token usage calculate</summary>
 
 ```java
- List<ChatMessage> messages = new ArrayList<>();
- messages.
-
-add(new SystemMessage("Hello OpenAI 1."));
-        messages.
-
-add(new SystemMessage("Hello OpenAI 2.   "));
-        messages.
-
-add(new UserMessage(new ImageContent("text", "textContent",new ImageUrl("dddd"))));
-int tokens_1 = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_3_5_TURBO.getName(), messages);
-int tokens_2 = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_3_5_TURBO.getName(), "Hello OpenAI 1.");
-int tokens_3 = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_4_TURBO.getName(), messages);
+public static void main(String... args) {
+  List<ChatMessage> messages = new ArrayList<>();
+  messages.add(new SystemMessage("Hello OpenAI 1."));
+  messages.add(new SystemMessage("Hello OpenAI 2.   "));
+  messages.add(new UserMessage(new ImageContent("text", "textContent", new ImageUrl("dddd"))));
+  int tokens_1 = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_3_5_TURBO.getName(), messages);
+  int tokens_2 = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_3_5_TURBO.getName(), "Hello OpenAI 1.");
+  int tokens_3 = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_4_TURBO.getName(), messages);
+}
 ```
 
 </details>
