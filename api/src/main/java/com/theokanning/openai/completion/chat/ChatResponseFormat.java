@@ -21,14 +21,18 @@ import java.io.IOException;
  * see {@link ChatCompletionRequest} documentation.
  */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ChatResponseFormat {
     /**
      * auto/text/json_object
      */
     private String type;
+
+    /**
+     * 构造私有,只允许从静态变量获取
+     */
+    private ChatResponseFormat(String type) {
+        this.type = type;
+    }
 
     public static final ChatResponseFormat AUTO = new ChatResponseFormat("auto");
 
@@ -65,14 +69,21 @@ public class ChatResponseFormat {
             }
             // 处理对象的情况 return ChatResponseFormat
             if (jsonParser.getCurrentToken() == JsonToken.START_OBJECT) {
-                ChatResponseFormat chatResponseFormat = new ChatResponseFormat();
                 while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
                     if (jsonParser.getCurrentName().equals("type")) {
                         jsonParser.nextToken();
-                        chatResponseFormat.setType(jsonParser.getText());
+                        switch (jsonParser.getText()){
+                            case "auto":
+                                return AUTO;
+                            case "text":
+                                return TEXT;
+                            case "json_object":
+                                return JSON_OBJECT;
+                            default:
+                                throw new InvalidFormatException(jsonParser, "Invalid response format", jsonParser.getCurrentToken().toString(), ChatResponseFormat.class);
+                        }
                     }
                 }
-                return chatResponseFormat;
             }
             throw new InvalidFormatException(jsonParser, "Invalid response format", jsonParser.getCurrentToken().toString(), ChatResponseFormat.class);
         }
