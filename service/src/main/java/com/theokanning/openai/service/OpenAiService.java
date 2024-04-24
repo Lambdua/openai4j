@@ -550,8 +550,6 @@ public class OpenAiService {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
-        mapper.addMixIn(ChatCompletionRequest.class, ChatCompletionRequestMixIn.class);
-        mapper.addMixIn(ChatFunctionCall.class, ChatFunctionCallMixIn.class);
         return mapper;
     }
 

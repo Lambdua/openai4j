@@ -57,7 +57,7 @@ public class OpenAiApiDynamicFunctionExample {
                     .model("gpt-3.5-turbo-0613")
                     .messages(messages)
                     .functions(Collections.singletonList(weatherFunction))
-                    .functionCall(ChatCompletionRequest.ChatCompletionRequestFunctionCall.of("auto"))
+                    .functionCall("auto")
                     .n(1)
                     .maxTokens(100)
                     .logitBias(new HashMap<>())

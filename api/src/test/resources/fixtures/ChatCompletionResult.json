@@ -304,7 +304,7 @@
             "type": "function",
             "function": {
               "name": "get_current_weather",
-              "arguments": "{\n\"location\": \"Boston, MA\"\n}"
+              "arguments": "{\r\n\"location\": \"Boston, MA\r\n\"}"
             }
           }
         ]

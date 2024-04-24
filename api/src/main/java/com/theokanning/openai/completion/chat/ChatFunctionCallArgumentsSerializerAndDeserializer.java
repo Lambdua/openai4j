@@ -1,4 +1,4 @@
-package com.theokanning.openai.service;
+package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
@@ -24,7 +24,7 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
             if (value == null) {
                 gen.writeNull();
             } else {
-                gen.writeString(value instanceof TextNode ? value.asText() : value.toPrettyString());
+                gen.writeString(value instanceof TextNode ? value.asText() : value.toString());
             }
         }
     }
