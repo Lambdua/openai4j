@@ -31,6 +31,9 @@ Project structure:
 - [ ] assistant-v2-streaming
 - [ ] assistant-v2-tool
 - [x] assistant-v1 removed in 0.20.0
+- [x] batch api pojo
+- [x] batch api client
+- [ ] batch api service
 
 
 # Quick Start
