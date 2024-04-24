@@ -71,7 +71,7 @@ public class ChatMessageAccumulator {
      * @return the function call from the message chunk.
      */
     public ChatFunctionCall getChatFunctionCallChunk() {
-        AssistantMessage msC = (AssistantMessage) getMessageChunk();
+        AssistantMessage msC = getMessageChunk();
         ChatFunctionCall functionCall = msC.getFunctionCall();
         if (functionCall == null) {
             functionCall = msC.getToolCalls().get(0).getFunction();

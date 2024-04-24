@@ -25,47 +25,43 @@ import java.io.IOException;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatResponseFormat {
-    private ResponseFormat type;
+    /**
+     * auto/text/json_object
+     */
+    private String type;
 
-    public enum ResponseFormat {
-        TEXT("text"),
-        JSON("json_object");
+    public static final ChatResponseFormat AUTO = new ChatResponseFormat("auto");
 
-        @JsonValue
-        private final String value;
+    public static final ChatResponseFormat TEXT = new ChatResponseFormat("text");
 
-        ResponseFormat(final String value) {
-            this.value = value;
-        }
-
-        @JsonValue
-        public String value() {
-            return value;
-        }
-    }
+    public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
 
 
     @NoArgsConstructor
-    public static class ChatResponseFormatSerializer extends JsonSerializer<Object> {
+    public static class ChatResponseFormatSerializer extends JsonSerializer<ChatResponseFormat> {
         @Override
-        public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-            if (o instanceof String) {
-                jsonGenerator.writeString((String) o);
-            }
-            if (o instanceof ChatResponseFormat) {
-                jsonGenerator.writeStartObject();
-                jsonGenerator.writeObjectField("type", ((ChatResponseFormat) o).getType());
-                jsonGenerator.writeEndObject();
+        public void serialize(ChatResponseFormat value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            if (value.getType().equals("auto")) {
+                gen.writeString(value.getType());
+            } else {
+                gen.writeStartObject();
+                gen.writeObjectField("type", (value).getType());
+                gen.writeEndObject();
             }
         }
+
     }
 
     @NoArgsConstructor
-    public static class ChatResponseFormatDeserializer extends JsonDeserializer<Object> {
+    public static class ChatResponseFormatDeserializer extends JsonDeserializer<ChatResponseFormat> {
         @Override
-        public Object deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+        public ChatResponseFormat deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
             if (jsonParser.getCurrentToken() == JsonToken.VALUE_STRING) {
-                return jsonParser.getText();
+                String text = jsonParser.getText();
+                if (!"auto".equals(text)) {
+                    throw new InvalidFormatException(jsonParser, "Invalid response format", jsonParser.getCurrentToken().toString(), ChatResponseFormat.class);
+                }
+                return new ChatResponseFormat(text);
             }
             // 处理对象的情况 return ChatResponseFormat
             if (jsonParser.getCurrentToken() == JsonToken.START_OBJECT) {
@@ -73,7 +69,7 @@ public class ChatResponseFormat {
                 while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
                     if (jsonParser.getCurrentName().equals("type")) {
                         jsonParser.nextToken();
-                        chatResponseFormat.setType(ResponseFormat.valueOf(jsonParser.getText().toUpperCase()));
+                        chatResponseFormat.setType(jsonParser.getText());
                     }
                 }
                 return chatResponseFormat;

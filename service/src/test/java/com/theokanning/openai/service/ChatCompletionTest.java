@@ -101,7 +101,7 @@ class ChatCompletionTest {
                 .builder()
                 .model("gpt-3.5-turbo-1106")
                 .messages(messages)
-                .responseFormat(ChatResponseFormat.builder().type(ChatResponseFormat.ResponseFormat.JSON).build())
+                .responseFormat(ChatResponseFormat.JSON_OBJECT)
                 .maxTokens(50)
                 .logitBias(new HashMap<>())
                 .build();

@@ -110,5 +110,5 @@ public class CreateThreadAndRunRequest {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
     @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
-    Object responseFormat;
+    ChatResponseFormat responseFormat;
 }

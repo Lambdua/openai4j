@@ -79,7 +79,7 @@ public class ModifyAssistantRequest {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
     @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
-    Object responseFormat;
+    ChatResponseFormat responseFormat;
 
     /**
      * Set of 16 key-value pairs that can be attached to an object.
