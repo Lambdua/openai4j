@@ -36,28 +36,6 @@ public class ContentDeserializer extends JsonDeserializer<Object> {
         return null;
     }
 
-    /**
-     * public class ImageContent {
-     *
-     * @param jsonParser
-     * @return
-     * @NonNull private String type;
-     * @JsonProperty("image_url")
-     * @JsonInclude(JsonInclude.Include.NON_NULL) private String text;
-     * @JsonInclude(JsonInclude.Include.NON_NULL)
-     * @JsonProperty("image_url") private ImageUrl imageUrl;
-     * <p>
-     * public ImageContent(String text) {
-     * this.type = "text";
-     * this.text = text;
-     * }
-     * <p>
-     * public ImageContent(ImageUrl imageUrl) {
-     * this.type = "image_url";
-     * this.imageUrl = imageUrl;
-     * }
-     * }
-     */
     ImageContent parseContent(JsonParser jsonParser) throws IOException {
         ImageContent content = new ImageContent();
         while (jsonParser.nextToken() != JsonToken.END_OBJECT) {

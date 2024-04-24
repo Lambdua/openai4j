@@ -23,36 +23,6 @@ import java.util.stream.Collectors;
 public class UserMessage implements ChatMessage {
     private final String role = ChatMessageRole.USER.value();
 
-    /**
-     * 字符串或者数组;
-     * String: 一个文本消息;
-     * Array: 具有定义类型的内容部分的数组，传入图像时每个部分的类型可以是 text 或 image_url 。您可以通过添加多个image_url内容部分来传递多个图像。仅当使用gpt-4-visual-preview型号时才支持图像输入。
-     * eg:
-     * curl https://api.openai.com/v1/chat/completions \
-     * -H "Content-Type: application/json" \
-     * -H "Authorization: Bearer $OPENAI_API_KEY" \
-     * -d '{
-     * "model": "gpt-4-turbo",
-     * "messages": [
-     * {
-     * "role": "user",
-     * "content": [
-     * {
-     * "type": "text",
-     * "text": "What'\''s in this image?"
-     * },
-     * {
-     * "type": "image_url",
-     * "image_url": {
-     * "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
-     * }
-     * }
-     * ]
-     * }
-     * ],
-     * "max_tokens": 300
-     * }'
-     */
     @JsonDeserialize(using = ContentDeserializer.class)
     @JsonSerialize(using = ContentSerializer.class)
     private Object content;
@@ -62,6 +32,27 @@ public class UserMessage implements ChatMessage {
 
     public UserMessage(Object content) {
         this.content = content;
+        contentTypeCheck();
+    }
+
+    public void setContent(Object content) {
+        this.content = content;
+        contentTypeCheck();
+    }
+
+    private void contentTypeCheck() {
+        if (content instanceof String) {
+            return;
+        }
+        if (content instanceof Collection) {
+            Collection collection = (Collection) content;
+            collection.forEach(item -> {
+                if (!(item instanceof ImageContent)) {
+                    throw new IllegalArgumentException("content must be a string or a collection of ImageContent");
+                }
+            });
+        }
+        throw new IllegalArgumentException("content must be a string or a collection of ImageContent");
     }
 
     @Override
