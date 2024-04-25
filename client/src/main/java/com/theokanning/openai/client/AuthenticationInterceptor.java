@@ -9,12 +9,11 @@ import java.io.IOException;
 /**
  * OkHttp Interceptor that adds an authorization token header
  */
-@Deprecated
 public class AuthenticationInterceptor implements Interceptor {
 
     private final String token;
 
-    protected AuthenticationInterceptor(String token) {
+    public AuthenticationInterceptor(String token) {
         this.token = token;
     }
 

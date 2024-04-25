@@ -23,6 +23,7 @@ import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.audio.*;
 import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.billing.Subscription;
+import com.theokanning.openai.client.AuthenticationInterceptor;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.CompletionChunk;
 import com.theokanning.openai.completion.CompletionRequest;
