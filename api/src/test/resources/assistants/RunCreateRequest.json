@@ -28,5 +28,11 @@
       }
     }
   ],
+  "tool_choice": {
+    "type": "function",
+    "function": {
+      "name": "get_current_weather"
+    }
+  },
   "stream": true
 }

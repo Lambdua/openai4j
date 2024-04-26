@@ -101,9 +101,9 @@ public class RunCreateRequest {
      * Specifying a particular tool like {"type": "file_search"} or {"type": "function", "function": {"name": "my_function"}} forces the model to call that tool.
      */
     @JsonProperty("tool_choice")
-    @JsonSerialize(using = ToolChoiceSerializer.class)
-    @JsonDeserialize(using = ToolChoiceDeserializer.class)
-    Object toolChoice;
+    @JsonSerialize(using = ToolChoice.Serializer.class)
+    @JsonDeserialize(using = ToolChoice.Deserializer.class)
+    ToolChoice toolChoice;
 
     /**
      * Specifies the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models since gpt-3.5-turbo-1106.

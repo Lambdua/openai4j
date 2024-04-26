@@ -3,6 +3,7 @@ package com.theokanning.openai.completion.chat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.theokanning.openai.assistants.run.ToolChoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -149,8 +150,9 @@ public class ChatCompletionRequest {
      * Controls which (if any) function is called by the model. none means the model will not call a function and instead generates a message. auto means the model can pick between generating a message or calling a function.
      */
     @JsonProperty("tool_choice")
-    String toolChoice;
-
+    @JsonSerialize(using = ToolChoice.Serializer.class)
+    @JsonDeserialize(using = ToolChoice.Deserializer.class)
+    ToolChoice toolChoice;
 
 
 

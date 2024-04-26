@@ -22,5 +22,5 @@
     "type": "auto"
   },
   "response_format": "auto",
-  "tool_choice": "auto"
+  "tool_choice": "none"
 }
