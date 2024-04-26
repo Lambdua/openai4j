@@ -1,6 +1,7 @@
 package com.theokanning.openai.assistants.thread;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.assistants.assistant.Tool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,13 +24,12 @@ public class Attachment {
      * There can be a maximum of 10 files attached to a message.
      * Useful for tools like retrieval and code_interpreter that can access and use files.
      */
-    @JsonProperty("file_ids")
-    List<String> fileIds;
+    @JsonProperty("file_id")
+    String fileId;
 
     /**
      * A list of tools that the files should be added
      */
-    @JsonProperty("add_to")
-    List<String> addTo;
+    List<Tool> tools;
 
 }

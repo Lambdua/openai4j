@@ -1,4 +1,4 @@
-package com.theokanning.openai.service;
+package com.theokanning.openai.service.assistants;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -8,6 +8,7 @@ import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
+import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.*;
 

@@ -1,9 +1,10 @@
-package com.theokanning.openai.service;
+package com.theokanning.openai.service.assistants;
 
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
+import com.theokanning.openai.service.OpenAiService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -27,10 +28,12 @@ public class ThreadTest {
     void createThread() {
         MessageRequest messageRequest = MessageRequest.builder()
                 .content("Hello")
+                .role("user")
                 .build();
 
         ThreadRequest threadRequest = ThreadRequest.builder()
                 .messages(Collections.singletonList(messageRequest))
+                .metadata(Collections.singletonMap("action", "create"))
                 .build();
 
         Thread thread = service.createThread(threadRequest);
@@ -42,7 +45,7 @@ public class ThreadTest {
     @Order(2)
     void retrieveThread() {
         Thread thread = service.retrieveThread(threadId);
-        System.out.println(thread.getMetadata());
+        assertEquals("create", thread.getMetadata().get("action"));
         assertEquals("thread", thread.getObject());
     }
 

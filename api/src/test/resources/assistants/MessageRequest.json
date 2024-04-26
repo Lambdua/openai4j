@@ -1,4 +1,14 @@
 {
   "role": "user",
-  "content": "How does AI work? Explain it in simple terms."
+  "content": "How does AI work? Explain it in simple terms.",
+  "attachments": [
+    {
+      "file_id": "1",
+      "tools": [
+        {
+          "type": "code_interpreter"
+        }
+      ]
+    }
+  ]
 }
