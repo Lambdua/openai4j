@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.theokanning.openai.assistants.run.ToolChoice;
 import com.theokanning.openai.completion.chat.*;
 import org.junit.jupiter.api.Test;
 
@@ -361,7 +362,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 //这里的tools是一个list,可以传入多个tool
                 .tools(Arrays.asList(tool))
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .build();
@@ -394,7 +395,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
                 .tools(Arrays.asList(tool))
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -445,7 +446,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
                 .tools(tools)
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -479,7 +480,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0125")
                 .messages(messages)
                 .tools(tools)
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -507,7 +508,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
                 .tools(tools)
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -588,7 +589,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
                 .tools(tools)
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(200)
                 .build();
@@ -625,7 +626,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0125")
                 .messages(messages)
                 .tools(tools)
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -654,7 +655,7 @@ class ChatCompletionTest {
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
                 .tools(tools)
-                .toolChoice("auto")
+                .toolChoice(ToolChoice.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())

@@ -67,7 +67,6 @@ public class FineTuningTest {
     @Order(2)
     void listFineTuningEvents() {
         List<FineTuningEvent> events = service.listFineTuningJobEvents(fineTuningJobId);
-
         assertFalse(events.isEmpty());
     }
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.assistant.Assistant;
@@ -21,6 +21,8 @@ import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.audio.*;
+import com.theokanning.openai.batch.Batch;
+import com.theokanning.openai.batch.BatchRequest;
 import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.billing.Subscription;
 import com.theokanning.openai.client.AuthenticationInterceptor;
@@ -65,6 +67,9 @@ import java.util.concurrent.TimeUnit;
 public class OpenAiService {
 
     private static final String DEFAULT_BASE_URL = "https://api.openai.com/v1/";
+
+    public static final String API_BASE_URL_ENV = "OPENAI_API_BASE_URL";
+
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
     private static final ObjectMapper mapper = defaultObjectMapper();
 
@@ -84,7 +89,7 @@ public class OpenAiService {
      * @param token OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      */
     public OpenAiService(final String token) {
-        this(token, DEFAULT_TIMEOUT, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
+        this(token, DEFAULT_TIMEOUT, System.getenv(API_BASE_URL_ENV) != null ? System.getenv(API_BASE_URL_ENV) : DEFAULT_BASE_URL);
     }
 
     public OpenAiService(final String token, final String baseUrl) {
@@ -98,7 +103,7 @@ public class OpenAiService {
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public OpenAiService(final String token, final Duration timeout) {
-        this(token, timeout, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
+        this(token, timeout, System.getenv(API_BASE_URL_ENV) != null ? System.getenv(API_BASE_URL_ENV) : DEFAULT_BASE_URL);
     }
 
     /**
@@ -152,14 +157,17 @@ public class OpenAiService {
         return execute(api.getModel(modelId));
     }
 
-    public CompletionResult createCompletion(CompletionRequest request) {
-        return execute(api.createCompletion(request));
+    public static OpenAiApi buildApi(String token, Duration timeout) {
+        return buildApi(token, timeout, System.getenv(API_BASE_URL_ENV) != null ? System.getenv(API_BASE_URL_ENV) : DEFAULT_BASE_URL);
     }
 
-    public Flowable<CompletionChunk> streamCompletion(CompletionRequest request) {
-        request.setStream(true);
-
-        return stream(api.createCompletionStream(request), CompletionChunk.class);
+    public static ObjectMapper defaultObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
+        return mapper;
     }
 
     public ChatCompletionResult createChatCompletion(ChatCompletionRequest request) {
@@ -168,7 +176,6 @@ public class OpenAiService {
 
     public Flowable<ChatCompletionChunk> streamChatCompletion(ChatCompletionRequest request) {
         request.setStream(true);
-
         return stream(api.createChatCompletionStream(request), ChatCompletionChunk.class);
     }
 
@@ -184,13 +191,9 @@ public class OpenAiService {
         return execute(api.listFiles()).data;
     }
 
-    public File uploadFile(String purpose, String filepath) {
-        java.io.File file = new java.io.File(filepath);
-        RequestBody purposeBody = RequestBody.create(MultipartBody.FORM, purpose);
-        RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
-
-        return execute(api.uploadFile(purposeBody, body));
+    @Deprecated
+    public CompletionResult createCompletion(CompletionRequest request) {
+        return execute(api.createCompletion(request));
     }
 
     public DeleteResult deleteFile(String fileId) {
@@ -225,15 +228,31 @@ public class OpenAiService {
         return execute(api.listFineTuningJobEvents(fineTuningJobId)).data;
     }
 
-
-    public CompletionResult createFineTuneCompletion(CompletionRequest request) {
-        return execute(api.createFineTuneCompletion(request));
+    @Deprecated
+    public Flowable<CompletionChunk> streamCompletion(CompletionRequest request) {
+        request.setStream(true);
+        return stream(api.createCompletionStream(request), CompletionChunk.class);
     }
 
-
-    public DeleteResult deleteFineTune(String fineTuneId) {
-        return execute(api.deleteFineTune(fineTuneId));
+    /**
+     * @param purpose file purpose,support: batch,fine-tune,assistants
+     */
+    public File uploadFile(String purpose, String filepath) {
+        java.io.File file = new java.io.File(filepath);
+        RequestBody purposeBody = RequestBody.create(MultipartBody.FORM, purpose);
+        RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
+        return execute(api.uploadFile(purposeBody, body));
     }
+
+    public Batch createBatch(BatchRequest request) {
+        return execute(api.createBatch(request));
+    }
+
+    public Batch retrieveBatch(String batchId) {
+        return execute(api.retrieveBatch(batchId));
+    }
+
 
     public ImageResult createImage(CreateImageRequest request) {
         return execute(api.createImage(request));
@@ -533,8 +552,8 @@ public class OpenAiService {
         this.executorService.shutdown();
     }
 
-    public static OpenAiApi buildApi(String token, Duration timeout) {
-        return buildApi(token, timeout, System.getenv("OPENAI_API_BASE_URL") != null ? System.getenv("OPENAI_API_BASE_URL") : DEFAULT_BASE_URL);
+    public Batch cancelBatch(String batchId) {
+        return execute(api.cancelBatch(batchId));
     }
 
     public static OpenAiApi buildApi(String token, Duration timeout, String baseUrl) {
@@ -545,13 +564,11 @@ public class OpenAiService {
         return retrofit.create(OpenAiApi.class);
     }
 
-    public static ObjectMapper defaultObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-        mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
-        return mapper;
+    //list all batches
+    public OpenAiResponse<Batch> listBatches(ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
+        });
+        return execute(api.listBatches(queryParameters));
     }
 
     public static OkHttpClient defaultClient(String token, Duration timeout) {
