@@ -65,10 +65,12 @@ public interface OpenAiApi {
     Single<Model> getModel(@Path("model_id") String modelId);
 
     @POST("completions")
+    @Deprecated
     Single<CompletionResult> createCompletion(@Body CompletionRequest request);
 
     @Streaming
     @POST("completions")
+    @Deprecated
     Call<ResponseBody> createCompletionStream(@Body CompletionRequest request);
 
     @POST("chat/completions")
