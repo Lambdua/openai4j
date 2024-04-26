@@ -51,6 +51,7 @@ public class UserMessage implements ChatMessage {
                     throw new IllegalArgumentException("content must be a string or a collection of ImageContent");
                 }
             });
+            return;
         }
         throw new IllegalArgumentException("content must be a string or a collection of ImageContent");
     }
