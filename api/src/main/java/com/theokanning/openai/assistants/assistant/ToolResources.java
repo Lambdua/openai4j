@@ -22,4 +22,11 @@ public class ToolResources {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     FileSearchResources fileSearch;
 
+    public ToolResources(CodeInterpreterResources codeInterpreter) {
+        this.codeInterpreter = codeInterpreter;
+    }
+
+    public ToolResources(FileSearchResources fileSearch) {
+        this.fileSearch = fileSearch;
+    }
 }

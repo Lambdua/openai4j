@@ -22,4 +22,8 @@ public class CodeInterpreterResources {
      */
     @JsonProperty("file_ids")
     private List<String> fileIds = Collections.emptyList();
+
+    public static CodeInterpreterResources of(List<String> fileIds) {
+        return new CodeInterpreterResources(fileIds);
+    }
 }

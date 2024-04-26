@@ -152,7 +152,7 @@ public enum StreamEvent {
 
     /**
      * Occurs when an error occurs. This can happen due to an internal server error or a timeout.
-     * data: {@link com.theokanning.openai.assistants.Error}
+     * data: {@link OpenAiError}
      */
     ERROR("error", OpenAiError.class),
 
@@ -161,6 +161,7 @@ public enum StreamEvent {
      * data: [DONE]
      */
     DONE("done", String.class);;
+
     String eventName;
 
     Class<?> dataClass;
