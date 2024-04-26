@@ -40,7 +40,8 @@ Project structure:
 
 ## Import
 ### Gradle
-`implementation 'io.github.lambdua:<api|client|service>:0.19.1'`
+
+`implementation 'io.github.lambdua:<api|client|service>:0.20.0'`
 ### Maven
 
 <details>
@@ -50,7 +51,7 @@ Project structure:
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>service</artifactId>
-    <version>0.19.1</version>       
+    <version>0.20.0</version>       
    </dependency>
 ```
 To utilize pojos, import the api module:
@@ -59,7 +60,7 @@ To utilize pojos, import the api module:
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>api</artifactId>
-    <version>0.19.1</version>       
+    <version>0.20.0</version>       
    </dependency>
 ```
 
