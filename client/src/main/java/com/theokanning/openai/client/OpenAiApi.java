@@ -89,12 +89,12 @@ public interface OpenAiApi {
     Single<EmbeddingResult> createEmbeddings(@Body EmbeddingRequest request);
 
 
-    @GET("files")
-    Single<OpenAiResponse<File>> listFiles();
-
     @Multipart
     @POST("files")
     Single<File> uploadFile(@Part("purpose") RequestBody purpose, @Part MultipartBody.Part file);
+
+    @GET("files")
+    Single<OpenAiResponse<File>> listFiles();
 
     @DELETE("files/{file_id}")
     Single<DeleteResult> deleteFile(@Path("file_id") String fileId);
@@ -120,9 +120,6 @@ public interface OpenAiApi {
 
     @GET("fine_tuning/jobs/{fine_tuning_job_id}/events")
     Single<OpenAiResponse<FineTuningEvent>> listFineTuningJobEvents(@Path("fine_tuning_job_id") String fineTuningJobId);
-
-    @POST("completions")
-    Single<CompletionResult> createFineTuneCompletion(@Body CompletionRequest request);
 
     @DELETE("models/{fine_tune_id}")
     Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
