@@ -33,7 +33,7 @@ Project structure:
 - [x] assistant-v1 removed in 0.20.0
 - [x] batch api pojo
 - [x] batch api client
-- [ ] batch api service
+- [x] batch api service
 
 
 # Quick Start
