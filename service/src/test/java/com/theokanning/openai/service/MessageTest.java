@@ -23,8 +23,7 @@ public class MessageTest {
 
     @BeforeAll
     static void setup() {
-        String token = System.getenv("OPENAI_TOKEN");
-        service = new OpenAiService(token);
+        service = new OpenAiService();
 
         ThreadRequest threadRequest = ThreadRequest.builder()
                 .build();

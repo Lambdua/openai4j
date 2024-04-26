@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CompletionTest {
 
-    String token = System.getenv("OPENAI_TOKEN");
-    OpenAiService service = new OpenAiService(token);
+    OpenAiService service = new OpenAiService();
 
     @Test
     void createCompletion() {

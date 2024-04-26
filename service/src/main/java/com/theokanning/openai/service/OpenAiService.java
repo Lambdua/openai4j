@@ -70,6 +70,8 @@ public class OpenAiService {
 
     public static final String API_BASE_URL_ENV = "OPENAI_API_BASE_URL";
 
+    public static final String API_KEY_ENV = "OPENAI_API_KEY";
+
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
     private static final ObjectMapper mapper = defaultObjectMapper();
 
@@ -80,7 +82,11 @@ public class OpenAiService {
      * Creates a new OpenAiService that wraps OpenAiApi,user OPENAI_API_KEY from environment variable
      */
     public OpenAiService() {
-        this(System.getenv("OPENAI_API_KEY"));
+        this(System.getenv(API_KEY_ENV));
+    }
+
+    public OpenAiService(Duration timeout) {
+        this(System.getenv(API_KEY_ENV), timeout);
     }
 
     /**

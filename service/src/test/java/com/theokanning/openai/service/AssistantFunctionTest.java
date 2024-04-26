@@ -25,8 +25,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AssistantFunctionTest {
-    String token = System.getenv("OPENAI_TOKEN");
-    OpenAiService service = new OpenAiService(token, Duration.ofMinutes(1));
+    OpenAiService service = new OpenAiService(Duration.ofMinutes(1));
 
     @Test
     void createRetrieveRun() throws JsonProcessingException {

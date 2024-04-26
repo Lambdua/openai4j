@@ -48,8 +48,7 @@ class ChatCompletionTest {
         }
     }
 
-    String token = System.getenv("OPENAI_TOKEN");
-    OpenAiService service = new OpenAiService(token);
+    OpenAiService service = new OpenAiService();
 
     @Test
     void createChatCompletion() {

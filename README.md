@@ -256,8 +256,7 @@ class OpenAiApiFunctionsExample {
   }
 
   public static void main(String... args) {
-    String token = System.getenv("OPENAI_TOKEN");
-    OpenAiService service = new OpenAiService(token);
+    OpenAiService service = new OpenAiService();
 
     FunctionExecutor functionExecutor = new FunctionExecutor(Collections.singletonList(ChatFunction.builder()
             .name("get_weather")

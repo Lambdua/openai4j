@@ -21,8 +21,7 @@ public class OpenAiApiDynamicFunctionExample {
     }
 
     public static void main(String... args) {
-        String token = System.getenv("OPENAI_TOKEN");
-        OpenAiService service = new OpenAiService(token);
+        OpenAiService service = new OpenAiService();
 
         ChatFunctionDynamic weatherFunction = ChatFunctionDynamic.builder()
                 .name("get_weather")

@@ -9,8 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class EditTest {
 
-    String token = System.getenv("OPENAI_TOKEN");
-    com.theokanning.openai.service.OpenAiService service = new OpenAiService(token);
+    com.theokanning.openai.service.OpenAiService service = new OpenAiService();
 
     @Test
     void edit() throws OpenAiHttpException {

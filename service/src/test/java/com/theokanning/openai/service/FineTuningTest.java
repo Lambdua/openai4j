@@ -20,8 +20,7 @@ public class FineTuningTest {
 
     @BeforeAll
    static void setup() throws Exception {
-        String token = System.getenv("OPENAI_TOKEN");
-        service = new OpenAiService(token);
+        service = new OpenAiService();
         fileId = service.uploadFile("fine-tune", "src/test/resources/chat-fine-tuning-data.jsonl").getId();
 
         // wait for file to be processed

@@ -21,8 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FileTest {
     static String filePath = "src/test/resources/fine-tuning-data.jsonl";
 
-    String token = System.getenv("OPENAI_TOKEN");
-    OpenAiService service = new OpenAiService(token);
+    OpenAiService service = new OpenAiService();
     static String fileId;
 
     @Test

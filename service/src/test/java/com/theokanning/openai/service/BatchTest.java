@@ -5,7 +5,6 @@ import com.theokanning.openai.batch.Batch;
 import com.theokanning.openai.batch.BatchRequest;
 import org.junit.jupiter.api.*;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BatchTest {
 
-    static String token = System.getenv("OPENAI_TOKEN");
-    static OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
+    static OpenAiService service = new OpenAiService();
 
     static String fileId;
 

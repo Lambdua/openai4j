@@ -17,8 +17,7 @@ import java.util.List;
  **/
 class OpenAiSimpleExample {
     public static void main(String... args) {
-        String token = System.getenv("OPENAI_TOKEN");
-        OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
+        OpenAiService service = new OpenAiService(Duration.ofSeconds(30));
 
         System.out.println("\nCreating completion...");
         CompletionRequest completionRequest = CompletionRequest.builder()

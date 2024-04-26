@@ -19,8 +19,7 @@ public class ImageTest {
     static String fileWithAlphaPath = "src/test/resources/penguin_with_alpha.png";
     static String maskPath = "src/test/resources/mask.png";
 
-    String token = System.getenv("OPENAI_TOKEN");
-    com.theokanning.openai.service.OpenAiService service = new OpenAiService(token, Duration.ofSeconds(30));
+    com.theokanning.openai.service.OpenAiService service = new OpenAiService(Duration.ofSeconds(30));
 
     @Test
     void createImageUrl() {
