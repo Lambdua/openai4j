@@ -27,14 +27,13 @@ Project structure:
 
 - [x] assistant-v2-pojo
 - [x] assistant-v2-client
-- [ ] assistant-v2-service
+- [x] assistant-v2-service
 - [ ] assistant-v2-streaming
-- [ ] assistant-v2-tool
+- [x] assistant-v2-tool
 - [x] assistant-v1 removed in 0.20.0
 - [x] batch api pojo
 - [x] batch api client
 - [x] batch api service
-
 
 # Quick Start
 
