@@ -5,7 +5,7 @@ import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
-import com.theokanning.openai.assistants.assistant.VectoreStoreFileRequest;
+import com.theokanning.openai.assistants.assistant.VectorStoreFileRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
@@ -299,7 +299,7 @@ public interface OpenAiApi {
      */
     @Headers("OpenAI-Beta: assistants=v2")
     @POST("vector_stores/{vector_store_id}/files")
-    Single<VectorStoreFile> createVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Body VectoreStoreFileRequest fileRequest);
+    Single<VectorStoreFile> createVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Body VectorStoreFileRequest fileRequest);
 
     @Headers("OpenAI-Beta: assistants=v2")
     @GET("vector_stores/{vector_store_id}/files")

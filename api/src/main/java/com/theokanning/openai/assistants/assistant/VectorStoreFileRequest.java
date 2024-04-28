@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class VectoreStoreFileRequest {
+public class VectorStoreFileRequest {
 
     @JsonProperty("file_id")
     String fileId;

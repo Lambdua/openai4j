@@ -1,6 +1,7 @@
 package com.theokanning.openai.assistants.assistant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.assistants.vector_store.VectorStore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

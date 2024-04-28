@@ -17,6 +17,9 @@ import com.theokanning.openai.assistants.run.*;
 import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
+import com.theokanning.openai.assistants.vector_store.ModifyVectorStoreRequest;
+import com.theokanning.openai.assistants.vector_store.VectorStore;
+import com.theokanning.openai.assistants.vector_store.VectorStoreRequest;
 import com.theokanning.openai.audio.*;
 import com.theokanning.openai.batch.Batch;
 import com.theokanning.openai.batch.BatchRequest;
@@ -434,10 +437,6 @@ public class OpenAiService {
         return execute(api.modifyMessage(threadId, messageId, request));
     }
 
-    public OpenAiResponse<Message> listMessages(String threadId) {
-        return execute(api.listMessages(threadId, Collections.emptyMap()));
-    }
-
     public OpenAiResponse<Message> listMessages(String threadId, ListSearchParameters params) {
         Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
         });
@@ -490,6 +489,36 @@ public class OpenAiService {
         }
         return execute(api.listRunSteps(threadId, runId, search));
     }
+
+
+    public VectorStore createVectorStore(VectorStoreRequest request) {
+        return execute(api.createVectorStore(request));
+    }
+
+    public OpenAiResponse<VectorStore> listVectorStores(ListSearchParameters listSearchParameters) {
+        Map<String, Object> search = new HashMap<>();
+        if (listSearchParameters != null) {
+            ObjectMapper mapper = defaultObjectMapper();
+            search = mapper.convertValue(listSearchParameters, Map.class);
+        }
+        return execute(api.listVectorStores(search));
+    }
+
+    public VectorStore retrieveVectorStore(String vectorStoreId) {
+        return execute(api.retrieveVectorStore(vectorStoreId));
+    }
+
+    public VectorStore modifyVectorStore(String vectorStoreId, ModifyVectorStoreRequest request) {
+        return execute(api.modifyVectorStore(vectorStoreId, request));
+    }
+
+    public DeleteResult deleteVectorStore(String vectorStoreId) {
+        return execute(api.deleteVectorStore(vectorStoreId));
+    }
+
+
+
+
 
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails

@@ -1,5 +1,6 @@
 package com.theokanning.openai.service.assistants;
 
+import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @date 2024年04月28 13:37
  **/
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AssistantToolRequireActionTest {
+class AssistantToolTest {
     static OpenAiService service = new OpenAiService();
 
 
@@ -114,7 +115,7 @@ class AssistantToolRequireActionTest {
             retrievedRun = service.retrieveRun(threadId, run.getId());
         }
         assertEquals("completed", retrievedRun.getStatus());
-        OpenAiResponse<Message> response = service.listMessages(threadId);
+        OpenAiResponse<Message> response = service.listMessages(threadId, new ListSearchParameters());
         List<Message> messages = response.getData();
         assertNotNull(messages);
         assertEquals(2, messages.size());

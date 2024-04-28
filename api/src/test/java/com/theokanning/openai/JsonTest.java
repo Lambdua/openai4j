@@ -2,7 +2,10 @@ package com.theokanning.openai;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theokanning.openai.assistants.assistant.*;
+import com.theokanning.openai.assistants.assistant.Assistant;
+import com.theokanning.openai.assistants.assistant.AssistantRequest;
+import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
+import com.theokanning.openai.assistants.assistant.VectorStoreFileRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
@@ -16,6 +19,7 @@ import com.theokanning.openai.assistants.run_step.RunStepDelta;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.assistants.vector_store.ModifyVectorStoreRequest;
+import com.theokanning.openai.assistants.vector_store.VectorStore;
 import com.theokanning.openai.assistants.vector_store.VectorStoreRequest;
 import com.theokanning.openai.assistants.vector_store_file.VectorStoreFile;
 import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFilesBatch;
@@ -107,7 +111,7 @@ public class JsonTest {
             VectorStoreRequest.class,
             VectorStore.class,
             ModifyVectorStoreRequest.class,
-            VectoreStoreFileRequest.class,
+            VectorStoreFileRequest.class,
             VectorStoreFile.class,
             VectorStoreFilesBatchRequest.class,
             VectorStoreFilesBatch.class,
