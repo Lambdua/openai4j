@@ -46,6 +46,7 @@ public class AssistantTest {
     @Order(1)
     void createAssistant() throws JsonProcessingException {
 
+        //this function definition is not recommended, it is recommended to use the ToolUtil class to define the function
         String funcDef = "{\n" +
                 "  \"type\": \"object\",\n" +
                 "  \"properties\": {\n" +

@@ -1,5 +1,9 @@
 package com.theokanning.openai.assistants.run;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.theokanning.openai.completion.chat.ChatFunctionCallArgumentsSerializerAndDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +21,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ToolCallFunction {
 
-    private String name;
+    String name;
 
-    private String arguments;
+    @JsonSerialize(using = ChatFunctionCallArgumentsSerializerAndDeserializer.Serializer.class)
+    @JsonDeserialize(using = ChatFunctionCallArgumentsSerializerAndDeserializer.Deserializer.class)
+    JsonNode arguments;
 
-    private String output;
+    //这个字段只存在于runStep 里面
+    String output;
 }

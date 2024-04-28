@@ -1,8 +1,5 @@
 package example;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaDescription;
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
@@ -11,43 +8,11 @@ import java.util.*;
 
 class OpenAiApiFunctionsExample {
 
-    @JsonSchemaDescription("Get the current weather of a location")
-    public static class Weather {
-        @JsonPropertyDescription("City and state, for example: León, Guanajuato")
-        public String location;
-
-        @JsonPropertyDescription("The temperature unit, can be 'celsius' or 'fahrenheit'")
-        @JsonProperty(required = true)
-        public WeatherUnit unit;
-
-    }
-
-    public enum WeatherUnit {
-        CELSIUS, FAHRENHEIT;
-    }
-
-    public static class WeatherResponse {
-        public String location;
-        public WeatherUnit unit;
-        public int temperature;
-        public String description;
-
-        public WeatherResponse(String location, WeatherUnit unit, int temperature, String description) {
-            this.location = location;
-            this.unit = unit;
-            this.temperature = temperature;
-            this.description = description;
-        }
-    }
 
     public static void main(String... args) {
         OpenAiService service = new OpenAiService();
 
-        FunctionExecutor functionExecutor = new FunctionExecutor(Collections.singletonList(ChatFunction.builder()
-                .name("get_weather")
-                .description("Get the current weather of a location")
-                .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
-                .build()));
+        FunctionExecutor functionExecutor = new FunctionExecutor(Collections.singletonList(ToolUtil.weatherFunction()));
 
 
         List<ChatMessage> messages = new ArrayList<>();

@@ -17,5 +17,5 @@ public class FunctionTool implements Tool {
     /**
      * Function definition, only used if type is "function"
      */
-    AssistantFunction function;
+    Object function;
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.theokanning.openai.assistants.run.ToolCallFunction;
 import com.theokanning.openai.completion.chat.ChatFunction;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.completion.chat.FunctionMessage;
@@ -97,6 +98,36 @@ public class FunctionExecutor {
         return new ToolMessage(executeAndConvertToJson(call).toPrettyString(), toolId);
     }
 
+    /**
+     * 将assistant-v2 api中的需要执行的function执行并返回json
+     *
+     * @param call
+     * @return
+     */
+    public JsonNode executeAndConvertToJson(ToolCallFunction call) {
+        try {
+            Object execution = execute(call.getName(), call.getArguments());
+            if (execution instanceof TextNode) {
+                JsonNode objectNode = MAPPER.readTree(((TextNode) execution).asText());
+                if (objectNode.isMissingNode())
+                    return (JsonNode) execution;
+                return objectNode;
+            }
+            if (execution instanceof ObjectNode) {
+                return (JsonNode) execution;
+            }
+            if (execution instanceof String) {
+                JsonNode objectNode = MAPPER.readTree((String) execution);
+                if (objectNode.isMissingNode())
+                    throw new RuntimeException("Parsing exception");
+                return objectNode;
+            }
+            return MAPPER.readValue(MAPPER.writeValueAsString(execution), JsonNode.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public JsonNode executeAndConvertToJson(ChatFunctionCall call) {
         try {
             Object execution = execute(call);
@@ -121,12 +152,15 @@ public class FunctionExecutor {
         }
     }
 
+    public <T> T execute(ChatFunctionCall functionCall) {
+        return execute(functionCall.getName(), functionCall.getArguments());
+    }
+
     @SuppressWarnings("unchecked")
-    public <T> T execute(ChatFunctionCall call) {
-        ChatFunction function = FUNCTIONS.get(call.getName());
+    public <T> T execute(String funName, JsonNode arguments) {
+        ChatFunction function = FUNCTIONS.get(funName);
         Object obj;
         try {
-            JsonNode arguments = call.getArguments();
             obj = MAPPER.readValue(arguments instanceof TextNode ? arguments.asText() : arguments.toPrettyString(), function.getParametersClass());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

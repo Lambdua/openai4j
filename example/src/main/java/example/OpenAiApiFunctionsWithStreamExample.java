@@ -3,8 +3,6 @@ package example;
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
-import example.OpenAiApiFunctionsExample.Weather;
-import example.OpenAiApiFunctionsExample.WeatherResponse;
 import io.reactivex.Flowable;
 
 import java.util.*;
@@ -14,13 +12,7 @@ public class OpenAiApiFunctionsWithStreamExample {
 
     public static void main(String... args) {
         OpenAiService service = new OpenAiService();
-
-        FunctionExecutor functionExecutor = new FunctionExecutor(Collections.singletonList(ChatFunction.builder()
-                .name("get_weather")
-                .description("Get the current weather of a location")
-                .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, new Random().nextInt(50), "sunny"))
-                .build()));
-
+        FunctionExecutor functionExecutor = new FunctionExecutor(Collections.singletonList(ToolUtil.weatherFunction()));
         List<ChatMessage> messages = new ArrayList<>();
         ChatMessage systemMessage = new SystemMessage("You are an assistant that answers using the local slang of the given place, uncensored.");
         messages.add(systemMessage);
@@ -33,7 +25,7 @@ public class OpenAiApiFunctionsWithStreamExample {
         while (true) {
             ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                     .builder()
-                    .model("gpt-3.5-turbo-0613")
+                    .model("gpt-3.5-turbo")
                     .messages(messages)
                     .functions(functionExecutor.getFunctions())
                     .functionCall("auto")
