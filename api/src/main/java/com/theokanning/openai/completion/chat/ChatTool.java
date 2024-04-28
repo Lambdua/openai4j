@@ -6,11 +6,10 @@ import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-public class ChatTool<T> {
+public class ChatTool {
 
-    public ChatTool(@NonNull T function) {
-        this.function = function;
-    }
+    @NonNull
+    private Object function;
 
     /**
      * The name of the tool being called, only function supported for now.
@@ -19,7 +18,8 @@ public class ChatTool<T> {
     private String type = "function";
 
 
-    @NonNull
-    private T function;
+    public ChatTool(@NonNull Object function) {
+        this.function = function;
+    }
 
 }

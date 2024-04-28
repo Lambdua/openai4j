@@ -28,14 +28,12 @@ public class ChatCompletionRequest {
     /**
      * The messages to generate chat completions for, in the <a
      * href="https://platform.openai.com/docs/guides/chat/introduction">chat format</a>.<br>
-     * see {@link ChatMessage}
      */
     List<ChatMessage> messages;
 
     /**
      * Must be either 'text' or 'json_object'. <br>
      * When specifying 'json_object' as the request format it's still necessary to instruct the model to return JSON.
-     * You may use {@link ChatResponseFormat.ResponseFormat} enum.
      */
     @JsonProperty("response_format")
     ChatResponseFormat responseFormat;

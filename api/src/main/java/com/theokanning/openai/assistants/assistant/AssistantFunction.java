@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
-
 /**
  * @description:
  * @author: vacuity
@@ -24,5 +22,6 @@ public class AssistantFunction {
 
     private String name;
 
-    private Map<String, Object> parameters;
+    private Object parameters;
+
 }

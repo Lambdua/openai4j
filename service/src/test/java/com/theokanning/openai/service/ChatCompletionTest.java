@@ -431,8 +431,8 @@ class ChatCompletionTest {
         final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
 
         List<ChatTool> tools = new ArrayList<>();
-        tools.add(new ChatTool<>(functions.get(0)));
-        tools.add(new ChatTool<>(functions.get(1)));
+        tools.add(new ChatTool(functions.get(0)));
+        tools.add(new ChatTool(functions.get(1)));
 
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
@@ -574,8 +574,8 @@ class ChatCompletionTest {
         final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
 
         List<ChatTool> tools = new ArrayList<>();
-        tools.add(new ChatTool<>(functions.get(0)));
-        tools.add(new ChatTool<>(functions.get(1)));
+        tools.add(new ChatTool(functions.get(0)));
+        tools.add(new ChatTool(functions.get(1)));
 
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
