@@ -13,10 +13,7 @@ import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
-import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
-import com.theokanning.openai.assistants.run.Run;
-import com.theokanning.openai.assistants.run.RunCreateRequest;
-import com.theokanning.openai.assistants.run.SubmitToolOutputsRequest;
+import com.theokanning.openai.assistants.run.*;
 import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
@@ -456,8 +453,8 @@ public class OpenAiService {
         return execute(api.retrieveRun(threadId, runId));
     }
 
-    public Run modifyRun(String threadId, String runId, Map<String, String> metadata) {
-        return execute(api.modifyRun(threadId, runId, metadata));
+    public Run modifyRun(String threadId, String runId, ModifyRunRequest request) {
+        return execute(api.modifyRun(threadId, runId, request));
     }
 
     public OpenAiResponse<Run> listRuns(String threadId, ListSearchParameters listSearchParameters) {

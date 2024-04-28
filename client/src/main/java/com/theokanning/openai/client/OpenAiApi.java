@@ -9,10 +9,7 @@ import com.theokanning.openai.assistants.assistant.VectoreStoreFileRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
-import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
-import com.theokanning.openai.assistants.run.Run;
-import com.theokanning.openai.assistants.run.RunCreateRequest;
-import com.theokanning.openai.assistants.run.SubmitToolOutputsRequest;
+import com.theokanning.openai.assistants.run.*;
 import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
@@ -235,6 +232,8 @@ public interface OpenAiApi {
     @POST("threads/runs")
     Single<Run> createThreadAndRun(@Body CreateThreadAndRunRequest createThreadAndRunRequest);
 
+    //todo stream
+
     @Headers("OpenAI-Beta: assistants=v2")
     @GET("threads/{thread_id}/runs")
     Single<OpenAiResponse<Run>> listRuns(@Path("thread_id") String threadId, @QueryMap Map<String, String> listSearchParameters);
@@ -246,7 +245,7 @@ public interface OpenAiApi {
 
     @Headers("OpenAI-Beta: assistants=v2")
     @POST("threads/{thread_id}/runs/{run_id}")
-    Single<Run> modifyRun(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body Map<String, String> metadata);
+    Single<Run> modifyRun(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body ModifyRunRequest modifyRunRequest);
 
     /**
      * When a run has the status: "requires_action" and required_action.type is submit_tool_outputs,
