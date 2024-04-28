@@ -38,6 +38,7 @@ public class Run {
 
     /**
      * The status of the run, which can be either queued, in_progress, requires_action, cancelling, cancelled, failed, completed, or expired.
+     * <img src="https://cdn.openai.com/API/docs/images/diagram-run-statuses-v2.png" alt="run status">
      */
     private String status;
 

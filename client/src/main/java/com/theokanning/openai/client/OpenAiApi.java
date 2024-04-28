@@ -177,7 +177,6 @@ public interface OpenAiApi {
     @GET("assistants")
     Single<OpenAiResponse<Assistant>> listAssistants(@QueryMap Map<String, Object> filterRequest);
 
-
     @Headers({"OpenAI-Beta: assistants=v2"})
     @GET("assistants/{assistant_id}")
     Single<Assistant> retrieveAssistant(@Path("assistant_id") String assistantId);

@@ -34,6 +34,9 @@ public class RunStep {
 
     private String type;
 
+    /**
+     * <img src="https://cdn.openai.com/API/docs/images/diagram-2.png" alt="run status">
+     */
     private String status;
 
     @JsonProperty("step_details")
