@@ -10,6 +10,7 @@ import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
+import com.theokanning.openai.assistants.assistant.VectorStoreFileRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
@@ -20,6 +21,9 @@ import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.assistants.vector_store.ModifyVectorStoreRequest;
 import com.theokanning.openai.assistants.vector_store.VectorStore;
 import com.theokanning.openai.assistants.vector_store.VectorStoreRequest;
+import com.theokanning.openai.assistants.vector_store_file.VectorStoreFile;
+import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFilesBatch;
+import com.theokanning.openai.assistants.vector_store_file_batch.VectorStoreFilesBatchRequest;
 import com.theokanning.openai.audio.*;
 import com.theokanning.openai.batch.Batch;
 import com.theokanning.openai.batch.BatchRequest;
@@ -516,6 +520,47 @@ public class OpenAiService {
         return execute(api.deleteVectorStore(vectorStoreId));
     }
 
+    public VectorStoreFile createVectorStoreFile(String vectorStoreId, VectorStoreFileRequest fileRequest) {
+        return execute(api.createVectorStoreFile(vectorStoreId, fileRequest));
+    }
+
+    public OpenAiResponse<VectorStoreFile> listVectorStoreFiles(String vectorStoreId, ListSearchParameters listSearchParameters) {
+        Map<String, Object> search = new HashMap<>();
+        if (listSearchParameters != null) {
+            ObjectMapper mapper = defaultObjectMapper();
+            search = mapper.convertValue(listSearchParameters, Map.class);
+        }
+        return execute(api.listVectorStoreFiles(vectorStoreId, search));
+    }
+
+    public VectorStoreFile retrieveVectorStoreFile(String vectorStoreId, String fileId) {
+        return execute(api.retrieveVectorStoreFile(vectorStoreId, fileId));
+    }
+
+    public DeleteResult deleteVectorStoreFile(String vectorStoreId, String fileId) {
+        return execute(api.deleteVectorStoreFile(vectorStoreId, fileId));
+    }
+
+    public VectorStoreFilesBatch createVectorStoreFileBatch(String vectorStoreId, VectorStoreFilesBatchRequest request) {
+        return execute(api.createVectorStoreFileBatch(vectorStoreId, request));
+    }
+
+    public VectorStoreFilesBatch retrieveVectorStoreFileBatch(String vectorStoreId, String batchId) {
+        return execute(api.retrieveVectorStoreFileBatch(vectorStoreId, batchId));
+    }
+
+    public VectorStoreFilesBatch cancelVectorStoreFileBatch(String vectorStoreId, String batchId) {
+        return execute(api.cancelVectorStoreFileBatch(vectorStoreId, batchId));
+    }
+
+    public OpenAiResponse<VectorStoreFile> listVectorStoreFilesInBatch(String vectorStoreId, String batchId, ListSearchParameters listSearchParameters) {
+        Map<String, Object> search = new HashMap<>();
+        if (listSearchParameters != null) {
+            ObjectMapper mapper = defaultObjectMapper();
+            search = mapper.convertValue(listSearchParameters, Map.class);
+        }
+        return execute(api.listVectorStoreFilesInBatch(vectorStoreId, batchId, search));
+    }
 
 
 

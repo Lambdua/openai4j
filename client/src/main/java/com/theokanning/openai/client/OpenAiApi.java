@@ -305,6 +305,11 @@ public interface OpenAiApi {
     @GET("vector_stores/{vector_store_id}/files")
     Single<OpenAiResponse<VectorStoreFile>> listVectorStoreFiles(@Path("vector_store_id") String vectorStoreId, @QueryMap Map<String, Object> filterRequest);
 
+    @Headers("OpenAI-Beta: assistants=v2")
+    @GET("vector_stores/{vector_store_id}/files/{file_id}")
+    Single<VectorStoreFile> retrieveVectorStoreFile(@Path("vector_store_id") String vectorStoreId, @Path("file_id") String fileId);
+
+
     /**
      * Delete a vector store file. This will remove the file from the vector store but the file itself will not be deleted. To delete the file, use the delete file endpoint.
      */

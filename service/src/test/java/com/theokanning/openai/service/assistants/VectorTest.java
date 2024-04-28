@@ -57,7 +57,7 @@ public class VectorTest {
         List<VectorStore> vectorStores = service.listVectorStores(new ListSearchParameters()).getData();
         assertNotNull(vectorStores);
         assertFalse(vectorStores.isEmpty());
-        assertEquals(vectorStoreId, vectorStores.get(0).getId());
+        assertTrue(vectorStores.stream().anyMatch(item -> item.getId().equals(vectorStoreId)));
     }
 
     @Test
