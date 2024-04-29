@@ -1,6 +1,5 @@
 package com.theokanning.openai.service.assistant_stream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
@@ -90,15 +89,6 @@ public class AssistantResponseBodyCallback implements Callback<ResponseBody> {
             }
         } catch (Throwable t) {
             onFailure(call, t);
-        }
-    }
-
-    private void errorEventThrown(AssistantSSE sse) throws JsonProcessingException {
-        if (sse.getEvent().equals(StreamEvent.ERROR)) {
-            OpenAiError error = mapper.readValue(
-                    sse.getData(),
-                    OpenAiError.class);
-            throw new OpenAiHttpException(error, null, 0);
         }
     }
 

@@ -50,6 +50,8 @@ import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
 import com.theokanning.openai.moderation.ModerationRequest;
 import com.theokanning.openai.moderation.ModerationResult;
+import com.theokanning.openai.service.assistant_stream.AssistantResponseBodyCallback;
+import com.theokanning.openai.service.assistant_stream.AssistantSSE;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -263,6 +265,10 @@ public class OpenAiService {
         return execute(api.retrieveBatch(batchId));
     }
 
+    public static Flowable<AssistantSSE> assistantStream(Call<ResponseBody> apiCall) {
+        return Flowable.create(emitter -> apiCall.enqueue(new AssistantResponseBodyCallback(emitter, false)), BackpressureStrategy.BUFFER);
+    }
+
 
     public ImageResult createImage(CreateImageRequest request) {
         return execute(api.createImage(request));
@@ -452,6 +458,13 @@ public class OpenAiService {
         return execute(api.createRun(threadId, runCreateRequest));
     }
 
+    public OpenAiResponse<Batch> listBatches(ListSearchParameters params) {
+        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
+        });
+        return execute(api.listBatches(queryParameters));
+    }
+
+
     public Run retrieveRun(String threadId, String runId) {
         return execute(api.retrieveRun(threadId, runId));
     }
@@ -472,6 +485,12 @@ public class OpenAiService {
     public Run submitToolOutputs(String threadId, String runId, SubmitToolOutputsRequest submitToolOutputsRequest) {
         return execute(api.submitToolOutputs(threadId, runId, submitToolOutputsRequest));
     }
+
+    public Flowable<AssistantSSE> createRunStream(String threadId, RunCreateRequest runCreateRequest) {
+        runCreateRequest.setStream(true);
+        return assistantStream(api.createRunStream(threadId, runCreateRequest));
+    }
+
 
     public Run cancelRun(String threadId, String runId) {
         return execute(api.cancelRun(threadId, runId));
@@ -562,8 +581,20 @@ public class OpenAiService {
         return execute(api.listVectorStoreFilesInBatch(vectorStoreId, batchId, search));
     }
 
+    public Flowable<AssistantSSE> submitToolOutputsStream(String threadId, String runId, SubmitToolOutputsRequest submitToolOutputsRequest) {
+        submitToolOutputsRequest.setStream(true);
+        return assistantStream(api.submitToolOutputsStream(threadId, runId, submitToolOutputsRequest));
+    }
 
-
+    /**
+     * Account information inquiry: including total amount and other information.
+     *
+     * @return Account information.
+     */
+    public Subscription subscription() {
+        Single<Subscription> subscription = api.subscription();
+        return subscription.blockingGet();
+    }
 
     /**
      * Calls the Open AI api, returns the response, and parses error messages if the request fails
@@ -596,6 +627,21 @@ public class OpenAiService {
     public static Flowable<SSE> stream(Call<ResponseBody> apiCall) {
         return stream(apiCall, false);
     }
+
+    /**
+     * Account API consumption amount information inquiry.
+     * Up to 100 days of inquiry.
+     *
+     * @param starDate
+     * @param endDate
+     * @return Consumption amount information.
+     */
+    public BillingUsage billingUsage(@NotNull LocalDate starDate, @NotNull LocalDate endDate) {
+        Single<BillingUsage> billingUsage = api.billingUsage(starDate, endDate);
+        return billingUsage.blockingGet();
+    }
+
+
 
     /**
      * Calls the Open AI api and returns a Flowable of SSE for streaming.
@@ -641,12 +687,6 @@ public class OpenAiService {
         return retrofit.create(OpenAiApi.class);
     }
 
-    //list all batches
-    public OpenAiResponse<Batch> listBatches(ListSearchParameters params) {
-        Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
-        });
-        return execute(api.listBatches(queryParameters));
-    }
 
     public static OkHttpClient defaultClient(String token, Duration timeout) {
         return new OkHttpClient.Builder()
@@ -728,29 +768,6 @@ public class OpenAiService {
 
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
         });
-    }
-
-    /**
-     * Account information inquiry: including total amount and other information.
-     *
-     * @return Account information.
-     */
-    public Subscription subscription() {
-        Single<Subscription> subscription = api.subscription();
-        return subscription.blockingGet();
-    }
-
-    /**
-     * Account API consumption amount information inquiry.
-     * Up to 100 days of inquiry.
-     *
-     * @param starDate
-     * @param endDate
-     * @return Consumption amount information.
-     */
-    public BillingUsage billingUsage(@NotNull LocalDate starDate, @NotNull LocalDate endDate) {
-        Single<BillingUsage> billingUsage = api.billingUsage(starDate, endDate);
-        return billingUsage.blockingGet();
     }
 
 }

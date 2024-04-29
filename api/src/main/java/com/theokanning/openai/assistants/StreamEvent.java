@@ -162,9 +162,10 @@ public enum StreamEvent {
      */
     DONE("done", String.class);;
 
-    String eventName;
+    public String eventName;
 
-    Class<?> dataClass;
+    public Class<?> dataClass;
+
 
     public static StreamEvent valueByName(String eventName) {
         for (StreamEvent value : values()) {
