@@ -225,6 +225,11 @@ public interface OpenAiApi {
     @POST("threads/{thread_id}/runs")
     Single<Run> createRun(@Path("thread_id") String threadId, @Body RunCreateRequest runCreateRequest);
 
+    @Streaming
+    @Headers("OpenAI-Beta: assistants=v2")
+    @POST("threads/{thread_id}/runs")
+    Call<ResponseBody> createRunStream(@Path("thread_id") String threadId, @Body RunCreateRequest runCreateRequest);
+
     /**
      * Create a thread and run it in one request.
      */
@@ -232,7 +237,12 @@ public interface OpenAiApi {
     @POST("threads/runs")
     Single<Run> createThreadAndRun(@Body CreateThreadAndRunRequest createThreadAndRunRequest);
 
-    //todo stream
+    @Streaming
+    @Headers("OpenAI-Beta: assistants=v2")
+    @POST("threads/runs")
+    Call<ResponseBody> createThreadAndRunStream(@Body CreateThreadAndRunRequest createThreadAndRunRequest);
+
+
 
     @Headers("OpenAI-Beta: assistants=v2")
     @GET("threads/{thread_id}/runs")
@@ -255,6 +265,11 @@ public interface OpenAiApi {
     @Headers("OpenAI-Beta: assistants=v2")
     @POST("threads/{thread_id}/runs/{run_id}/submit_tool_outputs")
     Single<Run> submitToolOutputs(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body SubmitToolOutputsRequest submitToolOutputsRequest);
+
+    @Streaming
+    @Headers("OpenAI-Beta: assistants=v2")
+    @POST("threads/{thread_id}/runs/{run_id}/submit_tool_outputs")
+    Call<ResponseBody> submitToolOutputsStream(@Path("thread_id") String threadId, @Path("run_id") String runId, @Body SubmitToolOutputsRequest submitToolOutputsRequest);
 
 
     @Headers("OpenAI-Beta: assistants=v2")

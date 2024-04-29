@@ -165,4 +165,13 @@ public enum StreamEvent {
     String eventName;
 
     Class<?> dataClass;
+
+    public static StreamEvent valueByName(String eventName) {
+        for (StreamEvent value : values()) {
+            if (value.eventName.equals(eventName)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Unknown event name: " + eventName);
+    }
 }

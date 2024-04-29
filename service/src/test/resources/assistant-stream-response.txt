@@ -1,0 +1,117 @@
+event: thread.run.created
+data: {"id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","object":"thread.run","created_at":1714359755,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"queued","started_at":null,"expires_at":1714360355,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.queued
+data: {"id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","object":"thread.run","created_at":1714359755,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"queued","started_at":null,"expires_at":1714360355,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.in_progress
+data: {"id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","object":"thread.run","created_at":1714359755,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"in_progress","started_at":1714359761,"expires_at":1714360355,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.step.created
+data: {"id":"step_RflgujWoSadGNeXrKDCGRNPS","object":"thread.run.step","created_at":1714359761,"run_id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"message_creation","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714360355,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_PrulAGbov2ARGF1HEp8ncEXb"}},"usage":null}
+
+event: thread.run.step.in_progress
+data: {"id":"step_RflgujWoSadGNeXrKDCGRNPS","object":"thread.run.step","created_at":1714359761,"run_id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"message_creation","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714360355,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_PrulAGbov2ARGF1HEp8ncEXb"}},"usage":null}
+
+event: thread.message.created
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message","created_at":1714359761,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","run_id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","status":"in_progress","incomplete_details":null,"incomplete_at":null,"completed_at":null,"role":"assistant","content":[],"attachments":[],"metadata":{}}
+
+event: thread.message.in_progress
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message","created_at":1714359761,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","run_id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","status":"in_progress","incomplete_details":null,"incomplete_at":null,"completed_at":null,"role":"assistant","content":[],"attachments":[],"metadata":{}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"不","annotations":[]}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"用"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"谢"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"祝"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"你"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"有"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"一个"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"愉"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"快"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"一"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"天"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"！"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"如果"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"你"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"有"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"任"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"何"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"其他"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"问题"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"随"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"时"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"可以"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"问"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"我"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"。"}}]}}
+
+event: thread.message.completed
+data: {"id":"msg_PrulAGbov2ARGF1HEp8ncEXb","object":"thread.message","created_at":1714359761,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","run_id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","status":"completed","incomplete_details":null,"incomplete_at":null,"completed_at":1714359762,"role":"assistant","content":[{"type":"text","text":{"value":"不用谢，祝你有一个愉快的一天！如果你有任何其他问题，随时可以问我。","annotations":[]}}],"attachments":[],"metadata":{}}
+
+event: thread.run.step.completed
+data: {"id":"step_RflgujWoSadGNeXrKDCGRNPS","object":"thread.run.step","created_at":1714359761,"run_id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"message_creation","status":"completed","cancelled_at":null,"completed_at":1714359762,"expires_at":1714360355,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_PrulAGbov2ARGF1HEp8ncEXb"}},"usage":{"prompt_tokens":498,"completion_tokens":35,"total_tokens":533}}
+
+event: thread.run.completed
+data: {"id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","object":"thread.run","created_at":1714359755,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"completed","started_at":1714359761,"expires_at":null,"cancelled_at":null,"failed_at":null,"completed_at":1714359762,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":{"prompt_tokens":498,"completion_tokens":35,"total_tokens":533},"response_format":"auto","tool_choice":"auto"}
+
+event: done
+data: [DONE]
+

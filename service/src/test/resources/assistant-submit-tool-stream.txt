@@ -1,0 +1,84 @@
+event: thread.run.step.completed
+data: {"id":"step_aBko9hKyw08cBWHwNuf9nmXt","object":"thread.run.step","created_at":1714358715,"run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"tool_calls","status":"completed","cancelled_at":null,"completed_at":1714359292,"expires_at":1714359314,"failed_at":null,"last_error":null,"step_details":{"type":"tool_calls","tool_calls":[{"id":"call_DH64pJ1iQZ1IsjyrR6heYat8","type":"function","function":{"name":"get_weather","arguments":"{\"location\":\"Xiamen\",\"unit\":\"CELSIUS\"}","output":"sunny 20° "}}]},"usage":{"prompt_tokens":331,"completion_tokens":24,"total_tokens":355}}
+
+event: thread.run.queued
+data: {"id":"run_tY9XhcKxzhLWREZZmj1i7zeC","object":"thread.run","created_at":1714358714,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"queued","started_at":1714358715,"expires_at":1714359314,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.in_progress
+data: {"id":"run_tY9XhcKxzhLWREZZmj1i7zeC","object":"thread.run","created_at":1714358714,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"in_progress","started_at":1714359292,"expires_at":1714359314,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.step.created
+data: {"id":"step_1RStVGFlvotQisWkwB6cFvho","object":"thread.run.step","created_at":1714359293,"run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"message_creation","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714359314,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_NinWuj4aZHvX8SPJbmF4pXmz"}},"usage":null}
+
+event: thread.run.step.in_progress
+data: {"id":"step_1RStVGFlvotQisWkwB6cFvho","object":"thread.run.step","created_at":1714359293,"run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"message_creation","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714359314,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_NinWuj4aZHvX8SPJbmF4pXmz"}},"usage":null}
+
+event: thread.message.created
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message","created_at":1714359293,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","status":"in_progress","incomplete_details":null,"incomplete_at":null,"completed_at":null,"role":"assistant","content":[],"attachments":[],"metadata":{}}
+
+event: thread.message.in_progress
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message","created_at":1714359293,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","status":"in_progress","incomplete_details":null,"incomplete_at":null,"completed_at":null,"role":"assistant","content":[],"attachments":[],"metadata":{}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"The","annotations":[]}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" weather"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" in"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" X"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"iam"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"en"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" is"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" currently"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" sunny"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" with"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" a"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" temperature"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" of"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":" "}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"20"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"°C"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"."}}]}}
+
+event: thread.message.completed
+data: {"id":"msg_NinWuj4aZHvX8SPJbmF4pXmz","object":"thread.message","created_at":1714359293,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","status":"completed","incomplete_details":null,"incomplete_at":null,"completed_at":1714359293,"role":"assistant","content":[{"type":"text","text":{"value":"The weather in Xiamen is currently sunny with a temperature of 20°C.","annotations":[]}}],"attachments":[],"metadata":{}}
+
+event: thread.run.step.completed
+data: {"id":"step_1RStVGFlvotQisWkwB6cFvho","object":"thread.run.step","created_at":1714359293,"run_id":"run_tY9XhcKxzhLWREZZmj1i7zeC","assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","type":"message_creation","status":"completed","cancelled_at":null,"completed_at":1714359293,"expires_at":1714359314,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_NinWuj4aZHvX8SPJbmF4pXmz"}},"usage":{"prompt_tokens":369,"completion_tokens":19,"total_tokens":388}}
+
+event: thread.run.completed
+data: {"id":"run_tY9XhcKxzhLWREZZmj1i7zeC","object":"thread.run","created_at":1714358714,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"completed","started_at":1714359292,"expires_at":null,"cancelled_at":null,"failed_at":null,"completed_at":1714359293,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":{"prompt_tokens":700,"completion_tokens":43,"total_tokens":743},"response_format":"auto","tool_choice":"auto"}
+
+event: done
+data: [DONE]
+
