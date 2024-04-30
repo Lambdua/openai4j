@@ -160,7 +160,7 @@ public enum StreamEvent {
      * Occurs when a stream ends.
      * data: [DONE]
      */
-    DONE("done", String.class);;
+    DONE("done", Void.class);;
 
     public String eventName;
 

@@ -27,11 +27,9 @@ public class AssistantResponseBodyCallback implements Callback<ResponseBody> {
     private static final ObjectMapper mapper = OpenAiService.defaultObjectMapper();
 
     private FlowableEmitter<AssistantSSE> emitter;
-    private boolean emitDone;
 
-    public AssistantResponseBodyCallback(FlowableEmitter<AssistantSSE> emitter, boolean emitDone) {
+    public AssistantResponseBodyCallback(FlowableEmitter<AssistantSSE> emitter) {
         this.emitter = emitter;
-        this.emitDone = emitDone;
     }
 
     @Override
@@ -69,14 +67,11 @@ public class AssistantResponseBodyCallback implements Callback<ResponseBody> {
                             throw new SSEFormatException("Invalid sse format! " + line);
                         }
                     } else if (line.isEmpty() && sse != null) {
+                        emitter.onNext(sse);
                         if (sse.isDone()) {
-                            if (emitDone) {
-                                emitter.onNext(sse);
-                            }
                             sse = null;
                             break;
                         }
-                        emitter.onNext(sse);
                         sse = null;
                     } else {
                         throw new SSEFormatException("Invalid sse format! " + line);

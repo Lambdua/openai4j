@@ -266,7 +266,7 @@ public class OpenAiService {
     }
 
     public static Flowable<AssistantSSE> assistantStream(Call<ResponseBody> apiCall) {
-        return Flowable.create(emitter -> apiCall.enqueue(new AssistantResponseBodyCallback(emitter, false)), BackpressureStrategy.BUFFER);
+        return Flowable.create(emitter -> apiCall.enqueue(new AssistantResponseBodyCallback(emitter)), BackpressureStrategy.BUFFER);
     }
 
 
@@ -499,6 +499,13 @@ public class OpenAiService {
     public Run createThreadAndRun(CreateThreadAndRunRequest createThreadAndRunRequest) {
         return execute(api.createThreadAndRun(createThreadAndRunRequest));
     }
+
+    public Flowable<AssistantSSE> createThreadAndRunStream(CreateThreadAndRunRequest createThreadAndRunRequest) {
+        createThreadAndRunRequest.setStream(true);
+        return assistantStream(api.createThreadAndRunStream(createThreadAndRunRequest));
+    }
+
+
 
     public RunStep retrieveRunStep(String threadId, String runId, String stepId) {
         return execute(api.retrieveRunStep(threadId, runId, stepId));

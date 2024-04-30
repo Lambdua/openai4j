@@ -57,6 +57,12 @@ public class RunStep {
     @JsonProperty("completed_at")
     private Integer completedAt;
 
+    /**
+     * assistant stream field
+     */
+    @JsonProperty("expires_at")
+    private Integer expiresAt;
+
     private Map<String, String> metadata;
 
     Usage usage;

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.theokanning.openai.Usage;
 import com.theokanning.openai.assistants.assistant.Tool;
+import com.theokanning.openai.assistants.assistant.ToolResources;
 import com.theokanning.openai.assistants.message.IncompleteDetails;
 import com.theokanning.openai.common.LastError;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
@@ -139,4 +140,11 @@ public class Run {
     @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
     @JsonDeserialize(using = ChatResponseFormat.ChatResponseFormatDeserializer.class)
     ChatResponseFormat responseFormat;
+
+
+    /**
+     * assistant stream event{@link com.theokanning.openai.assistants.StreamEvent#THREAD_RUN_CREATED} will return this field
+     */
+    @JsonProperty(value = "tool_resources")
+    ToolResources toolResources;
 }
