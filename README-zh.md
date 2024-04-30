@@ -1,10 +1,15 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.lambdua/service?color=blue)
 
+# OpenAi4J
+
+中文文档不是最新的,目前没有时间精力去维护,如果你有兴趣,可以提交PR,我会尽快合并,建议查看[英文文档](README.md)!</br>
+中文文档不是最新的,目前没有时间精力去维护,如果你有兴趣,可以提交PR,我会尽快合并,建议查看[英文文档](README.md)!</br>
+中文文档不是最新的,目前没有时间精力去维护,如果你有兴趣,可以提交PR,我会尽快合并,建议查看[英文文档](README.md)!</br>
+
 > ⚠️ 这个项目是[openai Java](https://github.com/TheoKanning/openai-java)
 > 项目的分叉,原项目作者似乎已经停止维护,无法满足我的需求，所以我决定继续维护这个项目,并添加新功能。
 > [版本变化详情](https://github.com/Lambdua/openai4j/releases)
 
-# OpenAI-Java
 
 用于使用OpenAI的GPT API的Java库。支持openAi所有的模型,支持最新的gpt4-trubo识图模型
 
