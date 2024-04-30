@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,4 +29,18 @@ public class SubmitToolOutputsRequest {
      */
     @JsonProperty("tool_outputs")
     private List<SubmitToolOutputRequestItem> toolOutputs;
+
+
+    /**
+     * 单个函数调用的请求对象构造
+     **/
+    public static SubmitToolOutputsRequest ofSingletonToolOutput(String toolCallId, String output) {
+        return SubmitToolOutputsRequest.builder()
+                .toolOutputs(Collections.singletonList(SubmitToolOutputRequestItem.builder()
+                        .toolCallId(toolCallId)
+                        .output(output)
+                        .build()))
+                .build();
+    }
+
 }
