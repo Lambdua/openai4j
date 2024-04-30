@@ -43,6 +43,7 @@ public class VectorStore {
     Integer bytes;
 
 
+    @JsonProperty("file_counts")
     FileCounts fileCounts;
 
     /**
