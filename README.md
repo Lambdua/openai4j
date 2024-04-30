@@ -1,26 +1,28 @@
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.lambdua/service?color=blue)
-> That it’s an unofficial library.</br>
-> ⚠️ This project is a fork of the [openai Java project](https://github.com/TheoKanning/openai-java). </br>
-> The original author appears to have ceased maintenance, failing to meet my needs, prompting me to continue its
-> development and adapting to the new features of OpenAI API.
 
-[中文文档-不是最新☕](README-zh.md)
+# OpenAi4J
 
-# OpenAI-Java
+OpenAi4J is an unofficial Java library tailored to facilitate the interaction with OpenAI's GPT models, including the
+newest additions such as gpt4-turbo vision,assistant-v2. Originally forked from TheoKanning/openai-java, this library
+continues development to incorporate latest API features after the original project's maintenance was discontinued.
 
-A Java library for utilizing the GPT API from OpenAI. It supports all OpenAI models, including the latest gpt4-turbo
-vision model.
+[中文介绍☕](README-zh.md)
 
-Project structure:
-- api: Objects for GPT API request/response handling, facilitating interaction with the OpenAI API.
-- client: A basic Retrofit client designed for GPT endpoints, including the api module.
-- service: A fundamental service class for creating and invoking the client, offering the most straightforward approach
-  to integrating OpenAI in Java.
-- example: Sample code demonstrating the library's utilization. 
+## Features
 
-# Supported APIs
+- Full support for all OpenAI API models including Completions, Chat, Edits, Embeddings, Audio, Files, Assistants-v2,
+  Images, Moderations, Batch, and Fine-tuning.
+- Easy-to-use client setup with Retrofit for immediate API interaction.
+- Extensive examples and documentation to help you start quickly.
+- Customizable setup with environment variable integration for API keys and base URLs.
+- Supports synchronous and asynchronous API calls.
 
-[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) ,[Assistants-v2](https://platform.openai.com/docs/api-reference/assistants), [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations) , [Batch](https://platform.openai.com/docs/api-reference/batch)
+This library aims to provide Java developers with a robust tool to integrate OpenAI's powerful capabilities into their
+applications effortlessly.
+
+## v0.20.1 will be released soon
+
+- [ ]  a more user-friendly way to access and use assistant-stream
 
 # Quick Start
 
@@ -570,21 +572,44 @@ static void assistantStream() throws JsonProcessingException {
 
 # FAQs
 
-# Is it possible to customize the OpenAI URL or use a proxy URL?
+<details style="border: 1px solid #aaa; border-radius: 4px; padding: 0.5em;">
+<summary style="font-weight: bold; color: #333;">Is it possible to customize the OpenAI URL or use a proxy URL?</summary>
+<p style="padding: 0.5em; margin: 0; color: #555;">Yes, you can specify a URL when constructing OpenAiService, which will serve as the base URL.But we recommend using the
+environment variable OPENAI_API_BASE_URL and OPENAI_API_KEY to load the OpenAI API key.</p>
+</details>
 
-Yes, you can specify a URL when constructing OpenAiService, which will serve as the base URL.But we recommend using the
-environment variable OPENAI_API_BASE_URL and OPENAI_API_KEY to load the OpenAI API key.
-```java
-OpenAiService service = new OpenAiService("your token", "baseUrl or proxy url");
-```
+<details style="border: 1px solid #aaa; border-radius: 4px; padding: 0.5em;">
+<summary style="font-weight: bold; color: #333;">Why am I experiencing connection timeouts?</summary>
+<p style="padding: 0.5em; margin: 0; color: #555;">Ensure your network is stable and your OpenAI server is accessible. If you face network instability, consider increasing the timeout duration.</p>
+</details>
 
-## Why am I experiencing connection timeouts?
+# Contributing to OpenAi4J
 
-Ensure your network is stable and your OpenAI server is accessible.
-If you face network instability, consider increasing the timeout duration.
+We welcome contributions from the community and are always looking for ways to make our project better. If you're
+interested in helping improve OpenAi4J, here are some ways you can contribute:
+
+## Reporting Issues
+
+Please use the GitHub Issues page to report issues. Be as specific as possible about how to reproduce the problem you
+are having, and include details like your operating system, Java version, and any relevant stack traces.
+
+## Submitting Pull Requests
+
+1. Fork the repository and create your branch from `main`.
+2. If you've added code that should be tested, add tests.
+3. Ensure your code lints and adheres to the existing style guidelines.
+4. Write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should
+   have detailed descriptions.
+5. Complete the pull request form, linking to any issues your PR addresses.
+
+## Support Us
+
+We hope you find this library useful! If you do, consider giving it a star on library❤️❤️❤️. Your support helps us keep
+the project alive and continuously improve it. Stay tuned for updates and feel free to contribute to the project or
+suggest new features.
+Thank you for supporting OpenAi4J!
 
 # License
-
 Released under the MIT License
 
 
