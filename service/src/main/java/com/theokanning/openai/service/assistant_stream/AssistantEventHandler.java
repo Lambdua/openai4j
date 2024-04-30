@@ -9,9 +9,11 @@ import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.run_step.RunStepDelta;
 
 /**
+ * @deprecated 这个类是实验性的，尚未经过充分测试，并且在未来版本中可能会有较大变动。建议在严格测试之前不要在生产环境中使用。将在下个版本中完善,也可能发生较大变动
  * @author LiangTao
  * @date 2024年04月29 11:58
  **/
+@Deprecated
 public interface AssistantEventHandler {
 
     default void onEvent(AssistantSSE sse) {
