@@ -8,7 +8,7 @@ import com.theokanning.openai.service.OpenAiService;
 
 import java.util.*;
 
-public class OpenAiApiDynamicFunctionExample {
+public class DynamicFunctionExample {
 
     private static JsonNode getWeather(String location, String unit) {
         ObjectMapper mapper = new ObjectMapper();

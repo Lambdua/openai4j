@@ -8,7 +8,7 @@ import io.reactivex.Flowable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class OpenAiApiFunctionsWithStreamExample {
+public class FunctionsWithStreamExample {
 
     public static void main(String... args) {
         OpenAiService service = new OpenAiService();

@@ -6,7 +6,7 @@ import com.theokanning.openai.service.OpenAiService;
 
 import java.util.*;
 
-class OpenAiApiFunctionsExample {
+class FunctionsExample {
 
 
     public static void main(String... args) {

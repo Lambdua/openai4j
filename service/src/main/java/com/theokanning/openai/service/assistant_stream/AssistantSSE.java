@@ -22,5 +22,11 @@ public class AssistantSSE {
         return event.equals(StreamEvent.DONE);
     }
 
-
+    @Override
+    public String toString() {
+        return "AssistantSSE{" +
+                "event=" + event.eventName +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }
