@@ -67,7 +67,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-1106")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .responseFormat(ChatResponseFormat.JSON_OBJECT)
                 .maxTokens(50)
@@ -279,7 +279,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
@@ -310,7 +310,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 //这里的tools是一个list,可以传入多个tool
                 .tools(Arrays.asList(tool))
@@ -344,7 +344,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .tools(Arrays.asList(tool))
                 .toolChoice(ToolChoice.AUTO)
@@ -395,7 +395,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -457,7 +457,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -538,7 +538,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -560,7 +560,6 @@ class ChatCompletionTest {
         ChatToolCall toolCall = toolCalls.get(0);
         Object execute = toolExecutor.execute(toolCall.getFunction());
         assertInstanceOf(List.class, execute);
-
 
         JsonNode jsonNode = toolExecutor.executeAndConvertToJson(toolCall.getFunction());
         assertInstanceOf(ArrayNode.class, jsonNode);
@@ -604,7 +603,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-3.5-turbo")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
