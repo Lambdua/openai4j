@@ -21,26 +21,14 @@ Project structure:
 
 # Supported APIs
 
-[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) ,[~~Assistants-v1~~](https://platform.openai.com/docs/api-reference/assistants-v1), [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations)
-
-# v0.20.0 will released feature
-
-- [x] assistant-v2-pojo
-- [x] assistant-v2-client
-- [x] assistant-v2-service
-- [ ] assistant-v2-streaming
-- [x] assistant-v2-tool
-- [x] assistant-v1 removed in 0.20.0
-- [x] batch api pojo
-- [x] batch api client
-- [x] batch api service
+[Models](https://platform.openai.com/docs/api-reference/models) , [Completions](https://platform.openai.com/docs/api-reference/completions) ,[Assistants-v2](https://platform.openai.com/docs/api-reference/assistants), [Chat](https://platform.openai.com/docs/api-reference/chat/create) , [Edits](https://platform.openai.com/docs/api-reference/edits) , [Embeddings](https://platform.openai.com/docs/api-reference/embeddings) , [Audio](https://platform.openai.com/docs/api-reference/audio) , [Files](https://platform.openai.com/docs/api-reference/files) , [Fine-tuning](https://platform.openai.com/docs/api-reference/fine-tuning) , [Images](https://platform.openai.com/docs/api-reference/images) , [Moderations](https://platform.openai.com/docs/api-reference/moderations) , [Batch](https://platform.openai.com/docs/api-reference/batch)
 
 # Quick Start
 
 ## Import
 ### Gradle
 
-`implementation 'io.github.lambdua:<api|client|service>:0.19.1'`
+`implementation 'io.github.lambdua:<api|client|service>:0.20.0'`
 ### Maven
 
 <details>
@@ -50,7 +38,7 @@ Project structure:
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>service</artifactId>
-  <version>0.19.1</version>
+  <version>0.20.0</version>
 </dependency>
 ```
 To utilize pojos, import the api module:
@@ -59,7 +47,7 @@ To utilize pojos, import the api module:
    <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>api</artifactId>
-  <version>0.19.1</version>
+  <version>0.20.0</version>
 </dependency>
 ```
 
