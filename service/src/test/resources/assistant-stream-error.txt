@@ -1,0 +1,8 @@
+event: thread.run.created
+data: {"id":"run_ks3Ccb9W0PnSkXGsEn57QTv4","object":"thread.run","created_at":1714359755,"assistant_id":"asst_lT7HN62o2lhWNnLC35F8ft7W","thread_id":"thread_BaRB3gk3HbzVTzHq2ryfGakQ","status":"queued","started_at":null,"expires_at":1714360355,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user","tools":[{"type":"function","function":{"name":"get_weather","description":"Get the current weather in a given location","parameters":{"$schema":"http://json-schema.org/draft-04/schema#","title":"Weather","type":"object","additionalProperties":false,"properties":{"location":{"type":"string","description":"City and state, for example: León, Guanajuato"},"unit":{"type":"string","enum":["CELSIUS","FAHRENHEIT"],"description":"The temperature unit, can be 'celsius' or 'fahrenheit'"}},"required":["unit"]}}}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: error
+data: {"error":{"message":"The server had an error processing your request. Sorry about that! You can retry your request, or contact us through our help center at help.openai.com if you keep seeing this error. (Please include the request ID req_a1d7205bea9ed7bbbf0da1a6ab430217 in your email.)","type":"server_error","param":null,"code":null}}
+
+event: done
+data: [DONE]
