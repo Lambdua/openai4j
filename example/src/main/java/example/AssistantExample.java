@@ -7,13 +7,16 @@ import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.StreamEvent;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
+import com.theokanning.openai.assistants.assistant.FileSearchTool;
 import com.theokanning.openai.assistants.assistant.FunctionTool;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.run.*;
 import com.theokanning.openai.assistants.run_step.RunStep;
+import com.theokanning.openai.assistants.thread.Attachment;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
+import com.theokanning.openai.file.File;
 import com.theokanning.openai.service.FunctionExecutor;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.service.assistant_stream.AssistantSSE;
@@ -29,8 +32,9 @@ import java.util.Optional;
  * @date 2024年04月30 13:30
  **/
 public class AssistantExample {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
         // assistantToolCall();
+        // assistantStream();
     }
 
     static void assistantToolCall() {
@@ -172,6 +176,60 @@ public class AssistantExample {
         Message message = objectMapper.readValue(msgSse.get().getData(), Message.class);
         String responseContent = message.getContent().get(0).getText().getValue();
         System.out.println(responseContent);
+    }
+
+    static void fileSearchExample() {
+        OpenAiService service = new OpenAiService();
+
+        AssistantRequest assistantRequest = AssistantRequest.builder()
+                .model("gpt-3.5-turbo")
+                .name("file search assistant")
+                .instructions("你是一个中国传统音乐教授,负责根据用户的需求解答问题")
+                //add file search tool to assistant
+                .tools(Collections.singletonList(new FileSearchTool()))
+                .temperature(0D)
+                .build();
+        Assistant assistant = service.createAssistant(assistantRequest);
+        String assistantId = assistant.getId();
+        ThreadRequest threadRequest = ThreadRequest.builder()
+                .build();
+        Thread thread = service.createThread(threadRequest);
+        String threadId = thread.getId();
+        //upload file for message attachment
+        File file = service.uploadFile("assistants", "src/main/resources/田山歌中艺术特征及其共生性特征探析.txt");
+        String fileId = file.getId();
+
+        MessageRequest messageRequest = MessageRequest.builder()
+                //query user to search file
+                .content("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
+                .attachments(Collections.singletonList(
+                        //add uploaded file to message with file search tool
+                        new Attachment(fileId, Collections.singletonList(new FileSearchTool()))
+                ))
+                .build();
+        //add msg to thread
+        service.createMessage(threadId, messageRequest);
+
+        //run
+        RunCreateRequest runCreateRequest = RunCreateRequest.builder()
+                .assistantId(assistantId)
+                .toolChoice(ToolChoice.AUTO)
+                .build();
+        Run run = service.createRun(threadId, runCreateRequest);
+        String runId = run.getId();
+
+        do {
+            run = service.retrieveRun(threadId, runId);
+        } while (!(run.getStatus().equals("completed")) && !(run.getStatus().equals("failed")));
+
+        List<RunStep> runSteps = service.listRunSteps(threadId, runId, new ListSearchParameters()).getData();
+
+        for (RunStep runStep : runSteps) {
+            System.out.println(runStep.getStepDetails());
+        }
+        service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
+            System.out.println(message.getContent());
+        });
     }
 
 
