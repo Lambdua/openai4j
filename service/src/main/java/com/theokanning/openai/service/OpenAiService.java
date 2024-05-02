@@ -253,7 +253,7 @@ public class OpenAiService {
         java.io.File file = new java.io.File(filepath);
         RequestBody purposeBody = RequestBody.create(MultipartBody.FORM, purpose);
         RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", filepath, fileBody);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
         return execute(api.uploadFile(purposeBody, body));
     }
 
