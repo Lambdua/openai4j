@@ -23,6 +23,10 @@ import com.theokanning.openai.service.assistant_stream.AssistantSSE;
 import io.reactivex.Flowable;
 import io.reactivex.subscribers.TestSubscriber;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +36,11 @@ import java.util.Optional;
  * @date 2024年04月30 13:30
  **/
 public class AssistantExample {
-    public static void main(String[] args) throws JsonProcessingException {
+    public static void main(String[] args) throws JsonProcessingException, UnsupportedEncodingException {
         // assistantToolCall();
         // assistantStream();
+        fileSearchExample();
+
     }
 
     static void assistantToolCall() {
@@ -178,7 +184,7 @@ public class AssistantExample {
         System.out.println(responseContent);
     }
 
-    static void fileSearchExample() {
+    static void fileSearchExample() throws UnsupportedEncodingException {
         OpenAiService service = new OpenAiService();
 
         AssistantRequest assistantRequest = AssistantRequest.builder()
@@ -191,13 +197,20 @@ public class AssistantExample {
                 .build();
         Assistant assistant = service.createAssistant(assistantRequest);
         String assistantId = assistant.getId();
+        System.out.println("assistantId:" + assistantId);
         ThreadRequest threadRequest = ThreadRequest.builder()
                 .build();
         Thread thread = service.createThread(threadRequest);
         String threadId = thread.getId();
+        System.out.println("threadId:" + threadId);
         //upload file for message attachment
-        File file = service.uploadFile("assistants", "src/main/resources/田山歌中艺术特征及其共生性特征探析.txt");
+        URL resource = AssistantExample.class.getClassLoader().getResource("田山歌中艺术特征及其共生性特征探析.txt");
+        File file = service.uploadFile("assistants", URLDecoder.decode(resource.getFile(), StandardCharsets.UTF_8.name()));
+        //get resource
+
+
         String fileId = file.getId();
+        System.out.println("fileId:" + fileId);
 
         MessageRequest messageRequest = MessageRequest.builder()
                 //query user to search file
