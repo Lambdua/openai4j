@@ -1,0 +1,867 @@
+event: thread.run.created
+data: {"id":"run_zPu5XycSKELG7TLPm9f2YE9g","object":"thread.run","created_at":1714663445,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","status":"queued","started_at":null,"expires_at":1714664045,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"你是一个中国传统音乐教授,负责根据用户的需求解答问题","tools":[{"type":"file_search"}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.queued
+data: {"id":"run_zPu5XycSKELG7TLPm9f2YE9g","object":"thread.run","created_at":1714663445,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","status":"queued","started_at":null,"expires_at":1714664045,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"你是一个中国传统音乐教授,负责根据用户的需求解答问题","tools":[{"type":"file_search"}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.in_progress
+data: {"id":"run_zPu5XycSKELG7TLPm9f2YE9g","object":"thread.run","created_at":1714663445,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","status":"in_progress","started_at":1714663445,"expires_at":1714664045,"cancelled_at":null,"failed_at":null,"completed_at":null,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"你是一个中国传统音乐教授,负责根据用户的需求解答问题","tools":[{"type":"file_search"}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":null,"response_format":"auto","tool_choice":"auto"}
+
+event: thread.run.step.created
+data: {"id":"step_5KZ2odQpK4XdXCcA4k3e0oPp","object":"thread.run.step","created_at":1714663446,"run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","type":"tool_calls","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714664045,"failed_at":null,"last_error":null,"step_details":{"type":"tool_calls","tool_calls":[]},"usage":null}
+
+event: thread.run.step.in_progress
+data: {"id":"step_5KZ2odQpK4XdXCcA4k3e0oPp","object":"thread.run.step","created_at":1714663446,"run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","type":"tool_calls","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714664045,"failed_at":null,"last_error":null,"step_details":{"type":"tool_calls","tool_calls":[]},"usage":null}
+
+event: thread.run.step.delta
+data: {"id":"step_5KZ2odQpK4XdXCcA4k3e0oPp","object":"thread.run.step.delta","delta":{"step_details":{"type":"tool_calls","tool_calls":[{"index":0,"id":"call_I3dJTDeW8qw07nZKy2PY4wPg","type":"file_search","file_search":{}}]}}}
+
+event: thread.run.step.completed
+data: {"id":"step_5KZ2odQpK4XdXCcA4k3e0oPp","object":"thread.run.step","created_at":1714663446,"run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","type":"tool_calls","status":"completed","cancelled_at":null,"completed_at":1714663447,"expires_at":1714664045,"failed_at":null,"last_error":null,"step_details":{"type":"tool_calls","tool_calls":[{"id":"call_I3dJTDeW8qw07nZKy2PY4wPg","type":"file_search","file_search":{}}]},"usage":{"prompt_tokens":661,"completion_tokens":16,"total_tokens":677}}
+
+event: thread.run.step.created
+data: {"id":"step_ceIe2j8kDtExZMoP1hbxUq8v","object":"thread.run.step","created_at":1714663447,"run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","type":"message_creation","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714664045,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_fYfgJmudo6DPupfc97VagqFz"}},"usage":null}
+
+event: thread.run.step.in_progress
+data: {"id":"step_ceIe2j8kDtExZMoP1hbxUq8v","object":"thread.run.step","created_at":1714663447,"run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","type":"message_creation","status":"in_progress","cancelled_at":null,"completed_at":null,"expires_at":1714664045,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_fYfgJmudo6DPupfc97VagqFz"}},"usage":null}
+
+event: thread.message.created
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message","created_at":1714663447,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","status":"in_progress","incomplete_details":null,"incomplete_at":null,"completed_at":null,"role":"assistant","content":[],"attachments":[],"metadata":{}}
+
+event: thread.message.in_progress
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message","created_at":1714663447,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","status":"in_progress","incomplete_details":null,"incomplete_at":null,"completed_at":null,"role":"assistant","content":[],"attachments":[],"metadata":{}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"田","annotations":[]}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"裁"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"中"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"包"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"容"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"性"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"在"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"其"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"在"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"发"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"展"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"中"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"结"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"合"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"、"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"号"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"子"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"、"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"小"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"调"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"三"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"种"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"裁"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"艺"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"术"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"特"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"征"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"。"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"田"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"继"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"承"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"号"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"子"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"“"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"一"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"领"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"众"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"”"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"演"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"唱"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"形"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"式"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"吸"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"收"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"小"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"调"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"元"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"素"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，并"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"通过"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"音"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"乐"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"形"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"式"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"旋"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"律"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"特"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"征"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"形"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"成"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"独"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"特"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"音"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"乐"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"风"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"格"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"。"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"这"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"种"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"融"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"合"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"不"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"仅"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"显示"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"田"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"在"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"艺"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"术"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"上"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"创"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"新"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"也"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"中国"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"民"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"间"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"音"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"乐"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"丰"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"富"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"文"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"化"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"内"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"涵"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"发"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"展"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"可能"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"性"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"【4:1†source】","annotations":[{"index":0,"type":"file_citation","text":"【4:1†source】","start_index":137,"end_index":149,"file_citation":{"file_id":"file-kyKFgipfncgb3X38YyDyulzE","quote":""}}]}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"。"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"另"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"外"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"田"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"文"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"学"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"性"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"叙"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"事"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"性"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"也"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"其"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"包"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"容"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"性"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"通过"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"词"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"对"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"民"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"间"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"故"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"事"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"、"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"历"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"史"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"传"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"说"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"表"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"达"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"传"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"承"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"民"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"间"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"传"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"统"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"记"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"忆"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"同时"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"在"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"创"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"作"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"上"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"运"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"用"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"对"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"仗"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"、"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"押"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"韵"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"、"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"比"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"兴"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"等"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"技"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"巧"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"增"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"加"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"了"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"曲"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"表"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"力"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"美"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"感"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"【4:3†source】","annotations":[{"index":1,"type":"file_citation","text":"【4:3†source】","start_index":235,"end_index":247,"file_citation":{"file_id":"file-kyKFgipfncgb3X38YyDyulzE","quote":""}}]}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"【4:4†source】","annotations":[{"index":2,"type":"file_citation","text":"【4:4†source】","start_index":247,"end_index":259,"file_citation":{"file_id":"file-kyKFgipfncgb3X38YyDyulzE","quote":""}}]}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"。"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"总"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"来"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"说"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"田"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"山"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"歌"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"裁"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"包"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"容"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"性"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"体"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"在"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"其"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"音"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"乐"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"文"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"学"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"特"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"征"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"融"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"合"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"发"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"展"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"中"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"，"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"呈"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"出"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"多"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"样"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"化"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"音"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"乐"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"表"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"现"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"形"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"式"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"和"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"丰"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"富"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"的"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"文"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"化"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"内"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"涵"}}]}}
+
+event: thread.message.delta
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message.delta","delta":{"content":[{"index":0,"type":"text","text":{"value":"。"}}]}}
+
+event: thread.message.completed
+data: {"id":"msg_fYfgJmudo6DPupfc97VagqFz","object":"thread.message","created_at":1714663447,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","status":"completed","incomplete_details":null,"incomplete_at":null,"completed_at":1714663455,"role":"assistant","content":[{"type":"text","text":{"value":"田山歌体裁中的包容性体现在其在发展中结合了山歌、号子、小调三种体裁的艺术特征。田山歌继承了号子的“一领众和”演唱形式，吸收了小调的元素，并通过山歌的音乐形式和旋律特征形成了独特的音乐风格。这种融合不仅显示了田山歌在艺术上的创新，也体现了中国民间音乐丰富的文化内涵和发展可能性【4:1†source】。另外，田山歌的文学性和叙事性也体现了其包容性，通过歌词对民间故事、历史传说的表达，传承了民间的传统和记忆，同时在创作上运用对仗、押韵、比兴等技巧，增加了歌曲的表现力和美感【4:3†source】【4:4†source】。总体来说，田山歌体裁的包容性体现在其音乐和文学特征的融合发展中，呈现出多样化的音乐表现形式和丰富的文化内涵。","annotations":[{"type":"file_citation","text":"【4:1†source】","start_index":137,"end_index":149,"file_citation":{"file_id":"file-kyKFgipfncgb3X38YyDyulzE"}},{"type":"file_citation","text":"【4:3†source】","start_index":235,"end_index":247,"file_citation":{"file_id":"file-kyKFgipfncgb3X38YyDyulzE"}},{"type":"file_citation","text":"【4:4†source】","start_index":247,"end_index":259,"file_citation":{"file_id":"file-kyKFgipfncgb3X38YyDyulzE"}}]}}],"attachments":[],"metadata":{}}
+
+event: thread.run.step.completed
+data: {"id":"step_ceIe2j8kDtExZMoP1hbxUq8v","object":"thread.run.step","created_at":1714663447,"run_id":"run_zPu5XycSKELG7TLPm9f2YE9g","assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","type":"message_creation","status":"completed","cancelled_at":null,"completed_at":1714663455,"expires_at":1714664045,"failed_at":null,"last_error":null,"step_details":{"type":"message_creation","message_creation":{"message_id":"msg_fYfgJmudo6DPupfc97VagqFz"}},"usage":{"prompt_tokens":6450,"completion_tokens":362,"total_tokens":6812}}
+
+event: thread.run.completed
+data: {"id":"run_zPu5XycSKELG7TLPm9f2YE9g","object":"thread.run","created_at":1714663445,"assistant_id":"asst_O0GL7IBGL5F0091TN7xO0Xe5","thread_id":"thread_smSMuOKnf9mxQIpBh2l2R51x","status":"completed","started_at":1714663445,"expires_at":null,"cancelled_at":null,"failed_at":null,"completed_at":1714663455,"required_action":null,"last_error":null,"model":"gpt-3.5-turbo","instructions":"你是一个中国传统音乐教授,负责根据用户的需求解答问题","tools":[{"type":"file_search"}],"tool_resources":{"code_interpreter":{"file_ids":[]}},"metadata":{},"temperature":1.0,"top_p":1.0,"max_completion_tokens":null,"max_prompt_tokens":null,"truncation_strategy":{"type":"auto","last_messages":null},"incomplete_details":null,"usage":{"prompt_tokens":7111,"completion_tokens":378,"total_tokens":7489},"response_format":"auto","tool_choice":"auto"}
+
+event: done
+data: [DONE]
+

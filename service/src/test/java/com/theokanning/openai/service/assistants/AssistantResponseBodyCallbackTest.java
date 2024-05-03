@@ -220,6 +220,27 @@ public class AssistantResponseBodyCallbackTest {
     }
 
     @Test
+    void testFileSearchStream() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream("src/test/resources/assistant-stream-filesearch.txt");
+        String content = new BufferedReader(new InputStreamReader(fileInputStream)).lines().collect(Collectors.joining("\n"));
+        ResponseBody body = ResponseBody.create(MediaType.get("application/json"), content);
+        Call<ResponseBody> call = Calls.response(body);
+        Flowable<AssistantSSE> flowable = Flowable.create(emitter -> call.enqueue(new AssistantResponseBodyCallback(emitter)), BackpressureStrategy.BUFFER);
+
+        TestSubscriber<AssistantSSE> testSubscriber = new TestSubscriber<>();
+        flowable.subscribe(testSubscriber);
+        for (AssistantSSE sse : testSubscriber.values()) {
+            if (sse.getEvent().equals(StreamEvent.DONE)) {
+                continue;
+            }
+            Object o = objectMapper.readValue(sse.getData(), sse.getEvent().dataClass);
+            assertEquals(sse.getEvent().dataClass, o.getClass());
+            String actual = objectMapper.writeValueAsString(o);
+            assertEquals(convertToJsonNodeAndRemoveNulls(sse.getData()), objectMapper.readTree(actual));
+        }
+    }
+
+    @Test
     void testServerError() {
         String errorBody = "{\n" +
                 "    \"error\": {\n" +

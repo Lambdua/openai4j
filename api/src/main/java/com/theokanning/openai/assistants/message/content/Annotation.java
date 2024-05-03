@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Annotation {
+
+    Integer index;
+
     /**
      * file_citation/file_path
      */
