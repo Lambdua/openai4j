@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.StreamEvent;
-import com.theokanning.openai.assistants.assistant.Assistant;
-import com.theokanning.openai.assistants.assistant.AssistantRequest;
-import com.theokanning.openai.assistants.assistant.FileSearchTool;
-import com.theokanning.openai.assistants.assistant.FunctionTool;
+import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.run.*;
@@ -39,7 +36,8 @@ public class AssistantExample {
     public static void main(String[] args) throws JsonProcessingException, UnsupportedEncodingException {
         // assistantToolCall();
         // assistantStream();
-        fileSearchExample();
+        // fileSearchExample();
+        codeInterpreterExample();
 
     }
 
@@ -243,6 +241,45 @@ public class AssistantExample {
         service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
             System.out.println(message.getContent());
         });
+    }
+
+    static void codeInterpreterExample() {
+        OpenAiService service = new OpenAiService();
+        AssistantRequest assistantRequest = AssistantRequest.builder()
+                .model("gpt-3.5-turbo")
+                .name("code interpreter assistant")
+                .instructions("You are a code interpreter assistant.Using code interpreter tools for result calculation")
+                .tools(Collections.singletonList(new CodeInterpreterTool()))
+                .temperature(0D)
+                .build();
+        Assistant assistant = service.createAssistant(assistantRequest);
+        String assistantId = assistant.getId();
+        System.out.println("assistantId:" + assistantId);
+        ThreadRequest threadRequest = ThreadRequest.builder()
+                .build();
+        Thread thread = service.createThread(threadRequest);
+        String threadId = thread.getId();
+        System.out.println("threadId:" + threadId);
+        MessageRequest messageRequest = MessageRequest.builder()
+                .content("What does the following value : 5+10*(2^3-2)*1```")
+                .build();
+        service.createMessage(threadId, messageRequest);
+        // RunCreateRequest runCreateRequest = RunCreateRequest.builder()
+        //         .assistantId(assistantId)
+        //         .toolChoice(ToolChoice.AUTO)
+        //         .build();
+        // Run run = service.createRun(threadId, runCreateRequest);
+        // String runId = run.getId();
+        // do {
+        //     run = service.retrieveRun(threadId, runId);
+        // } while (!(run.getStatus().equals("completed")) && !(run.getStatus().equals("failed")));
+        // List<RunStep> runSteps = service.listRunSteps(threadId, runId, new ListSearchParameters()).getData();
+        // for (RunStep runStep : runSteps) {
+        //     System.out.println(runStep.getStepDetails());
+        // }
+        // service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
+        //     System.out.println(message.getContent());
+        // });
     }
 
 
