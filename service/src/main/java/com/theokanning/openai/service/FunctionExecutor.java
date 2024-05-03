@@ -105,56 +105,42 @@ public class FunctionExecutor {
      * @return
      */
     public JsonNode executeAndConvertToJson(ToolCallFunction call) {
-        try {
-            Object execution = execute(call.getName(), call.getArguments());
-            if (execution instanceof TextNode) {
-                JsonNode objectNode = MAPPER.readTree(((TextNode) execution).asText());
-                if (objectNode.isMissingNode())
-                    return (JsonNode) execution;
-                return objectNode;
-            }
-            if (execution instanceof ObjectNode) {
-                return (JsonNode) execution;
-            }
-            if (execution instanceof String) {
-                JsonNode objectNode = MAPPER.readTree((String) execution);
-                if (objectNode.isMissingNode())
-                    throw new RuntimeException("Parsing exception");
-                return objectNode;
-            }
-            return MAPPER.readValue(MAPPER.writeValueAsString(execution), JsonNode.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return executeAndConvertToJson(call.getName(), call.getArguments());
     }
 
     public JsonNode executeAndConvertToJson(ChatFunctionCall call) {
-        try {
-            Object execution = execute(call);
-            if (execution instanceof TextNode) {
-                JsonNode objectNode = MAPPER.readTree(((TextNode) execution).asText());
-                if (objectNode.isMissingNode())
-                    return (JsonNode) execution;
-                return objectNode;
-            }
-            if (execution instanceof ObjectNode) {
-                return (JsonNode) execution;
-            }
-            if (execution instanceof String) {
-                JsonNode objectNode = MAPPER.readTree((String) execution);
-                if (objectNode.isMissingNode())
-                    throw new RuntimeException("Parsing exception");
-                return objectNode;
-            }
-            return MAPPER.readValue(MAPPER.writeValueAsString(execution), JsonNode.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return executeAndConvertToJson(call.getName(), call.getArguments());
     }
 
     public <T> T execute(ChatFunctionCall functionCall) {
         return execute(functionCall.getName(), functionCall.getArguments());
     }
+
+    public JsonNode executeAndConvertToJson(String funName, JsonNode arguments) {
+        try {
+            Object execution = execute(funName, arguments);
+            if (execution instanceof TextNode) {
+                JsonNode objectNode = MAPPER.readTree(((TextNode) execution).asText());
+                if (objectNode.isMissingNode())
+                    return (JsonNode) execution;
+                return objectNode;
+            }
+            if (execution instanceof ObjectNode) {
+                return (JsonNode) execution;
+            }
+            if (execution instanceof String) {
+                JsonNode objectNode = MAPPER.readTree((String) execution);
+                if (objectNode.isMissingNode())
+                    throw new RuntimeException("Parsing exception");
+                return objectNode;
+            }
+            return MAPPER.readValue(MAPPER.writeValueAsString(execution), JsonNode.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     @SuppressWarnings("unchecked")
     public <T> T execute(String funName, JsonNode arguments) {
