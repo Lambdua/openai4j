@@ -25,11 +25,18 @@ public class ToolCall {
 
     String id;
 
+    /**
+     * An array of tool calls the run step was involved in.
+     * These can be associated with one of three types of tools: code_interpreter, file_search, or function.
+     */
     String type;
 
     @JsonProperty("code_interpreter")
     ToolCallCodeInterpreter codeInterpreter;
 
+    /**
+     * For now, this is always going to be an empty object.
+     */
     @JsonProperty("file_search")
     Map<String, String> fileSearch;
 

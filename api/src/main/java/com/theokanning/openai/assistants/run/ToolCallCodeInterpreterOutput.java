@@ -18,9 +18,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ToolCallCodeInterpreterOutput {
 
+    private Integer index;
+
+    /**
+     * logs/image
+     */
     private String type;
 
+    /**
+     * Text output from the Code Interpreter tool call as part of a run step.
+     */
     private String logs;
+
 
     private RunImage image;
 }
