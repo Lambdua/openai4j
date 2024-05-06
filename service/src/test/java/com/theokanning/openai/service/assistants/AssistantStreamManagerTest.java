@@ -1,15 +1,14 @@
 package com.theokanning.openai.service.assistants;
 
+import com.theokanning.openai.OpenAiHttpException;
+import com.theokanning.openai.assistants.StreamEvent;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.content.Delta;
 import com.theokanning.openai.assistants.message.content.MessageDelta;
 import com.theokanning.openai.assistants.run.Run;
 import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.run_step.RunStepDelta;
-import com.theokanning.openai.service.assistant_stream.AssistantEventHandler;
-import com.theokanning.openai.service.assistant_stream.AssistantResponseBodyCallback;
-import com.theokanning.openai.service.assistant_stream.AssistantSSE;
-import com.theokanning.openai.service.assistant_stream.AssistantStreamManager;
+import com.theokanning.openai.service.assistant_stream.*;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +22,11 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -51,7 +51,9 @@ public class AssistantStreamManagerTest {
         AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
         manager.start();
 
+
         manager.waitForCompletion();
+
         // Verify that the event handler received the correct method calls
         verify(mockEventHandler, times(39)).onEvent(isA(AssistantSSE.class));
         verify(mockEventHandler, times(1)).onRunCreated(isA(Run.class));
@@ -75,6 +77,96 @@ public class AssistantStreamManagerTest {
         assertEquals(accumulatedDelata.getRole(), complectionMessage.getRole());
         assertEquals(accumulatedDelata.getContent().get(0).getType(), complectionMessage.getContent().get(0).getType());
         assertEquals(accumulatedDelata.getContent().get(0).getText().getValue(), complectionMessage.getContent().get(0).getText().getValue());
+
+        List<MessageDelta> msgDeltas = manager.getMsgDeltas();
+        MessageDelta first = msgDeltas.get(0);
+        for (int i = 1; i < msgDeltas.size(); i++) {
+            first = DeltaUtil.accumulatMessageDelta(first, msgDeltas.get(i));
+        }
+        assertEquals(first.getDelta().getContent().get(0).getText().getValue(), accumulatedDelata.getContent().get(0).getText().getValue(), "MessageDelta should be accumulated correctly");
+
+    }
+
+    @Test
+    void errorStreamTest() throws FileNotFoundException {
+        AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
+        Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-error.txt");
+        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
+        manager.syncStart();
+
+        // Verify that the event handler received the correct method calls
+        verify(mockEventHandler, times(1)).onError(isA(OpenAiHttpException.class));
+        verify(mockEventHandler, times(1)).onEnd();
+
+        AssistantSSE errorSse = manager.getEventMsgsHolder().stream().filter(sse -> StreamEvent.ERROR.equals(sse.getEvent())).findFirst().orElse(null);
+        assertNotNull(errorSse, "Error event not found");
+    }
+
+    @Test
+    void shutdownTest() throws FileNotFoundException, InterruptedException {
+        AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
+        Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-response.txt");
+        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
+        manager.start();
+
+        Thread.sleep(200);
+        manager.shutdown();
+        assertFalse(manager.isCompleted());
+
+        // Thread.sleep(1000);
+        List<AssistantSSE> eventMsgsHolder = manager.getEventMsgsHolder();
+        assertFalse(eventMsgsHolder.isEmpty());
+        verify(mockEventHandler, never()).onEnd();
+        verify(mockEventHandler, times(1)).onRunCreated(any(Run.class));
+        Thread.sleep(1000);
+        assertEquals(eventMsgsHolder.size(), manager.getEventMsgsHolder().size(), "eventMsgsHolder should not be updated after shutdown");
+    }
+
+
+    @Test
+    void fileSearchStreamTest() throws FileNotFoundException {
+        AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
+        Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-fileSearch.txt");
+        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
+        manager.syncStart();
+
+        // Verify that the event handler received the correct method calls
+        verify(mockEventHandler, times(1)).onRunCreated(isA(Run.class));
+        verify(mockEventHandler, times(1)).onRunInProgress(isA(Run.class));
+        verify(mockEventHandler, times(1)).onRunCompleted(isA(Run.class));
+        verify(mockEventHandler, times(2)).onRunStepCreated(isA(RunStep.class));
+        verify(mockEventHandler, times(2)).onRunStepInProgress(isA(RunStep.class));
+        verify(mockEventHandler, times(2)).onRunStepCompleted(isA(RunStep.class));
+        verify(mockEventHandler, atLeastOnce()).onRunStepDelta(isA(RunStepDelta.class));
+        verify(mockEventHandler, times(1)).onMessageCreated(isA(Message.class));
+        verify(mockEventHandler, times(1)).onMessageInProgress(isA(Message.class));
+        verify(mockEventHandler, times(1)).onMessageCompleted(isA(Message.class));
+        verify(mockEventHandler, atLeastOnce()).onMessageDelta(isA(MessageDelta.class));
+        verify(mockEventHandler, times(1)).onEnd();
+
+        //runStepDelta should be accumulated correctly
+        List<RunStepDelta> runStepDeltas = manager.getRunStepDeltas();
+        assertFalse(runStepDeltas.isEmpty());
+        RunStepDelta accumulatedRsd = manager.getAccumulatedRsd().orElse(null);
+        assertNotNull(accumulatedRsd);
+        assertEquals("tool_calls", accumulatedRsd.getDelta().getStepDetails().getType());
+        assertEquals("file_search", accumulatedRsd.getDelta().getStepDetails().getToolCalls().get(0).getType());
+
+        Message complectionMessage = manager.getCurrentMessage().get();
+        assertEquals("completed", complectionMessage.getStatus());
+        MessageDelta messageDelta = manager.getAccumulatedMsg().get();
+        assertEquals(messageDelta.getId(), complectionMessage.getId());
+        Delta accumulatedDelata = messageDelta.getDelta();
+        assertEquals(accumulatedDelata.getRole(), complectionMessage.getRole());
+        assertEquals(accumulatedDelata.getContent().get(0).getType(), complectionMessage.getContent().get(0).getType());
+        assertEquals(accumulatedDelata.getContent().get(0).getText().getValue(), complectionMessage.getContent().get(0).getText().getValue());
+
+        List<MessageDelta> msgDeltas = manager.getMsgDeltas();
+        MessageDelta first = msgDeltas.get(0);
+        for (int i = 1; i < msgDeltas.size(); i++) {
+            first = DeltaUtil.accumulatMessageDelta(first, msgDeltas.get(i));
+        }
+        assertEquals(first.getDelta().getContent().get(0).getText().getValue(), accumulatedDelata.getContent().get(0).getText().getValue(), "MessageDelta should be accumulated correctly");
     }
 
 
