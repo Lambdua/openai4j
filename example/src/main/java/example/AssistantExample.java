@@ -33,7 +33,7 @@ import java.util.Optional;
  * @date 2024年04月30 13:30
  **/
 public class AssistantExample {
-    public static void main(String[] args) throws JsonProcessingException, UnsupportedEncodingException {
+    public static void main(String[] args) {
         // assistantToolCall();
         // assistantStream();
         // fileSearchExample();
@@ -264,22 +264,22 @@ public class AssistantExample {
                 .content("What does the following value : 5+10*(2^3-2)*1```")
                 .build();
         service.createMessage(threadId, messageRequest);
-        // RunCreateRequest runCreateRequest = RunCreateRequest.builder()
-        //         .assistantId(assistantId)
-        //         .toolChoice(ToolChoice.AUTO)
-        //         .build();
-        // Run run = service.createRun(threadId, runCreateRequest);
-        // String runId = run.getId();
-        // do {
-        //     run = service.retrieveRun(threadId, runId);
-        // } while (!(run.getStatus().equals("completed")) && !(run.getStatus().equals("failed")));
-        // List<RunStep> runSteps = service.listRunSteps(threadId, runId, new ListSearchParameters()).getData();
-        // for (RunStep runStep : runSteps) {
-        //     System.out.println(runStep.getStepDetails());
-        // }
-        // service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
-        //     System.out.println(message.getContent());
-        // });
+        RunCreateRequest runCreateRequest = RunCreateRequest.builder()
+                .assistantId(assistantId)
+                .toolChoice(ToolChoice.AUTO)
+                .build();
+        Run run = service.createRun(threadId, runCreateRequest);
+        String runId = run.getId();
+        do {
+            run = service.retrieveRun(threadId, runId);
+        } while (!(run.getStatus().equals("completed")) && !(run.getStatus().equals("failed")));
+        List<RunStep> runSteps = service.listRunSteps(threadId, runId, new ListSearchParameters()).getData();
+        for (RunStep runStep : runSteps) {
+            System.out.println(runStep.getStepDetails());
+        }
+        service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
+            System.out.println(message.getContent());
+        });
     }
 
 

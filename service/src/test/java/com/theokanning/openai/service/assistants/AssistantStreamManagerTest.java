@@ -50,8 +50,7 @@ public class AssistantStreamManagerTest {
     void generalResponseStreamTest() throws FileNotFoundException {
         AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
         Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-response.txt");
-        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
-        manager.start();
+        AssistantStreamManager manager = AssistantStreamManager.start(assistantStreamExample, mockEventHandler);
 
 
         manager.waitForCompletion();
@@ -94,8 +93,7 @@ public class AssistantStreamManagerTest {
     void errorStreamTest() throws FileNotFoundException {
         AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
         Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-error.txt");
-        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
-        manager.syncStart();
+        AssistantStreamManager manager = AssistantStreamManager.syncStart(assistantStreamExample, mockEventHandler);
 
         // Verify that the event handler received the correct method calls
         verify(mockEventHandler, times(1)).onError(isA(OpenAiHttpException.class));
@@ -109,8 +107,7 @@ public class AssistantStreamManagerTest {
     void shutdownTest() throws FileNotFoundException, InterruptedException {
         AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
         Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-response.txt");
-        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
-        manager.start();
+        AssistantStreamManager manager = AssistantStreamManager.start(assistantStreamExample, mockEventHandler);
 
         Thread.sleep(200);
         manager.shutdown();
@@ -130,8 +127,7 @@ public class AssistantStreamManagerTest {
     void fileSearchStreamTest() throws FileNotFoundException {
         AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
         Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-fileSearch.txt");
-        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
-        manager.syncStart();
+        AssistantStreamManager manager = AssistantStreamManager.syncStart(assistantStreamExample, mockEventHandler);
 
         // Verify that the event handler received the correct method calls
         verify(mockEventHandler, times(1)).onRunCreated(isA(Run.class));
@@ -188,8 +184,7 @@ public class AssistantStreamManagerTest {
     void toolRequireStreamTest() throws FileNotFoundException {
         AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
         Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-tool-require.txt");
-        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
-        manager.syncStart();
+        AssistantStreamManager manager = AssistantStreamManager.syncStart(assistantStreamExample, mockEventHandler);
 
         // Verify that the event handler received the correct method calls
         verify(mockEventHandler, times(1)).onRunCreated(isA(Run.class));
@@ -231,8 +226,7 @@ public class AssistantStreamManagerTest {
     void codeInterpreterStreamTest() throws FileNotFoundException {
         AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
         Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-code-interpreter.txt");
-        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
-        manager.syncStart();
+        AssistantStreamManager manager = AssistantStreamManager.syncStart(assistantStreamExample, mockEventHandler);
 
         // Verify that the event handler received the correct method calls
         verify(mockEventHandler, atLeastOnce()).onRunStepDelta(isA(RunStepDelta.class));

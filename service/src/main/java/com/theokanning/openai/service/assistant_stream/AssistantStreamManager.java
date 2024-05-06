@@ -54,13 +54,48 @@ public class AssistantStreamManager {
      * @param stream       一个AssistantSSE的流
      * @param eventHandler 事件处理器
      */
-    public AssistantStreamManager(Flowable<AssistantSSE> stream, AssistantEventHandler eventHandler) {
+    private AssistantStreamManager(Flowable<AssistantSSE> stream, AssistantEventHandler eventHandler) {
         this.eventHandler = eventHandler;
         this.msgDeltas = Collections.synchronizedList(new ArrayList<>());
         this.runStepDeltas = Collections.synchronizedList(new ArrayList<>());
         this.eventMsgsHolder = Collections.synchronizedList(new ArrayList<>());
         this.stream = stream;
     }
+
+    /**
+     * 一个异步的Assistant stream管理器
+     *
+     * @param stream 一个AssistantSSE的流
+     */
+    private AssistantStreamManager(Flowable<AssistantSSE> stream) {
+        this(stream, new AssistantEventHandler() {
+        });
+    }
+
+    public static AssistantStreamManager start(Flowable<AssistantSSE> stream, AssistantEventHandler eventHandler) {
+        AssistantStreamManager manager = new AssistantStreamManager(stream, eventHandler);
+        manager.start();
+        return manager;
+    }
+
+    public static AssistantStreamManager start(Flowable<AssistantSSE> stream) {
+        AssistantStreamManager manager = new AssistantStreamManager(stream);
+        manager.start();
+        return manager;
+    }
+
+    public static AssistantStreamManager syncStart(Flowable<AssistantSSE> stream, AssistantEventHandler eventHandler) {
+        AssistantStreamManager manager = new AssistantStreamManager(stream, eventHandler);
+        manager.syncStart();
+        return manager;
+    }
+
+    public static AssistantStreamManager syncStart(Flowable<AssistantSSE> stream) {
+        AssistantStreamManager manager = new AssistantStreamManager(stream);
+        manager.syncStart();
+        return manager;
+    }
+
 
     public Optional<MessageDelta> getAccumulatedMsg() {
         return Optional.ofNullable(accumulatedMessageDelta);
@@ -79,21 +114,13 @@ public class AssistantStreamManager {
     }
 
 
-    /**
-     * 一个异步的Assistant stream管理器
-     *
-     * @param stream 一个AssistantSSE的流
-     */
-    public AssistantStreamManager(Flowable<AssistantSSE> stream) {
-        this(stream, new AssistantEventHandler() {
-        });
-    }
+
 
     public Optional<RunStep> getCurrentRunStep() {
         return Optional.ofNullable(currentRunStep);
     }
 
-    public void start() {
+    private void start() {
         disposable = stream.subscribe(this::handleEvent, eventHandler::onError, () -> completed = true);
     }
 
@@ -103,7 +130,7 @@ public class AssistantStreamManager {
         }
     }
 
-    public void syncStart() {
+    private void syncStart() {
         stream.blockingSubscribe(this::handleEvent, eventHandler::onError, () -> completed = true);
     }
 
