@@ -46,10 +46,14 @@ public class DeltaUtil {
             if (nowDeltaContent.getType().equals("text")) {
                 Text text = existsContent.getText();
                 text.setValue(text.getValue() + nowDeltaContent.getText().getValue());
-                //todo annotations  这里要测试什么时候返回引用
-                text.setAnnotations(nowDeltaContent.getText().getAnnotations());
+                if (nowDeltaContent.getText().getAnnotations() != null && !nowDeltaContent.getText().getAnnotations().isEmpty()) {
+                    if (text.getAnnotations() == null) {
+                        text.setAnnotations(nowDeltaContent.getText().getAnnotations());
+                    } else {
+                        text.getAnnotations().addAll(nowDeltaContent.getText().getAnnotations());
+                    }
+                }
             }
-            //todo image file 应该是只会返回一次才对
             if (nowDeltaContent.getType().equals("image_file") && nowDeltaContent.getImageFile() != null) {
                 existsContent.setImageFile(nowDeltaContent.getImageFile());
             }
@@ -87,10 +91,8 @@ public class DeltaUtil {
                 existsFunPart.setArguments(new TextNode(Optional.ofNullable(existsFunPart.getArguments()).orElse(new TextNode("")).asText() + currentFunPart.getArguments().asText()));
             }
         } else if (existsToolCallPart.getType().equals("file_search")) {
-
-            //todo 合并code_interpreter和file_search类型的数据
+            //file_search类型的数据不需要合并,只返回一次
         } else if (existsToolCallPart.getType().equals("code_interpreter")) {
-
             //todo 合并code_interpreter和file_search类型的数据
         }
         return result;
