@@ -63,7 +63,7 @@ public class AssistantStreamManager {
     }
 
     /**
-     * 一个异步的Assistant stream管理器
+     * an asynchronous assistant stream manager
      *
      * @param stream 一个AssistantSSE的流
      */
@@ -114,8 +114,6 @@ public class AssistantStreamManager {
     }
 
 
-
-
     public Optional<RunStep> getCurrentRunStep() {
         return Optional.ofNullable(currentRunStep);
     }
@@ -124,7 +122,7 @@ public class AssistantStreamManager {
         disposable = stream.subscribe(this::handleEvent, eventHandler::onError, () -> completed = true);
     }
 
-    public void shutdown() {
+    public void shutDown() {
         if (disposable != null) {
             disposable.dispose();
         }
@@ -138,112 +136,106 @@ public class AssistantStreamManager {
         StreamEvent eventType = sse.getEvent();
         eventMsgsHolder.add(sse);
         eventHandler.onEvent(sse);
-        try {
-            switch (eventType) {
-                case THREAD_RUN_CREATED:
-                    updateCurrentRun(sse);
-                    eventHandler.onRunCreated(currentRun);
-                    break;
-                case THREAD_RUN_QUEUED:
-                    updateCurrentRun(sse);
-                    eventHandler.onRunQueued(currentRun);
-                    break;
-                case THREAD_RUN_IN_PROGRESS:
-                    updateCurrentRun(sse);
-                    eventHandler.onRunInProgress(currentRun);
-                    break;
-                case THREAD_RUN_REQUIRES_ACTION:
-                    updateCurrentRun(sse);
-                    translationRunStepDelta();
-                    eventHandler.onRunRequiresAction(currentRun);
-                    break;
-                case THREAD_RUN_COMPLETED:
-                    updateCurrentRun(sse);
-                    eventHandler.onRunCompleted(currentRun);
-                    break;
-                case THREAD_RUN_FAILED:
-                    updateCurrentRun(sse);
-                    log.warn("run:{} failed at:{}", currentRun.getId(), currentRun.getFailedAt());
-                    eventHandler.onRunFailed(currentRun);
-                    break;
-                case THREAD_RUN_CANCELLING:
-                    updateCurrentRun(sse);
-                    eventHandler.onRunCancelling(currentRun);
-                    break;
-                case THREAD_RUN_CANCELLED:
-                    updateCurrentRun(sse);
-                    eventHandler.onRunCancelled(currentRun);
-                    break;
-                case THREAD_RUN_EXPIRED:
-                    updateCurrentRun(sse);
-                    log.warn("run:{} expired at:{}", currentRun.getId(), currentRun.getExpiresAt());
-                    eventHandler.onRunExpired(currentRun);
-                    break;
-                case THREAD_RUN_STEP_CREATED:
-                    updateCurrentRunStep(sse);
-                    eventHandler.onRunStepCreated(currentRunStep);
-                    break;
-                case THREAD_RUN_STEP_IN_PROGRESS:
-                    updateCurrentRunStep(sse);
-                    eventHandler.onRunStepInProgress(currentRunStep);
-                    break;
-                case THREAD_RUN_STEP_DELTA:
-                    accumulateRunStepDeltaAndSave(sse);
-                    eventHandler.onRunStepDelta(this.runStepDeltas.get(runStepDeltas.size() - 1));
-                    break;
-                case THREAD_RUN_STEP_COMPLETED:
-                    updateCurrentRunStep(sse);
-                    eventHandler.onRunStepCompleted(currentRunStep);
-                    break;
-                case THREAD_RUN_STEP_FAILED:
-                    updateCurrentRunStep(sse);
-                    log.warn("runid:{} ,RunStepId:{} failed at:{}", currentRun.getId(), currentRunStep.getId(), currentRunStep.getFailedAt());
-                    eventHandler.onRunStepFailed(currentRunStep);
-                    break;
-                case THREAD_RUN_STEP_CANCELLED:
-                    updateCurrentRunStep(sse);
-                    eventHandler.onRunStepCancelled(currentRunStep);
-                    break;
-                case THREAD_RUN_STEP_EXPIRED:
-                    updateCurrentRunStep(sse);
-                    log.warn("runid:{} ,RunStepId:{} expired at: {}", currentRun.getId(), currentRunStep.getId(), currentRunStep.getExpiredAt());
-                    eventHandler.onRunStepExpired(currentRunStep);
-                    break;
-                case THREAD_MESSAGE_CREATED:
-                    updateCurrentMessage(sse);
-                    eventHandler.onMessageCreated(currentMessage);
-                    break;
-                case THREAD_MESSAGE_IN_PROGRESS:
-                    updateCurrentMessage(sse);
-                    eventHandler.onMessageInProgress(currentMessage);
-                    break;
-                case THREAD_MESSAGE_DELTA:
-                    accumulateMessageDeltaAndSave(sse);
-                    eventHandler.onMessageDelta(this.msgDeltas.get(msgDeltas.size() - 1));
-                    break;
-                case THREAD_MESSAGE_COMPLETED:
-                    updateCurrentMessage(sse);
-                    eventHandler.onMessageCompleted(currentMessage);
-                    break;
-                case THREAD_MESSAGE_INCOMPLETE:
-                    updateCurrentMessage(sse);
-                    log.warn("Message:{} incomplete", currentMessage.getId());
-                    eventHandler.onMessageInComplete(currentMessage);
-                    break;
-                case DONE:
-                    completed = true;
-                    eventHandler.onEnd();
-                    break;
-                case ERROR:
-                    log.error("Stream error,the final message is:{},Run is {} ", currentMessage, currentRun);
-                    completed = true;
-                    eventHandler.onError(new OpenAiHttpException(sse.getPojo(), null, 200));
-                    break;
-            }
-        } catch (JsonProcessingException e) {
-            log.error("JsonProcessingException", e);
-            completed = true;
-            eventHandler.onError(e);
+        switch (eventType) {
+            case THREAD_RUN_CREATED:
+                updateCurrentRun(sse);
+                eventHandler.onRunCreated(currentRun);
+                break;
+            case THREAD_RUN_QUEUED:
+                updateCurrentRun(sse);
+                eventHandler.onRunQueued(currentRun);
+                break;
+            case THREAD_RUN_IN_PROGRESS:
+                updateCurrentRun(sse);
+                eventHandler.onRunInProgress(currentRun);
+                break;
+            case THREAD_RUN_REQUIRES_ACTION:
+                updateCurrentRun(sse);
+                translationRunStepDelta();
+                eventHandler.onRunRequiresAction(currentRun);
+                break;
+            case THREAD_RUN_COMPLETED:
+                updateCurrentRun(sse);
+                eventHandler.onRunCompleted(currentRun);
+                break;
+            case THREAD_RUN_FAILED:
+                updateCurrentRun(sse);
+                log.warn("run:{} failed at:{}", currentRun.getId(), currentRun.getFailedAt());
+                eventHandler.onRunFailed(currentRun);
+                break;
+            case THREAD_RUN_CANCELLING:
+                updateCurrentRun(sse);
+                eventHandler.onRunCancelling(currentRun);
+                break;
+            case THREAD_RUN_CANCELLED:
+                updateCurrentRun(sse);
+                eventHandler.onRunCancelled(currentRun);
+                break;
+            case THREAD_RUN_EXPIRED:
+                updateCurrentRun(sse);
+                log.warn("run:{} expired at:{}", currentRun.getId(), currentRun.getExpiresAt());
+                eventHandler.onRunExpired(currentRun);
+                break;
+            case THREAD_RUN_STEP_CREATED:
+                updateCurrentRunStep(sse);
+                eventHandler.onRunStepCreated(currentRunStep);
+                break;
+            case THREAD_RUN_STEP_IN_PROGRESS:
+                updateCurrentRunStep(sse);
+                eventHandler.onRunStepInProgress(currentRunStep);
+                break;
+            case THREAD_RUN_STEP_DELTA:
+                accumulateRunStepDeltaAndSave(sse);
+                eventHandler.onRunStepDelta(this.runStepDeltas.get(runStepDeltas.size() - 1));
+                break;
+            case THREAD_RUN_STEP_COMPLETED:
+                updateCurrentRunStep(sse);
+                eventHandler.onRunStepCompleted(currentRunStep);
+                break;
+            case THREAD_RUN_STEP_FAILED:
+                updateCurrentRunStep(sse);
+                log.warn("runid:{} ,RunStepId:{} failed at:{}", currentRun.getId(), currentRunStep.getId(), currentRunStep.getFailedAt());
+                eventHandler.onRunStepFailed(currentRunStep);
+                break;
+            case THREAD_RUN_STEP_CANCELLED:
+                updateCurrentRunStep(sse);
+                eventHandler.onRunStepCancelled(currentRunStep);
+                break;
+            case THREAD_RUN_STEP_EXPIRED:
+                updateCurrentRunStep(sse);
+                log.warn("runid:{} ,RunStepId:{} expired at: {}", currentRun.getId(), currentRunStep.getId(), currentRunStep.getExpiredAt());
+                eventHandler.onRunStepExpired(currentRunStep);
+                break;
+            case THREAD_MESSAGE_CREATED:
+                updateCurrentMessage(sse);
+                eventHandler.onMessageCreated(currentMessage);
+                break;
+            case THREAD_MESSAGE_IN_PROGRESS:
+                updateCurrentMessage(sse);
+                eventHandler.onMessageInProgress(currentMessage);
+                break;
+            case THREAD_MESSAGE_DELTA:
+                accumulateMessageDeltaAndSave(sse);
+                eventHandler.onMessageDelta(this.msgDeltas.get(msgDeltas.size() - 1));
+                break;
+            case THREAD_MESSAGE_COMPLETED:
+                updateCurrentMessage(sse);
+                eventHandler.onMessageCompleted(currentMessage);
+                break;
+            case THREAD_MESSAGE_INCOMPLETE:
+                updateCurrentMessage(sse);
+                log.warn("Message:{} incomplete", currentMessage.getId());
+                eventHandler.onMessageInComplete(currentMessage);
+                break;
+            case DONE:
+                completed = true;
+                eventHandler.onEnd();
+                break;
+            case ERROR:
+                log.error("Stream error,the final message is:{},Run is {} ", currentMessage, currentRun);
+                completed = true;
+                eventHandler.onError(new OpenAiHttpException(sse.getPojo(), null, 200));
+                break;
         }
     }
 
@@ -256,7 +248,7 @@ public class AssistantStreamManager {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
                 log.error("InterruptedException", e);
-                shutdown();
+                shutDown();
             }
         }
     }
@@ -266,7 +258,7 @@ public class AssistantStreamManager {
     }
 
     /**
-     * 返回sse事件流,这里返回的是一个新的list,不会影响内部的list
+     * Return the sse event stream, where a new list is returned. However, if you modify the properties of internal objects, it will affect the original list
      */
     public List<AssistantSSE> getEventMsgsHolder() {
         return new ArrayList<>(eventMsgsHolder);
@@ -283,12 +275,16 @@ public class AssistantStreamManager {
 
 
     /**
-     * 将之前合并的string类型的json function参数转换为jsonNode
+     * Convert the JSON function parameter of the previously merged string type to JSONNode
      */
-    private void translationRunStepDelta() throws JsonProcessingException {
+    private void translationRunStepDelta() {
         for (ToolCall toolCall : accumulatedRsd.getDelta().getStepDetails().getToolCalls()) {
             ToolCallFunction function = toolCall.getFunction();
-            function.setArguments(mapper.readTree(function.getArguments().asText()));
+            try {
+                function.setArguments(mapper.readTree(function.getArguments().asText()));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
