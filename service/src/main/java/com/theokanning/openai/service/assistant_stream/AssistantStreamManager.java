@@ -18,7 +18,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * assistant stream 管理器,帮助处理assistant stream的事件
@@ -35,29 +37,47 @@ public class AssistantStreamManager {
     private final List<RunStepDelta> runStepDeltas;
     private final List<AssistantSSE> eventMsgsHolder;
     private final ObjectMapper mapper = new ObjectMapper();
-
-
-    @Getter
     private MessageDelta accumulatedMessageDelta;
 
-    @Getter
     private RunStepDelta accumulatedRsd;
-
-    @Getter
     private Run currentRun;
-
-    @Getter
     private Message currentMessage;
-
-    @Getter
     private RunStep currentRunStep;
 
     @Getter
     private volatile boolean completed;
-
-    private Flowable<AssistantSSE> stream;
-
+    private final Flowable<AssistantSSE> stream;
     private Disposable disposable;
+
+    /**
+     * assistant 流响应处理器
+     *
+     * @param stream       一个AssistantSSE的流
+     * @param eventHandler 事件处理器
+     */
+    public AssistantStreamManager(Flowable<AssistantSSE> stream, AssistantEventHandler eventHandler) {
+        this.eventHandler = eventHandler;
+        this.msgDeltas = Collections.synchronizedList(new ArrayList<>());
+        this.runStepDeltas = Collections.synchronizedList(new ArrayList<>());
+        this.eventMsgsHolder = Collections.synchronizedList(new ArrayList<>());
+        this.stream = stream;
+    }
+
+    public Optional<MessageDelta> getAccumulatedMsg() {
+        return Optional.ofNullable(accumulatedMessageDelta);
+    }
+
+    public Optional<RunStepDelta> getAccumulatedRsd() {
+        return Optional.ofNullable(accumulatedRsd);
+    }
+
+    public Optional<Run> getCurrentRun() {
+        return Optional.ofNullable(currentRun);
+    }
+
+    public Optional<Message> getCurrentMessage() {
+        return Optional.ofNullable(currentMessage);
+    }
 
 
     /**
@@ -70,18 +90,8 @@ public class AssistantStreamManager {
         });
     }
 
-    /**
-     * assistant 流响应处理器
-     *
-     * @param stream       一个AssistantSSE的流
-     * @param eventHandler 事件处理器
-     */
-    public AssistantStreamManager(Flowable<AssistantSSE> stream, AssistantEventHandler eventHandler) {
-        this.eventHandler = eventHandler;
-        this.msgDeltas = new ArrayList<>();
-        this.runStepDeltas = new ArrayList<>();
-        this.eventMsgsHolder = new ArrayList<>();
-        this.stream = stream;
+    public Optional<RunStep> getCurrentRunStep() {
+        return Optional.ofNullable(currentRunStep);
     }
 
     public void start() {
@@ -222,8 +232,8 @@ public class AssistantStreamManager {
         }
     }
 
-    public StreamEvent getCurrentEvent() {
-        return eventMsgsHolder.isEmpty() ? null : eventMsgsHolder.get(eventMsgsHolder.size() - 1).getEvent();
+    public Optional<StreamEvent> getCurrentEvent() {
+        return Optional.ofNullable(eventMsgsHolder.isEmpty() ? null : eventMsgsHolder.get(eventMsgsHolder.size() - 1).getEvent());
     }
 
     /**
