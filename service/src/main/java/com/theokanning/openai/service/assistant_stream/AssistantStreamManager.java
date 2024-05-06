@@ -104,7 +104,7 @@ public class AssistantStreamManager {
         }
     }
 
-    public void asyncStart() {
+    public void syncStart() {
         stream.blockingSubscribe(this::handleEvent, eventHandler::onError, () -> completed = true);
     }
 
@@ -222,9 +222,12 @@ public class AssistantStreamManager {
     }
 
     public void waitForCompletion() {
+        if (disposable != null && disposable.isDisposed()) {
+            return;
+        }
         while (!completed) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 log.error("InterruptedException", e);
                 shutdown();
