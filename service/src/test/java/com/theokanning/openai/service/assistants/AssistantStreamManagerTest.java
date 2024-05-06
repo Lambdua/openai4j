@@ -110,7 +110,7 @@ public class AssistantStreamManagerTest {
         AssistantStreamManager manager = AssistantStreamManager.start(assistantStreamExample, mockEventHandler);
 
         Thread.sleep(200);
-        manager.shutdown();
+        manager.shutDown();
         assertFalse(manager.isCompleted());
 
         // Thread.sleep(1000);

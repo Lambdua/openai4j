@@ -572,6 +572,119 @@ static void assistantStream() throws JsonProcessingException {
 
 </details>
 
+
+<details>
+<summary>Assistant Stream Manager</summary>
+
+By using the `AssistantEventHandler` class and the `AssistantStreamManager` class, it is easier to manage the streaming
+calls of Assistant `AssistantEventHandler` contains all Assistant stream event callback hooks, and you can implement
+different events as needed:
+
+```java
+    /**
+     * You can implement various event callbacks for Assistant Event Handlers according to your own needs, making it convenient for you to handle various events related to Assistant
+     */
+    private static class LogHandler implements AssistantEventHandler {
+        @Override
+        public void onEvent(AssistantSSE sse) {
+            //every event will call this method
+        }
+
+        @Override
+        public void onRunCreated(Run run) {
+            System.out.println("start run: " + run.getId());
+        }
+
+        @Override
+        public void onEnd() {
+            System.out.println("stream end");
+        }
+
+        @Override
+        public void onMessageDelta(MessageDelta messageDelta) {
+            System.out.println(messageDelta.getDelta().getContent().get(0).getText());
+        }
+
+        @Override
+        public void onMessageCompleted(Message message) {
+            System.out.println("message completed");
+        }
+
+        @Override
+        public void onMessageInComplete(Message message) {
+            System.out.println("message in complete");
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            System.out.println("error:" + error.getMessage());
+        }
+    }
+```
+
+`AssistantStreamManager` arranges and manages various events in the stream, supporting synchronous/asynchronous
+retrieval of content from the stream,
+which can be obtained through the manager. Below is a usage example, for more examples, please refer
+to `AssistantStreamManagerTest.java`.
+
+```java
+    static void streamTest() {
+    OpenAiService service = new OpenAiService();
+    //1. create assistant
+    AssistantRequest assistantRequest = AssistantRequest.builder()
+            .model("gpt-3.5-turbo").name("weather assistant")
+            .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
+            .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
+            .temperature(0D)
+            .build();
+    Assistant assistant = service.createAssistant(assistantRequest);
+    String assistantId = assistant.getId();
+
+    System.out.println("assistantId:" + assistantId);
+    ThreadRequest threadRequest = ThreadRequest.builder()
+            .build();
+    Thread thread = service.createThread(threadRequest);
+    String threadId = thread.getId();
+    System.out.println("threadId:" + threadId);
+    MessageRequest messageRequest = MessageRequest.builder()
+            .content("What can you help me with?")
+            .build();
+    service.createMessage(threadId, messageRequest);
+    RunCreateRequest runCreateRequest = RunCreateRequest.builder()
+            .assistantId(assistantId)
+            .toolChoice(ToolChoice.AUTO)
+            .build();
+
+    //blocking
+    // AssistantStreamManager blockedManagere = AssistantStreamManager.syncStart(service.createRunStream(threadId, runCreateRequest), new LogHandler());
+    //async
+    AssistantStreamManager streamManager = AssistantStreamManager.start(service.createRunStream(threadId, runCreateRequest), new LogHandler());
+
+
+    //Other operations can be performed here...
+    boolean completed = streamManager.isCompleted();
+
+
+    // you can shut down the streamManager if you want to stop the stream
+    streamManager.shutDown();
+
+    //waiting for completion
+    streamManager.waitForCompletion();
+    // all of flowable events
+    List<AssistantSSE> eventMsgsHolder = streamManager.getEventMsgsHolder();
+
+    Optional<Run> currentRun = streamManager.getCurrentRun();
+    // get the accumulated message
+    streamManager.getAccumulatedMsg().ifPresent(msg -> {
+        System.out.println("accumulatedMsg:" + msg);
+    });
+    service.deleteAssistant(assistantId);
+    service.deleteThread(threadId);
+}
+```
+
+</details>
+
 # FAQs
 
 <details style="border: 1px solid #aaa; border-radius: 4px; padding: 0.5em;">
