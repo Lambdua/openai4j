@@ -7,6 +7,7 @@ import com.theokanning.openai.assistants.message.content.DeltaContent;
 import com.theokanning.openai.assistants.message.content.MessageDelta;
 import com.theokanning.openai.assistants.message.content.Text;
 import com.theokanning.openai.assistants.run.ToolCall;
+import com.theokanning.openai.assistants.run.ToolCallCodeInterpreter;
 import com.theokanning.openai.assistants.run.ToolCallFunction;
 import com.theokanning.openai.assistants.run_step.RunStepDelta;
 import com.theokanning.openai.assistants.run_step.StepDetails;
@@ -93,7 +94,18 @@ public class DeltaUtil {
         } else if (existsToolCallPart.getType().equals("file_search")) {
             //file_search类型的数据不需要合并,只返回一次
         } else if (existsToolCallPart.getType().equals("code_interpreter")) {
-            //todo 合并code_interpreter和file_search类型的数据
+            ToolCallCodeInterpreter currentCodeInterpreter = currentToolCallPart.getCodeInterpreter();
+            ToolCallCodeInterpreter existsCodeInterpreter = existsToolCallPart.getCodeInterpreter();
+            if (currentCodeInterpreter.getInput() != null) {
+                existsCodeInterpreter.setInput(existsCodeInterpreter.getInput() + currentCodeInterpreter.getInput());
+            }
+            if (currentCodeInterpreter.getOutputs() != null) {
+                if (existsCodeInterpreter.getOutputs() == null) {
+                    existsCodeInterpreter.setOutputs(currentCodeInterpreter.getOutputs());
+                } else {
+                    existsCodeInterpreter.getOutputs().addAll(currentCodeInterpreter.getOutputs());
+                }
+            }
         }
         return result;
     }

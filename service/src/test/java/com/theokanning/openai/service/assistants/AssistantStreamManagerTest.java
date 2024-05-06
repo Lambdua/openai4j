@@ -222,9 +222,45 @@ public class AssistantStreamManagerTest {
 
         ToolCall respTool = responseToolCalls.get(0);
 
-        //for the toolCall, the index should be null
+        //for use equals method,index should be null
         accumulateTool.setIndex(null);
         assertEquals(respTool, accumulateTool);
+    }
+
+    @Test
+    void codeInterpreterStreamTest() throws FileNotFoundException {
+        AssistantEventHandler mockEventHandler = mock(AssistantEventHandler.class);
+        Flowable<AssistantSSE> assistantStreamExample = getAssistantStreamExample("assistant-stream-code-interpreter.txt");
+        AssistantStreamManager manager = new AssistantStreamManager(assistantStreamExample, mockEventHandler);
+        manager.syncStart();
+
+        // Verify that the event handler received the correct method calls
+        verify(mockEventHandler, atLeastOnce()).onRunStepDelta(isA(RunStepDelta.class));
+        verify(mockEventHandler, times(1)).onEnd();
+
+        //runStepDelta should be accumulated correctly
+        List<RunStepDelta> runStepDeltas = manager.getRunStepDeltas();
+        assertFalse(runStepDeltas.isEmpty());
+        RunStepDelta accumulatedRsd = manager.getAccumulatedRsd().orElse(null);
+        assertNotNull(accumulatedRsd);
+        assertEquals("tool_calls", accumulatedRsd.getDelta().getStepDetails().getType());
+        ToolCall accumulateTool = accumulatedRsd.getDelta().getStepDetails().getToolCalls().get(0);
+        assertEquals("code_interpreter", accumulateTool.getType());
+
+        AssistantSSE respRsd = manager.getEventMsgsHolder().stream().filter(sse -> sse.getEvent().equals(StreamEvent.THREAD_RUN_STEP_COMPLETED) && ((RunStep) sse.getPojo()).getId().equals(accumulatedRsd.getId())).findFirst().orElse(null);
+        assertNotNull(respRsd);
+        RunStep codeInterpreterRunStep = respRsd.getPojo();
+        ToolCall respTool = codeInterpreterRunStep.getStepDetails().getToolCalls().get(0);
+
+        assertEquals("code_interpreter", respTool.getType());
+
+
+        //for use equals method,index should be null
+        accumulateTool.setIndex(null);
+        accumulateTool.getCodeInterpreter().getOutputs().get(0).setIndex(null);
+        assertEquals(respTool, accumulateTool);
+
+
     }
 
 }
