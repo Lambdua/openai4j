@@ -303,6 +303,9 @@ public class AssistantStreamManager {
         MessageDelta msgDelta = mapper.readValue(sse.getData(), MessageDelta.class);
         this.msgDeltas.add(msgDelta);
         accumulatedMessageDelta = DeltaUtil.accumulatMessageDelta(accumulatedMessageDelta, msgDelta);
+        if (accumulatedMessageDelta.getDelta().getRole() == null || accumulatedMessageDelta.getDelta().getRole().isEmpty()) {
+            getCurrentMessage().ifPresent(message -> accumulatedMessageDelta.getDelta().setRole(message.getRole()));
+        }
     }
 
 }
