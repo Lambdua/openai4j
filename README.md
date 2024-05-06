@@ -114,29 +114,28 @@ OpenAiService is versatile in its setup options, as demonstrated in the `example
 //0 Using the default configuration, read the environment variables OPENAI-API_KEY, OPENAI-API_BASE-URL as the default API_KEY and BASE-URL,
 //encourage the use of environment variables to load the OpenAI API key
 OpenAiService openAiService0 = new OpenAiService();
-//1.使用默认的baseUrl,默认配置service,这里会默认先从环境变量中获取BaseURL(key:OPENAI_API_BASE_URL),如果没有则使用默认的"https://api.openai.com/v1/";
+//1.Use the default base URL and configure service by default. Here, the base URL (key: OPENAI API BASE URL) will be obtained from the environment variable by default. If not, the default URL will be used“ https://api.openai.com/v 1/";
 OpenAiService openAiService = new OpenAiService(API_KEY);
-//2. 使用自定义的baseUrl,默认配置配置service
+//2. Use custom base Url with default configuration of service
 OpenAiService openAiService1 = new OpenAiService(API_KEY, BASE_URL);
-//3.自定义过期时间
+//3.Custom expiration time
 OpenAiService openAiService2 = new OpenAiService(API_KEY, Duration.ofSeconds(10));
-//4. 更灵活的自定义
-//4.1. 自定义okHttpClient
+//4. More flexible customization
+//4.1. customize okHttpClient
 OkHttpClient client = new OkHttpClient.Builder()
-        //连接池
+        //connection pool
         .connectionPool(new ConnectionPool(Runtime.getRuntime().availableProcessors() * 2, 30, TimeUnit.SECONDS))
-        //自定义的拦截器,如重试拦截器,日志拦截器,负载均衡拦截器等
+        //Customized interceptors, such as retry interceptors, log interceptors, load balancing interceptors, etc
         // .addInterceptor(new RetryInterceptor())
         // .addInterceptor(new LogInterceptor())
         // .addInterceptor(new LoadBalanceInterceptor())
-        //添加代理
         // .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxyHost", 8080)))
         .connectTimeout(2, TimeUnit.SECONDS)
         .writeTimeout(3, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
         .protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1))
         .build();
-//4.2 自定义Retorfit配置
+//4.2 Customizing Retorfit Configuration
 Retrofit retrofit = OpenAiService.defaultRetrofit(client, OpenAiService.defaultObjectMapper(), BASE_URL);
 OpenAiApi openAiApi = retrofit.create(OpenAiApi.class);
 OpenAiService openAiService3 = new OpenAiService(openAiApi);
@@ -169,7 +168,10 @@ OpenAiService openAiService3 = new OpenAiService(openAiApi);
 <details>
 <summary>Tools</summary>
 This library supports both the outdated method of function calls and the current tool-based approach.
-Firstly, we define the function parameters:
+
+First, we define a function object. The definition of a function object is flexible; you can use POJO to define it (
+automatically serialized by JSON schema) or use methods like `map` and `ChatFunctionDynamic` to define it. You can refer
+to the code in the example package. Here, we define a weather query function object:
 
 ```java
 public class Weather {
@@ -298,7 +300,7 @@ static void functionChat() {
 ```java
 void streamChatMultipleToolCalls() {
   final List<ChatFunction> functions = Arrays.asList(
-          //1. 天气查询
+          //1. weather query
           ChatFunction.builder()
                   .name("get_weather")
                   .description("Get the current weather in a given location")
@@ -314,7 +316,7 @@ void streamChatMultipleToolCalls() {
                         return new WeatherResponse(w.location, w.unit, 0, "unknown");
                     }
                   }).build(),
-          //2. 城市查询
+          //2. city query
           ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(City.class, v -> Arrays.asList("tokyo", "paris")).build()
   );
   final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
@@ -367,7 +369,7 @@ void streamChatMultipleToolCalls() {
   AssistantMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest2))
           .blockingLast()
           .getAccumulatedMessage();
-  //这里应该有两个工具调用
+    //There should be two tool calls here
   messages.add(accumulatedMessage2);
 
   for (ChatToolCall weatherToolCall : accumulatedMessage2.getToolCalls()) {
@@ -505,16 +507,16 @@ static void assistantStream() throws JsonProcessingException {
   Assistant assistant = service.createAssistant(assistantRequest);
   assistantId = assistant.getId();
 
-  //一般响应
+    //general response
   Flowable<AssistantSSE> threadAndRunStream = service.createThreadAndRunStream(
           CreateThreadAndRunRequest.builder()
                   .assistantId(assistantId)
-                  //这里不使用任何工具
+                  //no tools are used here
                   .toolChoice(ToolChoice.NONE)
                   .thread(ThreadRequest.builder()
                           .messages(Collections.singletonList(
                                   MessageRequest.builder()
-                                          .content("你好,你可以帮助我做什么?")
+                                          .content("hello what can you help me with?")
                                           .build()
                           ))
                           .build())
@@ -531,11 +533,11 @@ static void assistantStream() throws JsonProcessingException {
   RunStep runStep = objectMapper.readValue(runStepCompletion.get().getData(), RunStep.class);
   System.out.println(runStep.getStepDetails());
 
-  // 函数调用 stream
+    // Function call stream
   threadId = runStep.getThreadId();
-  service.createMessage(threadId, MessageRequest.builder().content("请帮我查询北京天气").build());
+    service.createMessage(threadId, MessageRequest.builder().content("Please help me check the weather in Beijing").build());
   Flowable<AssistantSSE> getWeatherFlowable = service.createRunStream(threadId, RunCreateRequest.builder()
-          //这里强制使用get_weather函数
+          //Force the use of the get weather function here
           .assistantId(assistantId)
           .toolChoice(new ToolChoice(new Function("get_weather")))
           .build()
@@ -554,8 +556,8 @@ static void assistantStream() throws JsonProcessingException {
   String callId = toolCall.getId();
 
   System.out.println(toolCall.getFunction());
-  // 提交函数调用结果
-  Flowable<AssistantSSE> toolCallResponseFlowable = service.submitToolOutputsStream(threadId, requireActionRun.getId(), SubmitToolOutputsRequest.ofSingletonToolOutput(callId, "北京的天气是晴天"));
+    // Submit function call results
+    Flowable<AssistantSSE> toolCallResponseFlowable = service.submitToolOutputsStream(threadId, requireActionRun.getId(), SubmitToolOutputsRequest.ofSingletonToolOutput(callId, "The weather in Beijing is sunny"));
   TestSubscriber<AssistantSSE> subscriber3 = new TestSubscriber<>();
   toolCallResponseFlowable
           .doOnNext(System.out::println)
