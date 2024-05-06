@@ -2,7 +2,6 @@ package com.theokanning.openai.service.assistant_stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theokanning.openai.OpenAiError;
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.assistants.StreamEvent;
 import com.theokanning.openai.assistants.message.Message;
@@ -211,7 +210,7 @@ public class AssistantStreamManager {
                 case ERROR:
                     log.error("Stream error,the final message is:{},Run is {} ", currentMessage, currentRun);
                     completed = true;
-                    eventHandler.onError(new OpenAiHttpException(mapper.readValue(sse.getData(), OpenAiError.class), null, 200));
+                    eventHandler.onError(new OpenAiHttpException(sse.getPojo(), null, 200));
                     break;
             }
         } catch (JsonProcessingException e) {
@@ -267,43 +266,43 @@ public class AssistantStreamManager {
     }
 
 
-    private void updateCurrentRunStep(AssistantSSE sse) throws JsonProcessingException {
+    private void updateCurrentRunStep(AssistantSSE sse) {
         if (!sse.getEvent().dataClass.equals(RunStep.class)) {
             throw new IllegalArgumentException("Event data is not a RunStep,raw data is: " + sse.getData() + "event is:" + sse.getEvent().name());
         }
-        this.currentRunStep = mapper.readValue(sse.getData(), RunStep.class);
+        this.currentRunStep = sse.getPojo();
     }
 
-    private void updateCurrentRun(AssistantSSE sse) throws JsonProcessingException {
+    private void updateCurrentRun(AssistantSSE sse) {
         if (!sse.getEvent().dataClass.equals(Run.class)) {
             throw new IllegalArgumentException("Event data is not a Run,raw data is: " + sse.getData() + "event is:" + sse.getEvent().name());
         }
-        this.currentRun = mapper.readValue(sse.getData(), Run.class);
+        this.currentRun = sse.getPojo();
     }
 
-    private void updateCurrentMessage(AssistantSSE sse) throws JsonProcessingException {
+    private void updateCurrentMessage(AssistantSSE sse) {
         if (!sse.getEvent().dataClass.equals(Message.class)) {
             throw new IllegalArgumentException("Event data is not a Message,raw data is: " + sse.getData() + "event is:" + sse.getEvent().name());
         }
-        this.currentMessage = mapper.readValue(sse.getData(), Message.class);
+        this.currentMessage = sse.getPojo();
     }
 
 
-    private void accumulateRunStepDeltaAndSave(AssistantSSE sse) throws JsonProcessingException {
+    private void accumulateRunStepDeltaAndSave(AssistantSSE sse) {
         if (!sse.getEvent().dataClass.equals(RunStepDelta.class)) {
             throw new IllegalArgumentException("Event data is not a RunStepDelta,raw data is: " + sse.getData() + "event is:" + sse.getEvent().name());
         }
-        RunStepDelta currentRenStepDelta = mapper.readValue(sse.getData(), RunStepDelta.class);
+        RunStepDelta currentRenStepDelta = sse.getPojo();
         this.runStepDeltas.add(currentRenStepDelta);
         accumulatedRsd = DeltaUtil.accumulatRunStepDelta(accumulatedRsd, currentRenStepDelta);
     }
 
 
-    private void accumulateMessageDeltaAndSave(AssistantSSE sse) throws JsonProcessingException {
+    private void accumulateMessageDeltaAndSave(AssistantSSE sse) {
         if (!sse.getEvent().dataClass.equals(MessageDelta.class)) {
             throw new IllegalArgumentException("Event data is not a MessageDelta,raw data is: " + sse.getData() + "event is:" + sse.getEvent().name());
         }
-        MessageDelta msgDelta = mapper.readValue(sse.getData(), MessageDelta.class);
+        MessageDelta msgDelta = sse.getPojo();
         this.msgDeltas.add(msgDelta);
         accumulatedMessageDelta = DeltaUtil.accumulatMessageDelta(accumulatedMessageDelta, msgDelta);
         if (accumulatedMessageDelta.getDelta().getRole() == null || accumulatedMessageDelta.getDelta().getRole().isEmpty()) {
