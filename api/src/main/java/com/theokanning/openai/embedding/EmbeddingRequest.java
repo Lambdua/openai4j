@@ -24,9 +24,9 @@ public class EmbeddingRequest {
     /**
      * input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays.
      * The input must not exceed the max input tokens for the model (8192 tokens for text-embedding-ada-002), cannot be an empty string, and any array must be 2048 dimensions or less. <br> <br>
-     *
-     * {@link InputData} is the parent class for all input types. use {@link StringInput}, {@link StringArrayInput}, {@link IntegerArrayInput}, {@link ArrayOfArraysInput} <br>
-     * Also you can use {@link InternalBuilder#input(Object)} to pass the input, it will automatically detect the input type.
+     * <p>
+     * input allow type of :String/Integer/List<String>/List<Integer>/List<List<Integer>>   <br>
+     * Also you can use {@link InternalBuilder#input(Object)} to check the input, it will automatically check the input type.
      */
     @NonNull
     Object input;
@@ -40,26 +40,22 @@ public class EmbeddingRequest {
         @Builder
         @SuppressWarnings("unchecked")
         public EmbeddingRequestBuilder input(@NonNull Object input) {
-            if (input instanceof InputData) {
-                return super.input(input);
-            }
             if (input instanceof String) {
-                return super.input(new StringInput((String) input));
+                return super.input(input);
             }
             if (input instanceof List) {
                 List tem = (List) input;
                 if (tem.stream().allMatch(String.class::isInstance)) {
-                    return super.input(new StringArrayInput((List<String>) input));
+                    return super.input(input);
                 }
-
                 if (tem.stream().allMatch(Integer.class::isInstance)) {
-                    return super.input(new IntegerArrayInput((List<Integer>) input));
+                    return super.input(input);
                 }
 
                 if (tem.stream().allMatch(List.class::isInstance)) {
                     List<List> tem2 = (List<List>) input;
                     if (tem2.stream().flatMap(List::stream).allMatch(Integer.class::isInstance)) {
-                        return super.input(new ArrayOfArraysInput((List<List<Integer>>) input));
+                        return super.input(input);
                     }
                 }
             }
