@@ -711,6 +711,21 @@ static void assistantStream() throws JsonProcessingException {
 
 感谢您对OpenAi4J的支持！
 
+# Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+<a href="https://github.com/Lambdua/openai4j/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lambdua/openai4j" />
+</a>
+
 # 许可证
 
 Released under the MIT License

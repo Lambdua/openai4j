@@ -725,6 +725,21 @@ the project alive and continuously improve it. Stay tuned for updates and feel f
 suggest new features.
 Thank you for supporting OpenAi4J!
 
+# Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+<a href="https://github.com/Lambdua/openai4j/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lambdua/openai4j" />
+</a>
+
 # License
 Released under the MIT License
 
