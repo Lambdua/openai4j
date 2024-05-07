@@ -16,7 +16,7 @@ OpenAi4J是一个非官方的Java库，旨在帮助java开发者与OpenAI的GPT�
 
 这个库旨在为Java开发人员提供一个强大的工具，将OpenAI的强大功能毫不费力地集成到他们的应用程序中。
 
-## v0.20.1 将会支持的功能
+## v0.20.2 将会支持的功能
 
 - [ ]  更简单、方便的使用Assistant-v2 stream模式
 
@@ -25,14 +25,14 @@ OpenAi4J是一个非官方的Java库，旨在帮助java开发者与OpenAI的GPT�
 ## 导入依赖
 ### Gradle
 
-`implementation 'io.github.lambdua:<api|client|service>:0.20.1'`
+`implementation 'io.github.lambdua:<api|client|service>:0.20.2'`
 ### Maven
 ```xml
 
 <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>service</artifactId>
-    <version>0.20.1</version>
+    <version>0.20.2</version>
 </dependency>
 ```
 
@@ -65,7 +65,7 @@ static void simpleChat() {
 <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>api</artifactId>
-    <version>0.20.1</version>
+    <version>0.20.2</version>
 </dependency>
 ```
 
