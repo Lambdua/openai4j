@@ -24,6 +24,4 @@ public class Embedding {
      * The position of this embedding in the list
      */
     Integer index;
-
-
 }
