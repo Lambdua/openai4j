@@ -20,10 +20,6 @@ continues development to incorporate latest API features after the original proj
 This library aims to provide Java developers with a robust tool to integrate OpenAI's powerful capabilities into their
 applications effortlessly.
 
-## v0.20.2 will be released soon
-
-- [ ]  a more user-friendly way to access and use assistant-stream
-
 # Quick Start
 
 ## Import
