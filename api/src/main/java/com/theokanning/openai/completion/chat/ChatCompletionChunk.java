@@ -1,6 +1,7 @@
 package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.Usage;
 import lombok.Data;
 
 import java.util.List;
@@ -38,11 +39,16 @@ public class ChatCompletionChunk {
     @JsonProperty("system_fingerprint")
     String systemFingerprint;
 
-
-
     /**
-     * A list of all generated completions.
+     * A list of chat completion choices. Can contain more than one elements if n is greater than 1.
+     * Can also be empty for the last chunk if you set stream_options: {"include_usage": true} {@link ChatCompletionRequest#streamOptions}.
      */
     List<ChatCompletionChoice> choices;
+
+    /**
+     * An optional field that will only be present when you set stream_options: {"include_usage": true} {@link ChatCompletionRequest#streamOptions} in your request.
+     * When present, it contains a null value except for the last chunk which contains the token usage statistics for the entire request.
+     */
+    Usage usage;
 
 }

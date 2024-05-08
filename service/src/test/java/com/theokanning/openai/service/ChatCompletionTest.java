@@ -60,6 +60,31 @@ class ChatCompletionTest {
     }
 
     @Test
+    void streamOptionsChatCompletion() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a dog and will speak as such.");
+        messages.add(systemMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(50)
+                .logitBias(new HashMap<>())
+                .stream(true)
+                .streamOptions(StreamOption.INCLUDE)
+                .build();
+
+        List<ChatCompletionChunk> chunks = new ArrayList<>();
+        service.streamChatCompletion(chatCompletionRequest).blockingForEach(chunks::add);
+        assertTrue(!chunks.isEmpty());
+        assertNotNull(chunks.get(1).getChoices().get(0));
+        assertNotNull(chunks.get(chunks.size() - 1).getUsage());
+    }
+
+
+    @Test
     void createChatCompletionWithJsonMode() {
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You will generate a random name and return it in JSON format.");

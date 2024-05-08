@@ -102,5 +102,8 @@
   "stop": [
     "test",
     "other"
-  ]
+  ],
+  "stream_options": {
+    "include_usage": true
+  }
 }

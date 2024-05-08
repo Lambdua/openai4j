@@ -66,6 +66,13 @@ public class ChatCompletionRequest {
     Boolean stream;
 
     /**
+     * If set, partial message deltas will be sent, like in ChatGPT.
+     * Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE]
+     */
+    @JsonProperty("stream_options")
+    StreamOption streamOptions;
+
+    /**
      * Up to 4 sequences where the API will stop generating further tokens.
      */
     List<String> stop;
