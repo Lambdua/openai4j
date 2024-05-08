@@ -12,16 +12,13 @@ import lombok.Data;
 import java.io.IOException;
 
 /**
+ * https://platform.openai.com/docs/guides/function-calling/function-calling-behavior
  * @author LiangTao
  * @date 2024年04月18 17:18
  **/
 @Data
 public class ToolChoice {
-    /**
-     * The type of the tool. If type is function, the function name must be set
-     * enum: none/auto/function
-     */
-    String type;
+    public static final ToolChoice REQUIRED = new ToolChoice("required");
 
     /**
      * The name of the function to call.
@@ -31,6 +28,13 @@ public class ToolChoice {
     public static final ToolChoice NONE = new ToolChoice("none");
 
     public static final ToolChoice AUTO = new ToolChoice("auto");
+    /**
+     * The type of the tool. If type is function, the function name must be set
+     * enum: none/auto/function/required
+     */
+    String type;
+
+
 
     private ToolChoice(String type) {
         this.type = type;
@@ -55,6 +59,8 @@ public class ToolChoice {
                         return ToolChoice.NONE;
                     case "auto":
                         return ToolChoice.AUTO;
+                    case "required":
+                        return ToolChoice.REQUIRED;
                     default:
                         return new ToolChoice(type);
                 }
@@ -96,9 +102,8 @@ public class ToolChoice {
             String type = toolChoice.getType();
             switch (type) {
                 case "none":
-                    jsonGenerator.writeString(type);
-                    break;
                 case "auto":
+                case "required":
                     jsonGenerator.writeString(type);
                     break;
                 default:
