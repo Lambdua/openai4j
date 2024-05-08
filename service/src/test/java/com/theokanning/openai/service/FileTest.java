@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,52 +19,53 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FileTest {
-    static String filePath = "src/test/resources/fine-tuning-data.jsonl";
 
     OpenAiService service = new OpenAiService();
-    static String fileId;
 
     @Test
     @Order(1)
     void uploadFile() throws Exception {
+        String filePath = "src/test/resources/fine-tuning-data.jsonl";
         File file = service.uploadFile("fine-tune", filePath);
-        fileId = file.getId();
-
+        String fileId = file.getId();
         assertEquals("fine-tune", file.getPurpose());
-        assertEquals(filePath, file.getFilename());
-
+        assertEquals("fine-tuning-data.jsonl", file.getFilename());
         // wait for file to be processed
         TimeUnit.SECONDS.sleep(10);
+
+        List<File> files = service.listFiles();
+        assertTrue(files.stream().anyMatch(fileItem -> fileItem.getId().equals(fileId)));
+        file = service.retrieveFile(fileId);
+        assertEquals("fine-tuning-data.jsonl", file.getFilename());
+        String fileBytesToString = service.retrieveFileContent(fileId).string();
+        String contents = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+        assertEquals(contents, fileBytesToString);
+        DeleteResult result = service.deleteFile(fileId);
+        assertTrue(result.isDeleted());
     }
 
     @Test
     @Order(2)
-    void listFiles() {
-        List<File> files = service.listFiles();
-
-        assertTrue(files.stream().anyMatch(file -> file.getId().equals(fileId)));
-    }
-
-    @Test
-    @Order(3)
-    void retrieveFile() {
-        File file = service.retrieveFile(fileId);
-
+    void uploadFileStream() throws Exception {
+        String filePath = "batch-task-data.jsonl";
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(filePath);
+        File file = service.uploadFile("fine-tune", resourceAsStream, "batch-task-data.jsonl");
+        String fileId = file.getId();
+        assertEquals("fine-tune", file.getPurpose());
         assertEquals(filePath, file.getFilename());
-    }
+        // wait for file to be processed
+        TimeUnit.SECONDS.sleep(10);
 
-    @Test
-    @Order(4)
-    void retrieveFileContent() throws IOException {
+        List<File> files = service.listFiles();
+        assertTrue(files.stream().anyMatch(fileItem -> fileItem.getId().equals(fileId)));
+        file = service.retrieveFile(fileId);
+        assertEquals(filePath, file.getFilename());
         String fileBytesToString = service.retrieveFileContent(fileId).string();
-        String contents = new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+        String contents = new String(Files.readAllBytes(new java.io.File(getClass().getClassLoader().getResource(filePath).getFile()).toPath()), StandardCharsets.UTF_8);
         assertEquals(contents, fileBytesToString);
-    }
-
-    @Test
-    @Order(5)
-    void deleteFile() {
         DeleteResult result = service.deleteFile(fileId);
         assertTrue(result.isDeleted());
     }
+
+
 }

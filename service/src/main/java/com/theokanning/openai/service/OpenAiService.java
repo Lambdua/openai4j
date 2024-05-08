@@ -62,7 +62,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.validation.constraints.NotNull;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
@@ -249,11 +252,28 @@ public class OpenAiService {
      */
     public File uploadFile(String purpose, String filepath) {
         java.io.File file = new java.io.File(filepath);
+        try {
+            return uploadFile(purpose, new FileInputStream(file), file.getName());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Upload a file using InputStream.
+     *
+     * @param purpose         file purpose, Use "assistants" for Assistants and Messages, "batch" for Batch API, and "fine-tune" for Fine-tuning.
+     * @param fileInputStream the input stream of the file to be uploaded
+     * @param filename        the name of the file to be uploaded
+     * @return the File object returned by the API after the file is uploaded
+     */
+    public File uploadFile(String purpose, InputStream fileInputStream, String filename) {
         RequestBody purposeBody = RequestBody.create(MultipartBody.FORM, purpose);
-        RequestBody fileBody = RequestBody.create(MediaType.parse("text"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
+        RequestBody fileBody = RequestBody.create(FileUtil.getFileUploadMediaType(filename), FileUtil.readAllBytes(fileInputStream));
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", filename, fileBody);
         return execute(api.uploadFile(purposeBody, body));
     }
+
 
     public Batch createBatch(BatchRequest request) {
         return execute(api.createBatch(request));
@@ -503,7 +523,6 @@ public class OpenAiService {
     }
 
 
-
     public RunStep retrieveRunStep(String threadId, String runId, String stepId) {
         return execute(api.retrieveRunStep(threadId, runId, stepId));
     }
@@ -642,7 +661,6 @@ public class OpenAiService {
     }
 
 
-
     /**
      * Calls the Open AI api and returns a Flowable of SSE for streaming.
      *
@@ -768,5 +786,6 @@ public class OpenAiService {
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
         });
     }
+
 
 }
