@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.assistant.Assistant;
@@ -177,7 +176,6 @@ public class OpenAiService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         mapper.addMixIn(ChatFunction.class, ChatFunctionMixIn.class);
         return mapper;
     }
@@ -476,7 +474,6 @@ public class OpenAiService {
     public OpenAiResponse<Run> listRuns(String threadId, ListSearchParameters listSearchParameters) {
         Map<String, String> search = new HashMap<>();
         if (listSearchParameters != null) {
-            ObjectMapper mapper = defaultObjectMapper();
             search = mapper.convertValue(listSearchParameters, Map.class);
         }
         return execute(api.listRuns(threadId, search));
@@ -514,7 +511,6 @@ public class OpenAiService {
     public OpenAiResponse<RunStep> listRunSteps(String threadId, String runId, ListSearchParameters listSearchParameters) {
         Map<String, String> search = new HashMap<>();
         if (listSearchParameters != null) {
-            ObjectMapper mapper = defaultObjectMapper();
             search = mapper.convertValue(listSearchParameters, Map.class);
         }
         return execute(api.listRunSteps(threadId, runId, search));
@@ -528,7 +524,6 @@ public class OpenAiService {
     public OpenAiResponse<VectorStore> listVectorStores(ListSearchParameters listSearchParameters) {
         Map<String, Object> search = new HashMap<>();
         if (listSearchParameters != null) {
-            ObjectMapper mapper = defaultObjectMapper();
             search = mapper.convertValue(listSearchParameters, Map.class);
         }
         return execute(api.listVectorStores(search));
@@ -553,7 +548,6 @@ public class OpenAiService {
     public OpenAiResponse<VectorStoreFile> listVectorStoreFiles(String vectorStoreId, ListSearchParameters listSearchParameters) {
         Map<String, Object> search = new HashMap<>();
         if (listSearchParameters != null) {
-            ObjectMapper mapper = defaultObjectMapper();
             search = mapper.convertValue(listSearchParameters, Map.class);
         }
         return execute(api.listVectorStoreFiles(vectorStoreId, search));
@@ -582,7 +576,6 @@ public class OpenAiService {
     public OpenAiResponse<VectorStoreFile> listVectorStoreFilesInBatch(String vectorStoreId, String batchId, ListSearchParameters listSearchParameters) {
         Map<String, Object> search = new HashMap<>();
         if (listSearchParameters != null) {
-            ObjectMapper mapper = defaultObjectMapper();
             search = mapper.convertValue(listSearchParameters, Map.class);
         }
         return execute(api.listVectorStoreFilesInBatch(vectorStoreId, batchId, search));
@@ -687,7 +680,6 @@ public class OpenAiService {
     }
 
     public static OpenAiApi buildApi(String token, Duration timeout, String baseUrl) {
-        ObjectMapper mapper = defaultObjectMapper();
         OkHttpClient client = defaultClient(token, timeout);
         Retrofit retrofit = defaultRetrofit(client, mapper, baseUrl);
 

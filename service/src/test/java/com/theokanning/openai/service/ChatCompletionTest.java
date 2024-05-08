@@ -10,13 +10,14 @@ import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.util.ToolUtil;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChatCompletionTest {
 
-    OpenAiService service = new OpenAiService();
+    OpenAiService service = new OpenAiService(Duration.ofSeconds(20));
 
     @Test
     void createChatCompletion() {
