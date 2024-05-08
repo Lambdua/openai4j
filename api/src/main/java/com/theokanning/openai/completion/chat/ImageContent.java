@@ -22,7 +22,6 @@ public class ImageContent {
     @NonNull
     private String type;
 
-    @JsonProperty("image_url")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String text;
 
