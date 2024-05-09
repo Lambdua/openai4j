@@ -5,7 +5,7 @@ name: Publish package to the Maven Central Repository
 
 on:
   release:
-    types: [ created ]
+    types: [created]
 jobs:
   publish:
     runs-on: ubuntu-latest
