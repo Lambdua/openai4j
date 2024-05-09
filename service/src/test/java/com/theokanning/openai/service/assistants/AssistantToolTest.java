@@ -1,11 +1,11 @@
 package com.theokanning.openai.service.assistants;
 
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.FunctionTool;
 import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.run.*;
 import com.theokanning.openai.assistants.thread.Thread;
@@ -114,10 +114,15 @@ class AssistantToolTest {
             retrievedRun = service.retrieveRun(threadId, run.getId());
         }
         assertEquals("completed", retrievedRun.getStatus());
-        OpenAiResponse<Message> response = service.listMessages(threadId, new ListSearchParameters());
+        OpenAiResponse<Message> response = service.listMessages(threadId, MessageListSearchParameters.builder()
+                .runId(retrievedRun.getId())
+                .limit(1)
+                .build()
+        );
         List<Message> messages = response.getData();
         assertNotNull(messages);
-        assertEquals(2, messages.size());
+        //test message query parameters is correct
+        assertEquals(1, messages.size());
     }
 
 }

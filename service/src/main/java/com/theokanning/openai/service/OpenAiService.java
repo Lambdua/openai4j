@@ -11,6 +11,7 @@ import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.assistant.ModifyAssistantRequest;
 import com.theokanning.openai.assistants.assistant.VectorStoreFileRequest;
 import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
 import com.theokanning.openai.assistants.run.*;
@@ -465,7 +466,7 @@ public class OpenAiService {
         return execute(api.modifyMessage(threadId, messageId, request));
     }
 
-    public OpenAiResponse<Message> listMessages(String threadId, ListSearchParameters params) {
+    public OpenAiResponse<Message> listMessages(String threadId, MessageListSearchParameters params) {
         Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
         });
         return execute(api.listMessages(threadId, queryParameters));

@@ -7,6 +7,7 @@ import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.StreamEvent;
 import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.run.*;
 import com.theokanning.openai.assistants.run_step.RunStep;
@@ -94,7 +95,8 @@ public class AssistantExample {
 
         System.out.println(retrievedRun);
 
-        OpenAiResponse<Message> response = service.listMessages(threadId, new ListSearchParameters());
+        OpenAiResponse<Message> response = service.listMessages(threadId, MessageListSearchParameters.builder()
+                .runId(retrievedRun.getId()).build());
         List<Message> messages = response.getData();
         messages.forEach(message -> {
             System.out.println(message.getContent());
@@ -238,7 +240,7 @@ public class AssistantExample {
         for (RunStep runStep : runSteps) {
             System.out.println(runStep.getStepDetails());
         }
-        service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
+        service.listMessages(threadId, new MessageListSearchParameters()).getData().forEach(message -> {
             System.out.println(message.getContent());
         });
     }
@@ -277,7 +279,7 @@ public class AssistantExample {
         for (RunStep runStep : runSteps) {
             System.out.println(runStep.getStepDetails());
         }
-        service.listMessages(threadId, new ListSearchParameters()).getData().forEach(message -> {
+        service.listMessages(threadId, new MessageListSearchParameters()).getData().forEach(message -> {
             System.out.println(message.getContent());
         });
     }

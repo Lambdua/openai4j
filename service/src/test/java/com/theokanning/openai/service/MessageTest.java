@@ -1,9 +1,9 @@
 package com.theokanning.openai.service;
 
 import com.theokanning.openai.DeleteResult;
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.assistants.assistant.CodeInterpreterTool;
 import com.theokanning.openai.assistants.message.Message;
+import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.message.ModifyMessageRequest;
 import com.theokanning.openai.assistants.thread.Attachment;
@@ -102,7 +102,7 @@ public class MessageTest {
         createTestMessage(separateThreadId);
         createTestMessage(separateThreadId);
         createTestMessage(separateThreadId);
-        List<Message> messages = service.listMessages(separateThreadId, new ListSearchParameters()).getData();
+        List<Message> messages = service.listMessages(separateThreadId, new MessageListSearchParameters()).getData();
         assertEquals(3, messages.size());
         DeleteResult deleteResult = service.deleteThread(separateThreadId);
         assertTrue(deleteResult.isDeleted());
