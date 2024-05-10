@@ -1,0 +1,23 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+  categories:
+    - title: 🏕 Features
+      labels:
+        - enhancement
+    - title: 🐛 Bug Fixes
+      labels:
+        - bug
+    - title: 👋 Deprecated
+      labels:
+        - deprecation
+    - title: 📄 documentation
+      labels:
+        - documentation
+    - title: 👒 Dependencies
+      labels:
+        - dependencies
+    - title: 'Other Changes'
+      labels:
+        - "*"
