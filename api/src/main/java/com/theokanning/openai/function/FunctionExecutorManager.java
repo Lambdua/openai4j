@@ -119,7 +119,7 @@ public class FunctionExecutorManager {
      */
     @Deprecated
     public FunctionMessage executeAndConvertToChatMessage(String funName, JsonNode arguments) {
-        return new FunctionMessage(executeAndConvertToJson(funName, arguments).toPrettyString());
+        return new FunctionMessage(executeAndConvertToJson(funName, arguments).toPrettyString(),funName);
     }
 
     @Deprecated
