@@ -8,8 +8,13 @@ import lombok.NonNull;
 
 import java.util.function.Function;
 
+/**
+ * @deprecated This class is no longer used and will be removed in a future release.
+ * Please use {@link com.theokanning.openai.function.FunctionDefinition} instead.
+ */
 @Data
 @NoArgsConstructor
+@Deprecated
 public class ChatFunction {
 
     /**
@@ -28,6 +33,7 @@ public class ChatFunction {
      */
     @JsonProperty("parameters")
     private Class<?> parametersClass;
+
 
     @JsonIgnore
     private Function<Object, Object> executor;

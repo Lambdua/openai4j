@@ -16,6 +16,9 @@ public class FunctionTool implements Tool {
 
     /**
      * Function definition, only used if type is "function"
+     * recommend to use {@link com.theokanning.openai.function.FunctionDefinition}  or custom class
+     *
+     * @since 0.20.5 {@link com.theokanning.openai.completion.chat.ChatFunction} {@link  com.theokanning.openai.completion.chat.ChatFunctionDynamic}will be deprecated
      */
     Object function;
 }

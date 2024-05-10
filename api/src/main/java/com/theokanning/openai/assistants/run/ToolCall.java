@@ -20,6 +20,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ToolCall {
+
     //may be need     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     Integer index;
 

@@ -18,6 +18,7 @@ public class ChatFunctionProperty {
     private String type;
     @JsonIgnore
     private Boolean required;
+
     private String description;
 
     private ChatFunctionParameters items;

@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * @deprecated see {@link ToolMessage}
  * @author LiangTao
  * @date 2024年04月10 10:37
  **/
 @Data
 @NoArgsConstructor
+@Deprecated
 public class FunctionMessage implements ChatMessage {
     private final String role = ChatMessageRole.FUNCTION.value();
 

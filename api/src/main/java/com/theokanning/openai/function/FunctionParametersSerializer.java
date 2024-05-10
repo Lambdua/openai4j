@@ -1,4 +1,4 @@
-package com.theokanning.openai.service;
+package com.theokanning.openai.function;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,8 +10,7 @@ import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 
 import java.io.IOException;
 
-@Deprecated
-public class ChatFunctionParametersSerializer extends JsonSerializer<Class<?>> {
+public class FunctionParametersSerializer extends JsonSerializer<Class<?>> {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private final JsonSchemaConfig config = JsonSchemaConfig.vanillaJsonSchemaDraft4();
@@ -19,17 +18,11 @@ public class ChatFunctionParametersSerializer extends JsonSerializer<Class<?>> {
 
     @Override
     public void serialize(Class<?> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        if (value == null) {
-            gen.writeNull();
-        } else {
-            try {
-                JsonNode schema = jsonSchemaGenerator.generateJsonSchema(value);
-                gen.writeObject(schema);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to generate JSON Schema", e);
-            }
-        }
+
     }
+
+
+
 }
 
 
