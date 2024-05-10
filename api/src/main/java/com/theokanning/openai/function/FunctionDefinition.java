@@ -1,14 +1,10 @@
 package com.theokanning.openai.function;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.node.TextNode;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
-import com.theokanning.openai.completion.chat.ChatFunction;
-import lombok.*;
+import lombok.Getter;
+import lombok.NonNull;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.function.Function;
 
 /**

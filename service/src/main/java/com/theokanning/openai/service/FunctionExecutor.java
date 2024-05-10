@@ -13,6 +13,11 @@ import com.theokanning.openai.completion.chat.ToolMessage;
 
 import java.util.*;
 
+/**
+ * @deprecated This class is deprecated and will be removed in a future version
+ * replaced by {@link com.theokanning.openai.function.FunctionExecutorManager}
+ */
+@Deprecated
 public class FunctionExecutor {
 
     private ObjectMapper MAPPER = new ObjectMapper();

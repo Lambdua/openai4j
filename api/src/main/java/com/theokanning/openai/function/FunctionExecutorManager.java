@@ -2,8 +2,6 @@ package com.theokanning.openai.function;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.assistants.run.SubmitToolOutputRequestItem;
 import com.theokanning.openai.completion.chat.FunctionMessage;
 import com.theokanning.openai.completion.chat.ToolMessage;
@@ -13,7 +11,6 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 /**
  * @author LiangTao
@@ -52,6 +49,10 @@ public class FunctionExecutorManager {
 
     public FunctionDefinition getFunctionDefinition(String functionName) {
         return functionHolderMap.get(functionName);
+    }
+
+    public List<FunctionDefinition> getFunctionDefinitions() {
+        return new ArrayList<>(functionHolderMap.values());
     }
 
     public void addFunctionDefinition(FunctionDefinition functionDefinition) {
@@ -94,14 +95,13 @@ public class FunctionExecutorManager {
     /**
      * chat-completion toolMessage
      */
-    public ToolMessage executeAndConvertToToolMessage(String funName, JsonNode arguments, String toolId) {
+    public ToolMessage executeAndConvertToChatMessage(String funName, JsonNode arguments, String toolId) {
         return new ToolMessage(executeAndConvertToJson(funName, arguments).toPrettyString(), toolId);
     }
 
-    public Future<ToolMessage> executeAndConvertToToolMessageAsync(String funName, JsonNode arguments, String toolId) {
-        return executorService.submit(() -> executeAndConvertToToolMessage(funName, arguments, toolId));
+    public Future<ToolMessage> executeAndConvertToChatMessageAsync(String funName, JsonNode arguments, String toolId) {
+        return executorService.submit(() -> executeAndConvertToChatMessage(funName, arguments, toolId));
     }
-
 
     /**
      * assistant stream toolMessage
@@ -115,29 +115,15 @@ public class FunctionExecutorManager {
     }
 
     /**
-     * @deprecated see {@link ToolMessage}{@link #executeAndConvertToToolMessage(String, JsonNode, String)}
+     * @deprecated see {@link ToolMessage}{@link #executeAndConvertToChatMessage(String, JsonNode, String)}
      */
     @Deprecated
-    public FunctionMessage executeAndConvertToFunctionMessage(String funName, JsonNode arguments) {
+    public FunctionMessage executeAndConvertToChatMessage(String funName, JsonNode arguments) {
         return new FunctionMessage(executeAndConvertToJson(funName, arguments).toPrettyString());
     }
 
     @Deprecated
-    public Future<FunctionMessage> executeAndConvertToFunctionMessageAsync(String funName, JsonNode arguments) {
-        return executorService.submit(() -> executeAndConvertToFunctionMessage(funName, arguments));
+    public Future<FunctionMessage> executeAndConvertToChatMessageAsync(String funName, JsonNode arguments) {
+        return executorService.submit(() -> executeAndConvertToChatMessage(funName, arguments));
     }
-
-
-
-
-    // public static void main(String[] args) {
-    //     FunctionExecutorManager functionExecutorManager = new FunctionExecutorManager();
-    //     functionExecutorManager.addFunctionDefinition(FunctionDefinition.<String>builder()
-    //             .name("test")
-    //             .parametersDefinitionByClass(String.class)
-    //             .executor((Function<String, Object>) s -> s + "test2")
-    //             .build());
-    //     System.out.println(functionExecutorManager.executeAndConvertToJson("test", new TextNode("test")));
-    // }
-
 }

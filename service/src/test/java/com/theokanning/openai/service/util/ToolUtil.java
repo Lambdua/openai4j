@@ -2,19 +2,20 @@ package com.theokanning.openai.service.util;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.theokanning.openai.completion.chat.ChatFunction;
+import com.theokanning.openai.function.FunctionDefinition;
 
 /**
  * @author LiangTao
  * @date 2024年04月28 16:25
  **/
 public class ToolUtil {
-    public static ChatFunction weatherFunction() {
-        return ChatFunction.builder()
+    public static FunctionDefinition weatherFunction() {
+        return FunctionDefinition.<Weather>builder()
                 .name("get_weather")
                 .description("Get the current weather in a given location")
+                .parametersDefinitionByClass(Weather.class)
                 //这里的executor是一个lambda表达式,这个lambda表达式接受一个Weather对象,返回一个WeatherResponse对象
-                .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
+                .executor(w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
                 .build();
     }
 

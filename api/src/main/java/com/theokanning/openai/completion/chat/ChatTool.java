@@ -9,6 +9,9 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatTool {
+    public ChatTool(@NonNull Object function) {
+        this.function = function;
+    }
 
     /**
      * The name of the tool being called, only function supported for now.

@@ -1,14 +1,12 @@
 package com.theokanning.openai.service.assistants;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
-import com.theokanning.openai.completion.chat.ChatFunctionParameters;
 import com.theokanning.openai.completion.chat.ChatFunctionProperty;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
 import com.theokanning.openai.service.OpenAiService;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

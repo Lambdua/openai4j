@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.assistants.run.ToolChoice;
 import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.function.FunctionDefinition;
+import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.util.ToolUtil;
 import org.junit.jupiter.api.Test;
 
@@ -116,8 +118,9 @@ class ChatCompletionTest {
 
     @Test
     void createChatCompletionWithFunctions() {
-        final List<ChatFunction> functions = Collections.singletonList(ToolUtil.weatherFunction());
-        final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
+        final List<FunctionDefinition> functions = Collections.singletonList(ToolUtil.weatherFunction());
+        // final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
+        final FunctionExecutorManager functionExecutor = new FunctionExecutorManager(functions);
 
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
@@ -129,7 +132,7 @@ class ChatCompletionTest {
                 .builder()
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
-                .functions(functionExecutor.getFunctions())
+                .functions(functions)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -137,19 +140,20 @@ class ChatCompletionTest {
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertEquals("function_call", choice.getFinishReason());
-        assertNotNull(choice.getMessage().getFunctionCall());
-        assertEquals("get_weather", choice.getMessage().getFunctionCall().getName());
-        assertInstanceOf(ObjectNode.class, choice.getMessage().getFunctionCall().getArguments());
+        ChatFunctionCall functionCall = choice.getMessage().getFunctionCall();
+        assertNotNull(functionCall);
+        assertEquals("get_weather", functionCall.getName());
+        assertInstanceOf(ObjectNode.class, functionCall.getArguments());
 
-        ChatMessage callResponse = functionExecutor.executeAndConvertToMessageHandlingExceptions(choice.getMessage().getFunctionCall());
+        ChatMessage callResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(),functionCall.getArguments());
         assertNotEquals("error", callResponse.getName());
 
         // this performs an unchecked cast
-        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(choice.getMessage().getFunctionCall());
+        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(functionCall.getName(),functionCall.getArguments());
         assertInstanceOf(ToolUtil.WeatherResponse.class, functionExecutionResponse);
         assertEquals(25, functionExecutionResponse.temperature);
 
-        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(choice.getMessage().getFunctionCall());
+        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(functionCall.getName(),functionCall.getArguments());
         assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
@@ -160,7 +164,7 @@ class ChatCompletionTest {
                 .builder()
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
-                .functions(functionExecutor.getFunctions())
+                .functions(functions)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -219,8 +223,8 @@ class ChatCompletionTest {
 
     @Test
     void streamChatCompletionWithFunctions() {
-        final List<ChatFunction> functions = Collections.singletonList(ToolUtil.weatherFunction());
-        final FunctionExecutor functionExecutor = new FunctionExecutor(functions);
+        final List<FunctionDefinition> functions = Collections.singletonList(ToolUtil.weatherFunction());
+        final FunctionExecutorManager functionExecutor = new FunctionExecutorManager(functions);
 
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
@@ -232,7 +236,7 @@ class ChatCompletionTest {
                 .builder()
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
-                .functions(functionExecutor.getFunctions())
+                .functions(functions)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -241,19 +245,20 @@ class ChatCompletionTest {
         AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
                 .blockingLast()
                 .getAccumulatedMessage();
-        assertNotNull(accumulatedMessage.getFunctionCall());
-        assertEquals("get_weather", accumulatedMessage.getFunctionCall().getName());
-        assertInstanceOf(ObjectNode.class, accumulatedMessage.getFunctionCall().getArguments());
+        ChatFunctionCall functionCall = accumulatedMessage.getFunctionCall();
+        assertNotNull(functionCall);
+        assertEquals("get_weather", functionCall.getName());
+        assertInstanceOf(ObjectNode.class, functionCall.getArguments());
 
-        ChatMessage callResponse = functionExecutor.executeAndConvertToMessageHandlingExceptions(accumulatedMessage.getFunctionCall());
+        ChatMessage callResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(),functionCall.getArguments());
         assertNotEquals("error", callResponse.getName());
 
         // this performs an unchecked cast
-        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(accumulatedMessage.getFunctionCall());
+        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(functionCall.getName(),functionCall.getArguments());
         assertInstanceOf(ToolUtil.WeatherResponse.class, functionExecutionResponse);
         assertEquals(25, functionExecutionResponse.temperature);
 
-        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(accumulatedMessage.getFunctionCall());
+        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(functionCall.getName(),functionCall.getArguments());
         assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
@@ -265,7 +270,7 @@ class ChatCompletionTest {
                 .builder()
                 .model("gpt-3.5-turbo-0613")
                 .messages(messages)
-                .functions(functionExecutor.getFunctions())
+                .functions(functions)
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
@@ -352,16 +357,17 @@ class ChatCompletionTest {
 
         ChatToolCall toolCall = choice.getMessage().getToolCalls().get(0);
 
-        FunctionExecutor toolExecutor = new FunctionExecutor(Arrays.asList(ToolUtil.weatherFunction()));
-        Object functionExecutionResponse = toolExecutor.execute(toolCall.getFunction());
+        FunctionExecutorManager toolExecutor = new FunctionExecutorManager(Arrays.asList(ToolUtil.weatherFunction()));
+        ChatFunctionCall function = toolCall.getFunction();
+        Object functionExecutionResponse = toolExecutor.execute(function.getName(), function.getArguments());
         assertInstanceOf(ToolUtil.WeatherResponse.class, functionExecutionResponse);
         assertEquals(25, ((ToolUtil.WeatherResponse) functionExecutionResponse).temperature);
 
-        JsonNode jsonFunctionExecutionResponse = toolExecutor.executeAndConvertToJson(toolCall.getFunction());
+        JsonNode jsonFunctionExecutionResponse = toolExecutor.executeAndConvertToJson(function.getName(), function.getArguments());
         assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
-        ToolMessage chatMessageTool = toolExecutor.executeAndConvertToMessageHandlingExceptions(toolCall.getFunction(), toolCall.getId());
+        ToolMessage chatMessageTool = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
         //确保不是异常的返回
         assertNotEquals("error", chatMessageTool.getName());
 
@@ -387,10 +393,11 @@ class ChatCompletionTest {
 
     @Test
     void createChatCompletionWithMultipleToolCalls() {
-        final List<ChatFunction> functions = Arrays.asList(ChatFunction.builder()
+        final List<FunctionDefinition> functions = Arrays.asList(FunctionDefinition.<ToolUtil.Weather>builder()
                         .name("get_weather")
                         .description("Get the current weather in a given location")
-                        .executor(ToolUtil.Weather.class, w -> {
+                        .parametersDefinitionByClass(ToolUtil.Weather.class)
+                        .executor( w -> {
                             switch (w.location) {
                                 case "tokyo":
                                     return new ToolUtil.WeatherResponse(w.location, w.unit, 10, "cloudy");
@@ -402,12 +409,14 @@ class ChatCompletionTest {
                                     return new ToolUtil.WeatherResponse(w.location, w.unit, 0, "unknown");
                             }
                         }).build(),
-                ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(ToolUtil.City.class, v -> {
+                FunctionDefinition.<ToolUtil.City>builder().name("getCities").description("Get a list of cities by time")
+                        .parametersDefinitionByClass(ToolUtil.City.class)
+                        .executor(v -> {
                     assertEquals("2022-12-01", v.time);
                     return Arrays.asList("tokyo", "paris");
                 }).build()
         );
-        final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
+        final FunctionExecutorManager toolExecutor = new FunctionExecutorManager(functions);
 
         List<ChatTool> tools = new ArrayList<>();
         tools.add(new ChatTool(functions.get(0)));
@@ -438,15 +447,16 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, choice.getMessage().getToolCalls().get(0).getFunction().getArguments());
 
         ChatToolCall toolCall = choice.getMessage().getToolCalls().get(0);
-        Object execute = toolExecutor.execute(toolCall.getFunction());
+        ChatFunctionCall function = toolCall.getFunction();
+        Object execute = toolExecutor.execute(function.getName(), function.getArguments());
         assertInstanceOf(List.class, execute);
 
 
-        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(toolCall.getFunction());
+        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(function.getName(),function.getArguments());
         assertInstanceOf(ArrayNode.class, jsonNode);
 
 
-        ToolMessage toolMessage = toolExecutor.executeAndConvertToMessageHandlingExceptions(toolCall.getFunction(), toolCall.getId());
+        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
         assertNotEquals("error", toolMessage.getName());
 
         messages.add(choice.getMessage());
@@ -476,9 +486,9 @@ class ChatCompletionTest {
         messages.add(choice2.getMessage());
 
         for (ChatToolCall weatherToolCall : choice2.getMessage().getToolCalls()) {
-            Object itemResult = toolExecutor.execute(weatherToolCall.getFunction());
+            Object itemResult = toolExecutor.execute(weatherToolCall.getFunction().getName(), weatherToolCall.getFunction().getArguments());
             assertInstanceOf(ToolUtil.WeatherResponse.class, itemResult);
-            messages.add(toolExecutor.executeAndConvertToMessage(weatherToolCall.getFunction(), weatherToolCall.getId()));
+            messages.add(toolExecutor.executeAndConvertToChatMessage(weatherToolCall.getFunction().getName(),weatherToolCall.getFunction().getArguments(), weatherToolCall.getId()));
         }
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
@@ -530,12 +540,13 @@ class ChatCompletionTest {
      */
     @Test
     void streamChatMultipleToolCalls() {
-        final List<ChatFunction> functions = Arrays.asList(
+        final List<FunctionDefinition> functions = Arrays.asList(
                 //1. 天气查询
-                ChatFunction.builder()
+                FunctionDefinition.<ToolUtil.Weather>builder()
                         .name("get_weather")
                         .description("Get the current weather in a given location")
-                        .executor(ToolUtil.Weather.class, w -> {
+                        .parametersDefinitionByClass(ToolUtil.Weather.class)
+                        .executor( w -> {
                             switch (w.location) {
                                 case "tokyo":
                                     return new ToolUtil.WeatherResponse(w.location, w.unit, 10, "cloudy");
@@ -548,9 +559,9 @@ class ChatCompletionTest {
                             }
                         }).build(),
                 //2. 城市查询
-                ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(ToolUtil.City.class, v -> Arrays.asList("tokyo", "paris")).build()
+                FunctionDefinition.<ToolUtil.City>builder().name("getCities").description("Get a list of cities by time").parametersDefinitionByClass(ToolUtil.City.class).executor(v -> Arrays.asList("tokyo", "paris")).build()
         );
-        final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
+        final FunctionExecutorManager toolExecutor = new FunctionExecutorManager(functions);
 
         List<ChatTool> tools = new ArrayList<>();
         tools.add(new ChatTool(functions.get(0)));
@@ -584,14 +595,15 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, toolCalls.get(0).getFunction().getArguments());
 
         ChatToolCall toolCall = toolCalls.get(0);
-        Object execute = toolExecutor.execute(toolCall.getFunction());
+        ChatFunctionCall function = toolCall.getFunction();
+        Object execute = toolExecutor.execute(function.getName(), function.getArguments());
         assertInstanceOf(List.class, execute);
 
-        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(toolCall.getFunction());
+        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(function.getName(), function.getArguments());
         assertInstanceOf(ArrayNode.class, jsonNode);
 
 
-        ToolMessage toolMessage = toolExecutor.executeAndConvertToMessageHandlingExceptions(toolCall.getFunction(), toolCall.getId());
+        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
         assertNotEquals("error", toolMessage.getName());
 
         messages.add(accumulatedMessage);
@@ -622,9 +634,10 @@ class ChatCompletionTest {
         messages.add(accumulatedMessage2);
 
         for (ChatToolCall weatherToolCall : accumulatedMessage2.getToolCalls()) {
-            Object itemResult = toolExecutor.execute(weatherToolCall.getFunction());
+            ChatFunctionCall call2 = weatherToolCall.getFunction();
+            Object itemResult = toolExecutor.execute(call2.getName(), call2.getArguments());
             assertInstanceOf(ToolUtil.WeatherResponse.class, itemResult);
-            messages.add(toolExecutor.executeAndConvertToMessage(weatherToolCall.getFunction(), weatherToolCall.getId()));
+            messages.add(toolExecutor.executeAndConvertToChatMessage(call2.getName(),call2.getArguments(), weatherToolCall.getId()));
         }
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest

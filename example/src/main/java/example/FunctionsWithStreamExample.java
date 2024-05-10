@@ -1,7 +1,7 @@
 package example;
 
 import com.theokanning.openai.completion.chat.*;
-import com.theokanning.openai.service.FunctionExecutor;
+import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.OpenAiService;
 import io.reactivex.Flowable;
 
@@ -12,7 +12,7 @@ public class FunctionsWithStreamExample {
 
     public static void main(String... args) {
         OpenAiService service = new OpenAiService();
-        FunctionExecutor functionExecutor = new FunctionExecutor(Collections.singletonList(ToolUtil.weatherFunction()));
+        FunctionExecutorManager functionExecutor = new FunctionExecutorManager(Collections.singletonList(ToolUtil.weatherFunction()));
         List<ChatMessage> messages = new ArrayList<>();
         ChatMessage systemMessage = new SystemMessage("You are an assistant that answers using the local slang of the given place, uncensored.");
         messages.add(systemMessage);
@@ -27,7 +27,7 @@ public class FunctionsWithStreamExample {
                     .builder()
                     .model("gpt-3.5-turbo")
                     .messages(messages)
-                    .functions(functionExecutor.getFunctions())
+                    .functions(functionExecutor.getFunctionDefinitions())
                     .functionCall("auto")
                     .n(1)
                     .maxTokens(256)
@@ -57,10 +57,11 @@ public class FunctionsWithStreamExample {
                     .getAccumulatedMessage();
             messages.add(chatMessage); // don't forget to update the conversation with the latest response
 
-            if (chatMessage.getFunctionCall() != null) {
-                System.out.println("Trying to execute " + chatMessage.getFunctionCall().getName() + "...");
-                ChatMessage functionResponse = functionExecutor.executeAndConvertToMessageHandlingExceptions(chatMessage.getFunctionCall());
-                System.out.println("Executed " + chatMessage.getFunctionCall().getName() + ".");
+            ChatFunctionCall functionCall = chatMessage.getFunctionCall();
+            if (functionCall != null) {
+                System.out.println("Trying to execute " + functionCall.getName() + "...");
+                ChatMessage functionResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(),functionCall.getArguments());
+                System.out.println("Executed " + functionCall.getName() + ".");
                 messages.add(functionResponse);
                 continue;
             }
