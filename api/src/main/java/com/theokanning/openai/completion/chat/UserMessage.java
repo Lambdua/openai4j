@@ -38,13 +38,6 @@ public class UserMessage implements ChatMessage {
         this.content = content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setContent(List<ImageContent> imageContents) {
-        this.content = content;
-    }
 
 
 
