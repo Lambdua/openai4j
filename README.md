@@ -634,6 +634,8 @@ to `AssistantStreamManagerTest.java`.
 
 </details>
 
+- [Assistant iamge chat](./service/src/test/java/com/theokanning/openai/service/assistants/AssistantImageTest.java#L66-L90)
+
 # FAQs
 
 <details style="border: 1px solid #aaa; border-radius: 4px; padding: 0.5em;">
