@@ -167,7 +167,7 @@ OpenAiService openAiService3 = new OpenAiService(openAiApi);
 This library supports both the outdated method of function calls and the current tool-based approach.
 
 First, we define a function object. The definition of a function object is flexible; you can use POJO to define it (
-automatically serialized by JSON schema) or use methods like `map` and `ChatFunctionDynamic` to define it. You can refer
+automatically serialized by JSON schema) or use methods like `map` and `FunctionDefinition` to define it. You can refer
 to the code in the example package. Here, we define a weather query function object:
 
 ```java
@@ -634,7 +634,7 @@ to `AssistantStreamManagerTest.java`.
 
 </details>
 
-- [Assistant iamge chat](./service/src/test/java/com/theokanning/openai/service/assistants/AssistantImageTest.java#L66-L90)
+- [Assistant iamge chat](./service/src/test/java/com/theokanning/openai/service/assistants/AssistantImageTest.java#L65-L90)
 
 # FAQs
 

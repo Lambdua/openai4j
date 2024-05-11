@@ -20,6 +20,7 @@ public class DynamicFunctionExample {
         return response;
     }
 
+    @Deprecated
     public static void main(String... args) {
         OpenAiService service = new OpenAiService();
 
