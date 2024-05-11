@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.theokanning.openai.assistants.message.content.ImageFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,14 +47,41 @@ public class ContentDeserializer extends JsonDeserializer<Object> {
             } else if ("text".equals(fieldName)) {
                 content.setText(jsonParser.getText());
             } else if ("image_url".equals(fieldName)) {
-                jsonParser.nextToken();
-                if ("url".equals(jsonParser.getCurrentName())) {
-                    jsonParser.nextToken();
-                    content.setImageUrl(new ImageUrl(jsonParser.getText()));
-                    jsonParser.nextToken();
-                }
+                content.setImageUrl(parseImageUrl(jsonParser));
+            } else if ("image_file".equals(fieldName)) {
+                content.setImageFile(parseImageFile(jsonParser));
             }
         }
         return content;
+    }
+
+    private ImageFile parseImageFile(JsonParser jsonParser) throws IOException {
+        String fileId = null;
+        String detail = null;
+        while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonParser.getCurrentName();
+            jsonParser.nextToken();
+            if ("file_id".equals(fieldName)) {
+                fileId = jsonParser.getText();
+            } else if ("detail".equals(fieldName)) {
+                detail = jsonParser.getText();
+            }
+        }
+        return new ImageFile(fileId, detail);
+    }
+
+    private ImageUrl parseImageUrl(JsonParser jsonParser) throws IOException {
+        String url = null;
+        String detail = null;
+        while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonParser.getCurrentName();
+            jsonParser.nextToken();
+            if ("url".equals(fieldName)) {
+                url = jsonParser.getText();
+            } else if ("detail".equals(fieldName)) {
+                detail = jsonParser.getText();
+            }
+        }
+        return new ImageUrl(url, detail);
     }
 }

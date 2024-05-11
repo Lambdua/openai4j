@@ -32,6 +32,9 @@ public class ContentSerializer extends JsonSerializer<Object> {
                 if (ic.getType().equals("image_url")) {
                     jsonGenerator.writeObjectField("image_url", ic.getImageUrl());
                 }
+                if (ic.getType().equals("image_file")) {
+                    jsonGenerator.writeObjectField("image_file", ic.getImageFile());
+                }
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();

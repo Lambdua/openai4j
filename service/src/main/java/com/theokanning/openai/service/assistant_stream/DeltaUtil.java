@@ -58,6 +58,9 @@ public class DeltaUtil {
             if (nowDeltaContent.getType().equals("image_file") && nowDeltaContent.getImageFile() != null) {
                 existsContent.setImageFile(nowDeltaContent.getImageFile());
             }
+            if (nowDeltaContent.getType().equals("image_url") && nowDeltaContent.getImageUrl() != null) {
+                existsContent.setImageUrl(nowDeltaContent.getImageUrl());
+            }
         } else {
             result.getDelta().getContent().add(nowDeltaContent);
         }

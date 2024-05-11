@@ -2,6 +2,7 @@ package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.assistants.message.content.ImageFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,11 @@ public class ImageContent {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("image_url")
     private ImageUrl imageUrl;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("image_file")
+    private ImageFile imageFile;
+
 
     public ImageContent(String text) {
         this.type = "text";

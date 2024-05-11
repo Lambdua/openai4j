@@ -1,6 +1,8 @@
 package com.theokanning.openai.completion.chat;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 /**
@@ -8,13 +10,17 @@ import lombok.NonNull;
  * @date 2024年04月10 10:26
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ImageUrl {
     @NonNull
-    private final String url;
+    private String url;
 
     private String detail;
 
     public ImageUrl(String url) {
         this.url = url;
     }
+
+
 }

@@ -20,4 +20,6 @@ public class ImageFile {
      */
     @JsonProperty("file_id")
     String fileId;
+
+    String detail;
 }

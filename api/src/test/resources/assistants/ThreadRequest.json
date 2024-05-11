@@ -7,6 +7,28 @@
     {
       "role": "user",
       "content": "How does AI work? Explain it in simple terms."
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the difference between these images?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "https://example.com/image.png"
+          }
+        },
+        {
+          "type": "image_file",
+          "image_file": {
+            "file_id": "file_id",
+            "detail": "low"
+          }
+        }
+      ]
     }
   ],
   "metadata": {
