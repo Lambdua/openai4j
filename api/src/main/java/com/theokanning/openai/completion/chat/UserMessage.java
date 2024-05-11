@@ -35,7 +35,7 @@ public class UserMessage implements ChatMessage {
     }
 
     public UserMessage(List<ImageContent> imageContents) {
-        this.content = content;
+        this.content = imageContents;
     }
 
 
