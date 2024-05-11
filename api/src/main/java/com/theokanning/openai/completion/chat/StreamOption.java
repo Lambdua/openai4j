@@ -1,13 +1,17 @@
 package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author LiangTao
  * @date 2024年05月07 22:46
  **/
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StreamOption {
 
     public static final StreamOption INCLUDE = new StreamOption(true);
@@ -21,7 +25,4 @@ public class StreamOption {
     @JsonProperty("include_usage")
     Boolean includeUsage;
 
-    private StreamOption(Boolean includeUsage) {
-        this.includeUsage = includeUsage;
-    }
 }

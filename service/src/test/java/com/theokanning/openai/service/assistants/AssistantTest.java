@@ -1,19 +1,20 @@
 package com.theokanning.openai.service.assistants;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.DeleteResult;
 import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.OpenAiResponse;
 import com.theokanning.openai.assistants.assistant.*;
+import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
+import com.theokanning.openai.completion.chat.ChatFunctionProperty;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,29 +46,21 @@ public class AssistantTest {
     @Test
     @Order(1)
     void createAssistant() throws JsonProcessingException {
-
-        //this function definition is not recommended, it is recommended to use the ToolUtil class to define the function
-        String funcDef = "{\n" +
-                "  \"type\": \"object\",\n" +
-                "  \"properties\": {\n" +
-                "    \"location\": {\n" +
-                "      \"type\": \"string\",\n" +
-                "      \"description\": \"The city and state, e.g. San Francisco, CA\"\n" +
-                "    },\n" +
-                "    \"unit\": {\n" +
-                "      \"type\": \"string\",\n" +
-                "      \"enum\": [\"celsius\", \"fahrenheit\"]\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"required\": [\"location\"]\n" +
-                "}";
-        Map<String, Object> funcParameters = mapper.readValue(funcDef, new TypeReference<Map<String, Object>>() {
-        });
-        AssistantFunction function = AssistantFunction.builder()
+        ChatFunctionDynamic dynamicFun = ChatFunctionDynamic.builder()
                 .name("weather_reporter")
                 .description("Get the current weather of a location")
-                .parameters(funcParameters)
-                .build();
+                .addProperty(ChatFunctionProperty.builder()
+                        .name("location")
+                        .type("string")
+                        .description("The city and state, e.g. San Francisco, CA")
+                        .build())
+                .addProperty(ChatFunctionProperty.builder()
+                        .name("unit")
+                        .type("string")
+                        .enumValues(new HashSet<>(Arrays.asList("celsius", "fahrenheit")))
+                        .description("The temperature unit, can be 'celsius' or 'fahrenheit")
+                        .required(true)
+                        .build()).build();
 
         AssistantRequest assistantRequest = AssistantRequest.builder()
                 .model("gpt-3.5-turbo")
@@ -76,7 +69,7 @@ public class AssistantTest {
                 .instructions("You are a personal Math Tutor.")
                 .tools(Arrays.asList(
                         new CodeInterpreterTool(),
-                        new FunctionTool(function)
+                        new FunctionTool(dynamicFun)
                 ))
                 .responseFormat(ChatResponseFormat.AUTO)
                 .temperature(0.2D)

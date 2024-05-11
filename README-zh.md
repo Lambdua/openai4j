@@ -188,55 +188,57 @@ public static class WeatherResponse {
 
 接下来，我们声明该函数并将其与执行器相关联，在这里模拟API响应：
 ```java
-//首先，获取天气的函数
-ChatFunction function = ChatFunction.builder()
-        .name("get_weather")
-        .description("Get the current weather in a specified location")
-        //executor是一个lambda表达式，它接受Weather对象并返回WeatherResponse
-        .executor(Weather.class, w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
-        .build();
+//First, a function to fetch the weather
+public static FunctionDefinition weatherFunction() {
+  return FunctionDefinition.<Weather>builder()
+          .name("get_weather")
+          .description("Get the current weather in a given location")
+          .parametersDefinitionByClass(Weather.class)
+          //The executor here is a lambda expression that accepts a Weather object and returns a Weather Response object
+          .executor(w -> new WeatherResponse(w.location, w.unit, 25, "sunny"))
+          .build();
+}
 ```
 
 然后，该服务用于聊天完成请求，包含以下工具：
 
 ```java
 static void toolChat() {
-    OpenAiService service = new OpenAiService(Duration.ofSeconds(30));
-    //ToolUtil是一个简化工具创建的实用程序类,里面就是前面的函数创建代码
-    final ChatTool tool = new ChatTool(ToolUtil.weatherFunction());
-    final List<ChatMessage> messages = new ArrayList<>();
-    final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
-    final ChatMessage userMessage = new UserMessage("What is the weather in BeiJin?");
-    messages.add(systemMessage);
-    messages.add(userMessage);
+  OpenAiService service = new OpenAiService(Duration.ofSeconds(30));
+  final ChatTool tool = new ChatTool(ToolUtil.weatherFunction());
+  final List<ChatMessage> messages = new ArrayList<>();
+  final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+  final ChatMessage userMessage = new UserMessage("What is the weather in BeiJin?");
+  messages.add(systemMessage);
+  messages.add(userMessage);
 
-    ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
-            .messages(messages)
-            //工具是一个列表；可以包括多个工具
-            .tools(Collections.singletonList(tool))
-            .toolChoice(ToolChoice.AUTO)
-            .n(1)
-            .maxTokens(100)
-            .build();
-    //Request is sent
-    ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-    AssistantMessage toolCallMsg = choice.getMessage();
-    ChatToolCall toolCall = toolCallMsg.getToolCalls().get(0);
-    System.out.println(toolCall.getFunction());
+  ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+          .model("gpt-3.5-turbo")
+          .messages(messages)
+          //Tools is a list; multiple tools can be included
+          .tools(Collections.singletonList(tool))
+          .toolChoice(ToolChoice.AUTO)
+          .n(1)
+          .maxTokens(100)
+          .build();
+  //Request is sent
+  ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+  AssistantMessage toolCallMsg = choice.getMessage();
+  ChatToolCall toolCall = toolCallMsg.getToolCalls().get(0);
+  System.out.println(toolCall.getFunction());
 
-    messages.add(toolCallMsg);
-    messages.add(new ToolMessage("the weather is fine today.", toolCall.getId()));
+  messages.add(toolCallMsg);
+  messages.add(new ToolMessage("the weather is fine today.", toolCall.getId()));
 
-    //submit tool call
-    ChatCompletionRequest toolCallRequest = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
-            .messages(messages)
-            .n(1)
-            .maxTokens(100)
-            .build();
-    ChatCompletionChoice toolCallChoice = service.createChatCompletion(toolCallRequest).getChoices().get(0);
-    System.out.println(toolCallChoice.getMessage().getContent());
+  //submit tool call
+  ChatCompletionRequest toolCallRequest = ChatCompletionRequest.builder()
+          .model("gpt-3.5-turbo")
+          .messages(messages)
+          .n(1)
+          .maxTokens(100)
+          .build();
+  ChatCompletionChoice toolCallChoice = service.createChatCompletion(toolCallRequest).getChoices().get(0);
+  System.out.println(toolCallChoice.getMessage().getContent());
 }
 ```
 
@@ -290,99 +292,98 @@ static void functionChat() {
 
 ```java
 void streamChatMultipleToolCalls() {
-    final List<ChatFunction> functions = Arrays.asList(
-            //1. 天气查询
-            ChatFunction.builder()
-                    .name("get_weather")
-                    .description("Get the current weather in a given location")
-                    .executor(Weather.class, w -> {
-                        switch (w.location) {
-                            case "tokyo":
-                                return new WeatherResponse(w.location, w.unit, 10, "cloudy");
-                            case "san francisco":
-                                return new WeatherResponse(w.location, w.unit, 72, "sunny");
-                            case "paris":
-                                return new WeatherResponse(w.location, w.unit, 22, "sunny");
-                            default:
-                                return new WeatherResponse(w.location, w.unit, 0, "unknown");
-                        }
-                    }).build(),
-            //2. 城市查询
-            ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(City.class, v -> Arrays.asList("tokyo", "paris")).build()
-    );
-    final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
+  final List<FunctionDefinition> functions = Arrays.asList(
+          //1. weather query
+          FunctionDefinition.<ToolUtil.Weather>builder()
+                  .name("get_weather")
+                  .description("Get the current weather in a given location")
+                  .parametersDefinitionByClass(ToolUtil.Weather.class)
+                  .executor( w -> {
+                    switch (w.location) {
+                      case "tokyo":
+                        return new ToolUtil.WeatherResponse(w.location, w.unit, 10, "cloudy");
+                      case "san francisco":
+                        return new ToolUtil.WeatherResponse(w.location, w.unit, 72, "sunny");
+                      case "paris":
+                        return new ToolUtil.WeatherResponse(w.location, w.unit, 22, "sunny");
+                      default:
+                        return new ToolUtil.WeatherResponse(w.location, w.unit, 0, "unknown");
+                    }
+                  }).build(),
+          //2. city query
+          FunctionDefinition.<ToolUtil.City>builder().name("getCities").description("Get a list of cities by time").parametersDefinitionByClass(ToolUtil.City.class).executor(v -> Arrays.asList("tokyo", "paris")).build()
+  );
+  final FunctionExecutorManager toolExecutor = new FunctionExecutorManager(functions);
 
-    List<ChatTool> tools = new ArrayList<>();
-    tools.add(new ChatTool<>(functions.get(0)));
-    tools.add(new ChatTool<>(functions.get(1)));
+  List<ChatTool> tools = new ArrayList<>();
+  tools.add(new ChatTool(functions.get(0)));
+  tools.add(new ChatTool(functions.get(1)));
 
-    final List<ChatMessage> messages = new ArrayList<>();
-    final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
-    final ChatMessage userMessage = new UserMessage("What is the weather like in cities with weather on 2022-12-01 ?");
-    messages.add(systemMessage);
-    messages.add(userMessage);
+  final List<ChatMessage> messages = new ArrayList<>();
+  final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+  final ChatMessage userMessage = new UserMessage("What is the weather like in cities with weather on 2022-12-01 ?");
+  messages.add(systemMessage);
+  messages.add(userMessage);
 
-    ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
-            .builder()
-            .model("gpt-3.5-turbo-0613")
-            .messages(messages)
-            .tools(tools)
-            .toolChoice("auto")
-            .n(1)
-            .maxTokens(200)
-            .build();
+  ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+          .builder()
+          .model("gpt-3.5-turbo")
+          .messages(messages)
+          .tools(tools)
+          .toolChoice(ToolChoice.AUTO)
+          .n(1)
+          .maxTokens(200)
+          .build();
 
-    AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
-            .blockingLast()
-            .getAccumulatedMessage();
+  AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+          .blockingLast()
+          .getAccumulatedMessage();
 
-    List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
-    ChatToolCall toolCall = toolCalls.get(0);
-    Object execute = toolExecutor.execute(toolCall.getFunction());
-    JsonNode jsonNode = toolExecutor.executeAndConvertToJson(toolCall.getFunction());
-    ToolMessage toolMessage = toolExecutor.executeAndConvertToMessageHandlingExceptions(toolCall.getFunction(), toolCall.getId());
-    messages.add(accumulatedMessage);
-    messages.add(toolMessage);
+  List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
 
-    ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
-            .builder()
-            //3.5 there may be logical issues
-            .model("gpt-3.5-turbo-0125")
-            .messages(messages)
-            .tools(tools)
-            .toolChoice("auto")
-            .n(1)
-            .maxTokens(100)
-            .logitBias(new HashMap<>())
-            .build();
+  ChatToolCall toolCall = toolCalls.get(0);
+  ChatFunctionCall function = toolCall.getFunction();
+  JsonNode jsonNode = toolExecutor.executeAndConvertToJson(function.getName(), function.getArguments());
+  ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
+  messages.add(accumulatedMessage);
+  messages.add(toolMessage);
+  ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
+          .builder()
+          //3.5 there may be logical issues
+          .model("gpt-3.5-turbo-0125")
+          .messages(messages)
+          .tools(tools)
+          .toolChoice(ToolChoice.AUTO)
+          .n(1)
+          .maxTokens(100)
+          .logitBias(new HashMap<>())
+          .build();
 
-    // ChatCompletionChoice choice2 = service.createChatCompletion(chatCompletionRequest2).getChoices().get(0);
-    AssistantMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest2))
-            .blockingLast()
-            .getAccumulatedMessage();
-    //这里应该有两个工具调用
-    messages.add(accumulatedMessage2);
+  // ChatCompletionChoice choice2 = service.createChatCompletion(chatCompletionRequest2).getChoices().get(0);
+  AssistantMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest2))
+          .blockingLast()
+          .getAccumulatedMessage();
+  messages.add(accumulatedMessage2);
+  for (ChatToolCall weatherToolCall : accumulatedMessage2.getToolCalls()) {
+    ChatFunctionCall call2 = weatherToolCall.getFunction();
+    Object itemResult = toolExecutor.execute(call2.getName(), call2.getArguments());
+    messages.add(toolExecutor.executeAndConvertToChatMessage(call2.getName(),call2.getArguments(), weatherToolCall.getId()));
+  }
 
-    for (ChatToolCall weatherToolCall : accumulatedMessage2.getToolCalls()) {
-        Object itemResult = toolExecutor.execute(weatherToolCall.getFunction());
-        assertInstanceOf(WeatherResponse.class, itemResult);
-        messages.add(toolExecutor.executeAndConvertToMessage(weatherToolCall.getFunction(), weatherToolCall.getId()));
-    }
+  ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
+          .builder()
+          .model("gpt-3.5-turbo")
+          .messages(messages)
+          .tools(tools)
+          .toolChoice(ToolChoice.AUTO)
+          .n(1)
+          .maxTokens(100)
+          .logitBias(new HashMap<>())
+          .build();
 
-    ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
-            .builder()
-            .model("gpt-3.5-turbo-0613")
-            .messages(messages)
-            .tools(tools)
-            .toolChoice("auto")
-            .n(1)
-            .maxTokens(100)
-            .logitBias(new HashMap<>())
-            .build();
-
-    AssistantMessage accumulatedMessage3 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest3))
-            .blockingLast()
-            .getAccumulatedMessage();
+  AssistantMessage accumulatedMessage3 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest3))
+          .blockingLast()
+          .getAccumulatedMessage();
 }
 
 ```
@@ -410,71 +411,65 @@ public static void main(String... args) {
 
 ```java
 static void assistantToolCall() {
-    OpenAiService service = new OpenAiService();
-    FunctionExecutor executor = new FunctionExecutor(Collections.singletonList(ToolUtil.weatherFunction()));
-    //create assistant
-    AssistantRequest assistantRequest = AssistantRequest.builder()
-            .model("gpt-3.5-turbo").name("weather assistant")
-            .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
-            .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
-            .temperature(0D)
-            .build();
-    Assistant assistant = service.createAssistant(assistantRequest);
-    String assistantId = assistant.getId();
+  OpenAiService service = new OpenAiService();
+  FunctionExecutorManager executor = new FunctionExecutorManager(Collections.singletonList(ToolUtil.weatherFunction()));
+  AssistantRequest assistantRequest = AssistantRequest.builder()
+          .model("gpt-3.5-turbo").name("weather assistant")
+          .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
+          .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
+          .temperature(0D)
+          .build();
+  Assistant assistant = service.createAssistant(assistantRequest);
+  String assistantId = assistant.getId();
+  ThreadRequest threadRequest = ThreadRequest.builder().build();
+  Thread thread = service.createThread(threadRequest);
+  String threadId = thread.getId();
 
-    //create thread
-    ThreadRequest threadRequest = ThreadRequest.builder().build();
-    Thread thread = service.createThread(threadRequest);
-    String threadId = thread.getId();
+  MessageRequest messageRequest = MessageRequest.builder()
+          .content("What's the weather of Xiamen?")
+          .build();
+  //add message to thread
+  service.createMessage(threadId, messageRequest);
+  RunCreateRequest runCreateRequest = RunCreateRequest.builder().assistantId(assistantId).build();
 
-    MessageRequest messageRequest = MessageRequest.builder()
-            .content("What's the weather of Xiamen?")
-            .build();
-    //add message to thread
-    service.createMessage(threadId, messageRequest);
-    RunCreateRequest runCreateRequest = RunCreateRequest.builder().assistantId(assistantId).build();
+  Run run = service.createRun(threadId, runCreateRequest);
 
-    Run run = service.createRun(threadId, runCreateRequest);
+  Run retrievedRun = service.retrieveRun(threadId, run.getId());
+  while (!(retrievedRun.getStatus().equals("completed"))
+          && !(retrievedRun.getStatus().equals("failed"))
+          && !(retrievedRun.getStatus().equals("expired"))
+          && !(retrievedRun.getStatus().equals("incomplete"))
+          && !(retrievedRun.getStatus().equals("requires_action"))) {
+    retrievedRun = service.retrieveRun(threadId, run.getId());
+  }
+  System.out.println(retrievedRun);
 
-    //wait for the run to complete
-    Run retrievedRun = service.retrieveRun(threadId, run.getId());
-    while (!(retrievedRun.getStatus().equals("completed"))
-            && !(retrievedRun.getStatus().equals("failed"))
-            && !(retrievedRun.getStatus().equals("expired"))
-            && !(retrievedRun.getStatus().equals("incomplete"))
-            && !(retrievedRun.getStatus().equals("requires_action"))) {
-        retrievedRun = service.retrieveRun(threadId, run.getId());
-    }
-    //print the result
-    System.out.println(retrievedRun);
+  RequiredAction requiredAction = retrievedRun.getRequiredAction();
+  List<ToolCall> toolCalls = requiredAction.getSubmitToolOutputs().getToolCalls();
+  ToolCall toolCall = toolCalls.get(0);
+  ToolCallFunction function = toolCall.getFunction();
+  String toolCallId = toolCall.getId();
 
-    RequiredAction requiredAction = retrievedRun.getRequiredAction();
-    List<ToolCall> toolCalls = requiredAction.getSubmitToolOutputs().getToolCalls();
-    ToolCall toolCall = toolCalls.get(0);
-    ToolCallFunction function = toolCall.getFunction();
-    String toolCallId = toolCall.getId();
+  SubmitToolOutputsRequest submitToolOutputsRequest = SubmitToolOutputsRequest.ofSingletonToolOutput(toolCallId, executor.executeAndConvertToJson(function.getName(),function.getArguments()).toPrettyString());
+  retrievedRun = service.submitToolOutputs(threadId, retrievedRun.getId(), submitToolOutputsRequest);
 
-    //submit tool output with get_weather function
-    SubmitToolOutputsRequest submitToolOutputsRequest = SubmitToolOutputsRequest.ofSingletonToolOutput(toolCallId, executor.executeAndConvertToJson(function).toPrettyString());
-    retrievedRun = service.submitToolOutputs(threadId, retrievedRun.getId(), submitToolOutputsRequest);
+  while (!(retrievedRun.getStatus().equals("completed"))
+          && !(retrievedRun.getStatus().equals("failed"))
+          && !(retrievedRun.getStatus().equals("expired"))
+          && !(retrievedRun.getStatus().equals("incomplete"))
+          && !(retrievedRun.getStatus().equals("requires_action"))) {
+    retrievedRun = service.retrieveRun(threadId, run.getId());
+  }
 
-    while (!(retrievedRun.getStatus().equals("completed"))
-            && !(retrievedRun.getStatus().equals("failed"))
-            && !(retrievedRun.getStatus().equals("expired"))
-            && !(retrievedRun.getStatus().equals("incomplete"))
-            && !(retrievedRun.getStatus().equals("requires_action"))) {
-        retrievedRun = service.retrieveRun(threadId, run.getId());
-    }
+  System.out.println(retrievedRun);
 
-    //print the result with tool call
-    System.out.println(retrievedRun);
+  OpenAiResponse<Message> response = service.listMessages(threadId, MessageListSearchParameters.builder()
+          .runId(retrievedRun.getId()).build());
+  List<Message> messages = response.getData();
+  messages.forEach(message -> {
+    System.out.println(message.getContent());
+  });
 
-    //get result message list
-    OpenAiResponse<Message> response = service.listMessages(threadId, new ListSearchParameters());
-    List<Message> messages = response.getData();
-    messages.forEach(message -> {
-        System.out.println(message.getContent());
-    });
 }
 ```
 

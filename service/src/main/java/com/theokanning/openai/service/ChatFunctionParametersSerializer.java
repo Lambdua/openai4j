@@ -10,6 +10,7 @@ import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 
 import java.io.IOException;
 
+@Deprecated
 public class ChatFunctionParametersSerializer extends JsonSerializer<Class<?>> {
 
     private final ObjectMapper mapper = new ObjectMapper();

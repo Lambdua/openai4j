@@ -2,7 +2,8 @@ package example;
 
 import com.theokanning.openai.assistants.run.ToolChoice;
 import com.theokanning.openai.completion.chat.*;
-import com.theokanning.openai.service.FunctionExecutor;
+import com.theokanning.openai.function.FunctionDefinition;
+import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.OpenAiService;
 
 import java.time.Duration;
@@ -154,12 +155,13 @@ public class ChatExample {
 
     static void streamChatWithTool() {
         OpenAiService service = new OpenAiService(Duration.ofSeconds(30));
-        final List<ChatFunction> functions = Arrays.asList(
+        final List<FunctionDefinition> functions = Arrays.asList(
                 //1. 天气查询
-                ChatFunction.builder()
+                FunctionDefinition.<ToolUtil.Weather>builder()
                         .name("get_weather")
                         .description("Get the current weather in a given location")
-                        .executor(ToolUtil.Weather.class, w -> {
+                        .parametersDefinitionByClass(ToolUtil.Weather.class)
+                        .executor(w -> {
                             switch (w.location) {
                                 case "tokyo":
                                     return new ToolUtil.WeatherResponse(w.location, w.unit, 10, "cloudy");
@@ -172,9 +174,9 @@ public class ChatExample {
                             }
                         }).build(),
                 //2. 城市查询
-                ChatFunction.builder().name("getCities").description("Get a list of cities by time").executor(ToolUtil.City.class, v -> Arrays.asList("tokyo", "paris")).build()
+                FunctionDefinition.<ToolUtil.City>builder().name("getCities").description("Get a list of cities by time").parametersDefinitionByClass(ToolUtil.City.class).executor(v -> Arrays.asList("tokyo", "paris")).build()
         );
-        final FunctionExecutor toolExecutor = new FunctionExecutor(functions);
+        FunctionExecutorManager toolExecutor = new FunctionExecutorManager(functions);
 
         List<ChatTool> tools = new ArrayList<>();
         tools.add(new ChatTool(functions.get(0)));
@@ -203,7 +205,7 @@ public class ChatExample {
         List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
 
         ChatToolCall toolCall = toolCalls.get(0);
-        ToolMessage toolMessage = toolExecutor.executeAndConvertToMessageHandlingExceptions(toolCall.getFunction(), toolCall.getId());
+        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(toolCall.getFunction().getName(),toolCall.getFunction().getArguments(), toolCall.getId());
         messages.add(accumulatedMessage);
         messages.add(toolMessage);
 
@@ -229,7 +231,7 @@ public class ChatExample {
         messages.add(accumulatedMessage2);
 
         for (ChatToolCall weatherToolCall : accumulatedMessage2.getToolCalls()) {
-            messages.add(toolExecutor.executeAndConvertToMessage(weatherToolCall.getFunction(), weatherToolCall.getId()));
+            messages.add(toolExecutor.executeAndConvertToChatMessage(weatherToolCall.getFunction().getName(),weatherToolCall.getFunction().getArguments(), weatherToolCall.getId()));
         }
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest

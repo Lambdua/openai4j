@@ -15,7 +15,7 @@ import com.theokanning.openai.assistants.thread.Attachment;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
 import com.theokanning.openai.file.File;
-import com.theokanning.openai.service.FunctionExecutor;
+import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.service.assistant_stream.AssistantSSE;
 import io.reactivex.Flowable;
@@ -44,7 +44,7 @@ public class AssistantExample {
 
     static void assistantToolCall() {
         OpenAiService service = new OpenAiService();
-        FunctionExecutor executor = new FunctionExecutor(Collections.singletonList(ToolUtil.weatherFunction()));
+        FunctionExecutorManager executor = new FunctionExecutorManager(Collections.singletonList(ToolUtil.weatherFunction()));
         AssistantRequest assistantRequest = AssistantRequest.builder()
                 .model("gpt-3.5-turbo").name("weather assistant")
                 .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
@@ -82,7 +82,7 @@ public class AssistantExample {
         ToolCallFunction function = toolCall.getFunction();
         String toolCallId = toolCall.getId();
 
-        SubmitToolOutputsRequest submitToolOutputsRequest = SubmitToolOutputsRequest.ofSingletonToolOutput(toolCallId, executor.executeAndConvertToJson(function).toPrettyString());
+        SubmitToolOutputsRequest submitToolOutputsRequest = SubmitToolOutputsRequest.ofSingletonToolOutput(toolCallId, executor.executeAndConvertToJson(function.getName(),function.getArguments()).toPrettyString());
         retrievedRun = service.submitToolOutputs(threadId, retrievedRun.getId(), submitToolOutputsRequest);
 
         while (!(retrievedRun.getStatus().equals("completed"))
