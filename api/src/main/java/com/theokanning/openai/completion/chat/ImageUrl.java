@@ -12,6 +12,8 @@ public class ImageUrl {
     @NonNull
     private final String url;
 
+    private String detail;
+
     public ImageUrl(String url) {
         this.url = url;
     }

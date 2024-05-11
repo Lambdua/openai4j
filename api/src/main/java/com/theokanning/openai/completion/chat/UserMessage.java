@@ -30,31 +30,23 @@ public class UserMessage implements ChatMessage {
     //An optional name for the participant. Provides the model information to differentiate between participants of the same role.
     private String name;
 
-    public UserMessage(Object content) {
+    public UserMessage(String content) {
         this.content = content;
-        contentTypeCheck();
     }
 
-    public void setContent(Object content) {
+    public UserMessage(List<ImageContent> imageContents) {
         this.content = content;
-        contentTypeCheck();
     }
 
-    private void contentTypeCheck() {
-        if (content instanceof String) {
-            return;
-        }
-        if (content instanceof Collection) {
-            Collection collection = (Collection) content;
-            collection.forEach(item -> {
-                if (!(item instanceof ImageContent)) {
-                    throw new IllegalArgumentException("content must be a string or a collection of ImageContent");
-                }
-            });
-            return;
-        }
-        throw new IllegalArgumentException("content must be a string or a collection of ImageContent");
+    public void setContent(String content) {
+        this.content = content;
     }
+
+    public void setContent(List<ImageContent> imageContents) {
+        this.content = content;
+    }
+
+
 
     @Override
     @JsonIgnore
