@@ -2,6 +2,7 @@ package com.theokanning.openai.function;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
+import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -40,6 +41,7 @@ public class FunctionDefinition {
 
     /**
      * The parameters the functions accepts.Choose between this parameter and {@link #parametersDefinitionClass}
+     * This parameter requires you to implement the serialization/deserialization logic of the JSON schema yourself
      **/
     private Object parametersDefinition;
 
@@ -93,9 +95,6 @@ public class FunctionDefinition {
         public FunctionDefinition build() {
             if (name == null) {
                 throw new IllegalArgumentException("name can't be null");
-            }
-            if (parametersDefinitionClass == null && parametersDefinition == null) {
-                throw new IllegalArgumentException("parametersDefinitionClass and parametersDefinition can't be null at the same time,please set one of them");
             }
             if (parametersDefinition != null && parametersDefinitionClass != null) {
                 throw new IllegalArgumentException("parametersDefinitionClass and parametersDefinition can't be set at the same time,please set one of them");
