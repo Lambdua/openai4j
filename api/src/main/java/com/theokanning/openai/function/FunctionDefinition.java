@@ -2,7 +2,6 @@ package com.theokanning.openai.function;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
-import com.kjetland.jackson.jsonSchema.annotations.JsonSchemaTitle;
 import lombok.Getter;
 import lombok.NonNull;
 

@@ -6,7 +6,10 @@ import com.theokanning.openai.assistants.thread.Attachment;
 import com.theokanning.openai.completion.chat.ContentDeserializer;
 import com.theokanning.openai.completion.chat.ContentSerializer;
 import com.theokanning.openai.completion.chat.ImageContent;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Map;
