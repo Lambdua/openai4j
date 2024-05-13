@@ -80,7 +80,7 @@
                         <configuration>
                             <publishingServerId>Lambdua</publishingServerId>
                             <tokenAuth>true</tokenAuth>
-                            <autoPublish>false</autoPublish>
+                            <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
                     <plugin>
