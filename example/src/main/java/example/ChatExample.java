@@ -23,7 +23,8 @@ public class ChatExample {
         // gptVision();
         // toolChat();
         // functionChat();
-        streamChatWithTool();
+        // streamChatWithTool();
+        gpt4oVision();
     }
 
     static void simpleChat() {
@@ -150,6 +151,25 @@ public class ChatExample {
                 .build();
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         System.out.println(choice.getMessage().getContent());
+    }
+
+    static void gpt4oVision() {
+        OpenAiService service = new OpenAiService(Duration.ofSeconds(20));
+        final List<ChatMessage> messages = new ArrayList<>();
+        //Here, the imageMessage is intended for image recognition
+        final ChatMessage imageMessage = UserMessage.buildImageMessage("What's in this image?",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
+        messages.add(imageMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+                .model("gpt-4o")
+                .messages(messages)
+                .n(1)
+                .maxTokens(300)
+                .build();
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        System.out.println(choice.getMessage().getContent());
+
     }
 
 
