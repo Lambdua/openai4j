@@ -378,7 +378,11 @@ public class OpenAiService {
         if (request.getLanguage() != null) {
             builder.addFormDataPart("language", request.getLanguage());
         }
-
+        if (request.getTimestampGranularities() != null && !request.getTimestampGranularities().isEmpty()) {
+            for (String granularity : request.getTimestampGranularities()) {
+                builder.addFormDataPart("timestamp_granularities[]", granularity);
+            }
+        }
         return execute(api.createTranscription(builder.build()));
     }
 

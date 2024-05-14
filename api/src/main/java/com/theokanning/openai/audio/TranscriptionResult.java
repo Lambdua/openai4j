@@ -41,4 +41,6 @@ public class TranscriptionResult {
      */
     List<TranscriptionSegment> segments;
 
+    List<Words> words;
+
 }
