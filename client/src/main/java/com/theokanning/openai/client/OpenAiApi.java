@@ -220,6 +220,10 @@ public interface OpenAiApi {
     @POST("threads/{thread_id}/messages/{message_id}")
     Single<Message> modifyMessage(@Path("thread_id") String threadId, @Path("message_id") String messageId, @Body ModifyMessageRequest request);
 
+    @Headers({"OpenAI-Beta: assistants=v2"})
+    @DELETE("threads/{thread_id}/messages/{message_id}")
+    Single<DeleteResult> deleteMessage(@Path("thread_id") String threadId, @Path("message_id") String messageId);
+
 
     @Headers("OpenAI-Beta: assistants=v2")
     @POST("threads/{thread_id}/runs")

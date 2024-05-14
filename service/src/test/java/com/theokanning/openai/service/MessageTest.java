@@ -104,6 +104,11 @@ public class MessageTest {
         createTestMessage(separateThreadId);
         List<Message> messages = service.listMessages(separateThreadId, new MessageListSearchParameters()).getData();
         assertEquals(3, messages.size());
+
+        service.deleteMessage(separateThreadId, messages.get(0).getId());
+        List<Message> messagesAfterDelete = service.listMessages(separateThreadId, new MessageListSearchParameters()).getData();
+        assertEquals(2, messagesAfterDelete.size());
+
         DeleteResult deleteResult = service.deleteThread(separateThreadId);
         assertTrue(deleteResult.isDeleted());
     }
