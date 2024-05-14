@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,6 +35,7 @@ public class AudioTest {
         CreateTranscriptionRequest createTranscriptionRequest = CreateTranscriptionRequest.builder()
                 .model("whisper-1")
                 .responseFormat("verbose_json")
+                .timestampGranularities(Arrays.asList("word", "segment"))
                 .build();
 
         TranscriptionResult result = service.createTranscription(createTranscriptionRequest, englishAudioFilePath);
@@ -42,6 +44,7 @@ public class AudioTest {
         assertEquals("english", result.getLanguage());
         assertTrue(result.getDuration() > 0);
         assertEquals(1, result.getSegments().size());
+        assertEquals(2, result.getWords().size());
     }
 
     @Test

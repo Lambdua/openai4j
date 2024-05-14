@@ -3,6 +3,8 @@ package com.theokanning.openai.audio;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.util.List;
+
 /**
  * A request for OpenAi to create transcription based on an audio file
  * All fields except model are optional
@@ -43,4 +45,13 @@ public class CreateTranscriptionRequest {
      * The language of the input audio. Supplying the input language in ISO-639-1 format will improve accuracy and latency.
      */
     String language;
+
+    /**
+     * The timestamp granularities to populate for this transcription. response_format must be set verbose_json to use timestamp granularities.<br>
+     * Either or both of these options are supported: word, or segment. <br>
+     * Note: There is no additional latency for segment timestamps, but generating word timestamps incurs additional latency.
+     */
+    @JsonProperty("timestamp_granularities ")
+    List<String> timestampGranularities;
+
 }
