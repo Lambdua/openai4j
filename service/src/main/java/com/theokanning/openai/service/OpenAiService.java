@@ -42,6 +42,7 @@ import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.fine_tuning.FineTuningEvent;
 import com.theokanning.openai.fine_tuning.FineTuningJob;
+import com.theokanning.openai.fine_tuning.FineTuningJobCheckpoint;
 import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageRequest;
@@ -240,6 +241,10 @@ public class OpenAiService {
 
     public List<FineTuningEvent> listFineTuningJobEvents(String fineTuningJobId) {
         return execute(api.listFineTuningJobEvents(fineTuningJobId)).data;
+    }
+
+    public List<FineTuningJobCheckpoint> listFineTuningCheckpoints(String fineTuningJobId) {
+        return execute(api.listFineTuningCheckpoints(fineTuningJobId)).data;
     }
 
     @Deprecated
