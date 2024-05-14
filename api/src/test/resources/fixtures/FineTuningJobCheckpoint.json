@@ -1,0 +1,17 @@
+{
+  "object": "fine_tuning.job.checkpoint",
+  "id": "ftckpt_qtZ5Gyk4BLq1SfLFWp3RtO3P",
+  "created_at": 1712211699,
+  "fine_tuned_model_checkpoint": "ft:gpt-3.5-turbo-0125:my-org:custom_suffix:9ABel2dg:ckpt-step-88",
+  "fine_tuning_job_id": "ftjob-fpbNQ3H1GrMehXRf8cO97xTN",
+  "metrics": {
+    "step": 88,
+    "train_loss": 0.478,
+    "train_mean_token_accuracy": 0.924,
+    "valid_loss": 10.112,
+    "valid_mean_token_accuracy": 0.145,
+    "full_valid_loss": 0.567,
+    "full_valid_mean_token_accuracy": 0.944
+  },
+  "step_number": 88
+}

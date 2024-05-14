@@ -37,6 +37,7 @@ import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.fine_tuning.FineTuningEvent;
 import com.theokanning.openai.fine_tuning.FineTuningJob;
+import com.theokanning.openai.fine_tuning.FineTuningJobCheckpoint;
 import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.model.Model;
@@ -66,6 +67,7 @@ public class JsonTest {
             FineTuningEvent.class,
             FineTuningJob.class,
             FineTuningJobRequest.class,
+            FineTuningJobCheckpoint.class,
             ImageResult.class,
             TranscriptionResult.class,
             TranslationResult.class,

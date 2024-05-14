@@ -15,5 +15,14 @@
     "file-abc123"
   ],
   "validation_file": "validation-file",
-  "trained_tokens": 5768
+  "trained_tokens": 5768,
+  "integrations": [
+    {
+      "type": "wandb",
+      "wandb": {
+        "project": "my-wandb-project",
+        "run_id": "ftjob-abc123"
+      }
+    }
+  ]
 }

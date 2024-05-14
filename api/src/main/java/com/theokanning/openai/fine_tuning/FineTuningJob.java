@@ -1,6 +1,7 @@
 package com.theokanning.openai.fine_tuning;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.OpenAiError;
 import lombok.Data;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class FineTuningJob {
      */
     @JsonProperty("created_at")
     Long createdAt;
+
+    OpenAiError.OpenAiErrorDetails error;
 
     /**
      * The unix timestamp for when the fine-tuning job was finished.
@@ -87,4 +90,20 @@ public class FineTuningJob {
      */
     @JsonProperty("trained_tokens")
     Integer trainedTokens;
+
+    /**
+     * A list of integrations to enable for this fine-tuning job.
+     */
+    List<Integrations> integrations;
+
+    /**
+     * The seed controls the reproducibility of the job. Passing in the same seed and job parameters should produce the same results, but may differ in rare cases. If a seed is not specified, one will be generated for you.
+     */
+    Integer seed;
+
+    /**
+     * The Unix timestamp (in seconds) for when the fine-tuning job is estimated to finish. The value will be null if the fine-tuning job is not running.
+     */
+    @JsonProperty("estimated_finish")
+    Long estimatedFinish;
 }

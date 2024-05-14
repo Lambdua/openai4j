@@ -37,6 +37,7 @@ import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
 import com.theokanning.openai.fine_tuning.FineTuningEvent;
 import com.theokanning.openai.fine_tuning.FineTuningJob;
+import com.theokanning.openai.fine_tuning.FineTuningJobCheckpoint;
 import com.theokanning.openai.fine_tuning.FineTuningJobRequest;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.ImageResult;
@@ -117,6 +118,10 @@ public interface OpenAiApi {
 
     @GET("fine_tuning/jobs/{fine_tuning_job_id}/events")
     Single<OpenAiResponse<FineTuningEvent>> listFineTuningJobEvents(@Path("fine_tuning_job_id") String fineTuningJobId);
+
+    //List fine-tuning checkpoints
+    @GET("fine_tuning/jobs/{fine_tuning_job_id}/checkpoints")
+    Single<OpenAiResponse<FineTuningJobCheckpoint>> listFineTuningCheckpoints(@Path("fine_tuning_job_id") String fineTuningJobId);
 
     @DELETE("models/{fine_tune_id}")
     Single<DeleteResult> deleteFineTune(@Path("fine_tune_id") String fineTuneId);
