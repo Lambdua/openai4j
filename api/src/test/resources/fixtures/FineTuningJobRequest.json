@@ -3,7 +3,22 @@
   "validation_file": "file-abc123",
   "training_file": "file-abc123",
   "hyperparameters": {
-    "n_epochs": 4
+    "n_epochs": 4,
+    "batch_size": 1,
+    "learning_rate_multiplier": 1.0
   },
-  "suffix": "test"
+  "suffix": "test",
+  "integrations": [
+    {
+      "type": "wandb",
+      "wandb": {
+        "project": "my-wandb-project",
+        "name": "ft-run-display-name",
+        "tags": [
+          "first-experiment",
+          "v2"
+        ]
+      }
+    }
+  ]
 }
