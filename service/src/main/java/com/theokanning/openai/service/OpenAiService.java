@@ -472,6 +472,10 @@ public class OpenAiService {
         return execute(api.listMessages(threadId, queryParameters));
     }
 
+    public DeleteResult deleteMessage(String threadId, String messageId) {
+        return execute(api.deleteMessage(threadId, messageId));
+    }
+
 
     public Run createRun(String threadId, RunCreateRequest runCreateRequest) {
         return execute(api.createRun(threadId, runCreateRequest));
