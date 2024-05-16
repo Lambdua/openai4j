@@ -28,9 +28,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>https://github.com/Lambdua/openai-java.git</connection>
-        <developerConnection>scm:git:ssh://git@ssh.github.com:443/Lambdua/openai-java.git </developerConnection>
-        <url>https://github.com/Lambdua/openai-java</url>
+        <connection>scm:git:https://github.com/Lambdua/openai4j.git</connection>
+        <developerConnection>scm:git:https://github.com/Lambdua/openai4j.git</developerConnection>
+        <url>https://github.com/Lambdua/openai4j</url>
     </scm>
 
     <properties>
@@ -213,12 +213,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version> <!-- 确保使用支持JUnit 5的版本 -->
+                <version>2.22.2</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.10.1</version> <!-- 使用与你的测试一致的JUnit Jupiter版本 -->
+                        <version>5.10.1</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -228,7 +228,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version> <!-- 使用最新版本 -->
+                <version>3.1.0</version>
                 <configuration>
                     <filesets>
                         <fileset>
