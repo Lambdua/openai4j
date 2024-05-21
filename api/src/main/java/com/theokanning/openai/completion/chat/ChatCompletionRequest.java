@@ -1,8 +1,6 @@
 package com.theokanning.openai.completion.chat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.theokanning.openai.assistants.run.ToolChoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +15,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatCompletionRequest {
-
 
 
     /**
@@ -114,9 +111,9 @@ public class ChatCompletionRequest {
     String user;
 
     /**
+     * @since 0.20.5 {@link com.theokanning.openai.completion.chat.ChatFunction} {@link  com.theokanning.openai.completion.chat.ChatFunctionDynamic}will be deprecated
      * @deprecated Replaced by {@link #tools}
      * recommend to use {@link com.theokanning.openai.function.FunctionDefinition}  or custom class
-     * @since 0.20.5 {@link com.theokanning.openai.completion.chat.ChatFunction} {@link  com.theokanning.openai.completion.chat.ChatFunctionDynamic}will be deprecated
      */
     @Deprecated
     List<?> functions;
@@ -126,9 +123,7 @@ public class ChatCompletionRequest {
      */
     @JsonProperty("function_call")
     @Deprecated
-    @JsonSerialize(using = ChatCompletionRequestFunctionCall.Serializer.class)
-    @JsonDeserialize(using = ChatCompletionRequestFunctionCall.Deserializer.class)
-    Object functionCall;
+    ChatCompletionRequestFunctionCall functionCall;
 
 
     /**
@@ -148,7 +143,6 @@ public class ChatCompletionRequest {
     Integer topLogprobs;
 
 
-
     /**
      * Function definition, only used if type is "function"
      * recommend to use {@link com.theokanning.openai.function.FunctionDefinition}  or custom class
@@ -161,39 +155,7 @@ public class ChatCompletionRequest {
      * Controls which (if any) function is called by the model. none means the model will not call a function and instead generates a message. auto means the model can pick between generating a message or calling a function.
      */
     @JsonProperty("tool_choice")
-    @JsonSerialize(using = ToolChoice.Serializer.class)
-    @JsonDeserialize(using = ToolChoice.Deserializer.class)
     ToolChoice toolChoice;
 
 
-
-    public static ChatCompletionRequestBuilder builder() {
-        return new InternalBuilder();
-    }
-    private static class InternalBuilder extends ChatCompletionRequestBuilder {
-        public InternalBuilder() {
-            super();
-        }
-
-        @Override
-        public ChatCompletionRequest build() {
-            ChatCompletionRequest request = super.build();
-            request.functionCallParamCheck();
-            return request;
-        }
-    }
-
-    private void functionCallParamCheck() {
-        if (functionCall==null){
-            return;
-        }
-        if (!(functionCall instanceof ChatCompletionRequestFunctionCall || functionCall instanceof String)) {
-            throw new IllegalArgumentException("functionCall must be a ChatCompletionRequestFunctionCall or a String type");
-        }
-    }
-
-    public void setFunctionCall(Object functionCall) {
-        this.functionCall = functionCall;
-        functionCallParamCheck();
-    }
 }

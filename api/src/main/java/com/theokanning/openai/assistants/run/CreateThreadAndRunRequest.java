@@ -93,8 +93,6 @@ public class CreateThreadAndRunRequest {
      * Specifying a particular tool like {"type": "file_search"} or {"type": "function", "function": {"name": "my_function"}} forces the model to call that tool.
      */
     @JsonProperty("tool_choice")
-    @JsonSerialize(using = ToolChoice.Serializer.class)
-    @JsonDeserialize(using = ToolChoice.Deserializer.class)
     ToolChoice toolChoice;
 
     /**

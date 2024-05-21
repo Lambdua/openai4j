@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.io.IOException;
@@ -17,24 +19,25 @@ import java.io.IOException;
  * @date 2024年04月18 17:18
  **/
 @Data
+@JsonSerialize(using = ToolChoice.Serializer.class)
+@JsonDeserialize(using = ToolChoice.Deserializer.class)
 public class ToolChoice {
     public static final ToolChoice REQUIRED = new ToolChoice("required");
+
+    public static final ToolChoice NONE = new ToolChoice("none");
+
+    public static final ToolChoice AUTO = new ToolChoice("auto");
 
     /**
      * The name of the function to call.
      */
     Function function;
 
-    public static final ToolChoice NONE = new ToolChoice("none");
-
-    public static final ToolChoice AUTO = new ToolChoice("auto");
     /**
      * The type of the tool. If type is function, the function name must be set
      * enum: none/auto/function/required
      */
     String type;
-
-
 
     private ToolChoice(String type) {
         this.type = type;

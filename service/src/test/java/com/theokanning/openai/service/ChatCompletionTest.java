@@ -145,15 +145,15 @@ class ChatCompletionTest {
         assertEquals("get_weather", functionCall.getName());
         assertInstanceOf(ObjectNode.class, functionCall.getArguments());
 
-        ChatMessage callResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(),functionCall.getArguments());
+        ChatMessage callResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(), functionCall.getArguments());
         assertNotEquals("error", callResponse.getName());
 
         // this performs an unchecked cast
-        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(functionCall.getName(),functionCall.getArguments());
+        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(functionCall.getName(), functionCall.getArguments());
         assertInstanceOf(ToolUtil.WeatherResponse.class, functionExecutionResponse);
         assertEquals(25, functionExecutionResponse.temperature);
 
-        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(functionCall.getName(),functionCall.getArguments());
+        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(functionCall.getName(), functionCall.getArguments());
         assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
@@ -250,15 +250,15 @@ class ChatCompletionTest {
         assertEquals("get_weather", functionCall.getName());
         assertInstanceOf(ObjectNode.class, functionCall.getArguments());
 
-        ChatMessage callResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(),functionCall.getArguments());
+        ChatMessage callResponse = functionExecutor.executeAndConvertToChatMessage(functionCall.getName(), functionCall.getArguments());
         assertNotEquals("error", callResponse.getName());
 
         // this performs an unchecked cast
-        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(functionCall.getName(),functionCall.getArguments());
+        ToolUtil.WeatherResponse functionExecutionResponse = functionExecutor.execute(functionCall.getName(), functionCall.getArguments());
         assertInstanceOf(ToolUtil.WeatherResponse.class, functionExecutionResponse);
         assertEquals(25, functionExecutionResponse.temperature);
 
-        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(functionCall.getName(),functionCall.getArguments());
+        JsonNode jsonFunctionExecutionResponse = functionExecutor.executeAndConvertToJson(functionCall.getName(), functionCall.getArguments());
         assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
@@ -367,7 +367,7 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, jsonFunctionExecutionResponse);
         assertEquals("25", jsonFunctionExecutionResponse.get("temperature").asText());
 
-        ToolMessage chatMessageTool = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
+        ToolMessage chatMessageTool = toolExecutor.executeAndConvertToChatMessage(function.getName(), function.getArguments(), toolCall.getId());
         //确保不是异常的返回
         assertNotEquals("error", chatMessageTool.getName());
 
@@ -397,7 +397,7 @@ class ChatCompletionTest {
                         .name("get_weather")
                         .description("Get the current weather in a given location")
                         .parametersDefinitionByClass(ToolUtil.Weather.class)
-                        .executor( w -> {
+                        .executor(w -> {
                             switch (w.location) {
                                 case "tokyo":
                                     return new ToolUtil.WeatherResponse(w.location, w.unit, 10, "cloudy");
@@ -412,9 +412,9 @@ class ChatCompletionTest {
                 FunctionDefinition.<ToolUtil.City>builder().name("getCities").description("Get a list of cities by time")
                         .parametersDefinitionByClass(ToolUtil.City.class)
                         .executor(v -> {
-                    assertEquals("2022-12-01", v.time);
-                    return Arrays.asList("tokyo", "paris");
-                }).build()
+                            assertEquals("2022-12-01", v.time);
+                            return Arrays.asList("tokyo", "paris");
+                        }).build()
         );
         final FunctionExecutorManager toolExecutor = new FunctionExecutorManager(functions);
 
@@ -452,11 +452,11 @@ class ChatCompletionTest {
         assertInstanceOf(List.class, execute);
 
 
-        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(function.getName(),function.getArguments());
+        JsonNode jsonNode = toolExecutor.executeAndConvertToJson(function.getName(), function.getArguments());
         assertInstanceOf(ArrayNode.class, jsonNode);
 
 
-        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
+        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(), function.getArguments(), toolCall.getId());
         assertNotEquals("error", toolMessage.getName());
 
         messages.add(choice.getMessage());
@@ -488,7 +488,7 @@ class ChatCompletionTest {
         for (ChatToolCall weatherToolCall : choice2.getMessage().getToolCalls()) {
             Object itemResult = toolExecutor.execute(weatherToolCall.getFunction().getName(), weatherToolCall.getFunction().getArguments());
             assertInstanceOf(ToolUtil.WeatherResponse.class, itemResult);
-            messages.add(toolExecutor.executeAndConvertToChatMessage(weatherToolCall.getFunction().getName(),weatherToolCall.getFunction().getArguments(), weatherToolCall.getId()));
+            messages.add(toolExecutor.executeAndConvertToChatMessage(weatherToolCall.getFunction().getName(), weatherToolCall.getFunction().getArguments(), weatherToolCall.getId()));
         }
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
@@ -546,7 +546,7 @@ class ChatCompletionTest {
                         .name("get_weather")
                         .description("Get the current weather in a given location")
                         .parametersDefinitionByClass(ToolUtil.Weather.class)
-                        .executor( w -> {
+                        .executor(w -> {
                             switch (w.location) {
                                 case "tokyo":
                                     return new ToolUtil.WeatherResponse(w.location, w.unit, 10, "cloudy");
@@ -603,7 +603,7 @@ class ChatCompletionTest {
         assertInstanceOf(ArrayNode.class, jsonNode);
 
 
-        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(),function.getArguments(), toolCall.getId());
+        ToolMessage toolMessage = toolExecutor.executeAndConvertToChatMessage(function.getName(), function.getArguments(), toolCall.getId());
         assertNotEquals("error", toolMessage.getName());
 
         messages.add(accumulatedMessage);
@@ -637,7 +637,7 @@ class ChatCompletionTest {
             ChatFunctionCall call2 = weatherToolCall.getFunction();
             Object itemResult = toolExecutor.execute(call2.getName(), call2.getArguments());
             assertInstanceOf(ToolUtil.WeatherResponse.class, itemResult);
-            messages.add(toolExecutor.executeAndConvertToChatMessage(call2.getName(),call2.getArguments(), weatherToolCall.getId()));
+            messages.add(toolExecutor.executeAndConvertToChatMessage(call2.getName(), call2.getArguments(), weatherToolCall.getId()));
         }
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
