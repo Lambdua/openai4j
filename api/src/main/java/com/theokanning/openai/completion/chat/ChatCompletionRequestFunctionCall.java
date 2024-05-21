@@ -58,8 +58,6 @@ public class ChatCompletionRequestFunctionCall {
                 gen.writeObjectField("name", name);
                 gen.writeEndObject();
             }
-            // This should never happen
-            throw new IllegalArgumentException("Unexpected value to function call: " + value);
         }
     }
 
