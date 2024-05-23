@@ -749,8 +749,10 @@ public class OpenAiService {
                     functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
                 }
                 if (messageChunk.getFunctionCall().getArguments() != null) {
-                    String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? "" : messageChunk.getFunctionCall().getArguments().asText();
-                    functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+                    String argumentsPart = messageChunk.getFunctionCall().getArguments().asText();
+                    if (!argumentsPart.isEmpty()) {
+                        functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+                    }
                 }
                 accumulatedMessage.setFunctionCall(functionCall);
             } else if (messageChunk.getToolCalls() != null) {
