@@ -743,15 +743,16 @@ public class OpenAiService {
         return flowable.map(chunk -> {
             ChatCompletionChoice firstChoice = chunk.getChoices().get(0);
             AssistantMessage messageChunk = firstChoice.getMessage();
+            ChatFunctionCall chunkFunctionCall = new ChatFunctionCall(null, null);
             if (messageChunk.getFunctionCall() != null) {
                 if (messageChunk.getFunctionCall().getName() != null) {
                     String namePart = messageChunk.getFunctionCall().getName();
-                    functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
+                    chunkFunctionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
                 }
                 if (messageChunk.getFunctionCall().getArguments() != null) {
                     String argumentsPart = messageChunk.getFunctionCall().getArguments().asText();
                     if (!argumentsPart.isEmpty()) {
-                        functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+                        chunkFunctionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
                     }
                 }
                 accumulatedMessage.setFunctionCall(functionCall);
@@ -783,9 +784,12 @@ public class OpenAiService {
             }
 
             if (firstChoice.getFinishReason() != null) { // last
-                if ("function_call".equals(firstChoice.getFinishReason()) && functionCall.getArguments() != null) {
-                    functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
-                    accumulatedMessage.setFunctionCall(functionCall);
+                if ("function_call".equals(firstChoice.getFinishReason())) {
+                    if (chunkFunctionCall.getArguments() != null) {
+                        functionCall.setName(chunkFunctionCall.getName());
+                        functionCall.setArguments(mapper.readTree(chunkFunctionCall.getArguments().asText()));
+                        accumulatedMessage.setFunctionCall(functionCall);
+                    }
                 }
                 if ("tool_calls".equals(firstChoice.getFinishReason()) && accumulatedMessage.getToolCalls() != null) {
                     //按照index重新排序

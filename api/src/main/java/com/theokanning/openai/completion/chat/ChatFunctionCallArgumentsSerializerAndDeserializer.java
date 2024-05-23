@@ -41,10 +41,7 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
                 return null;
             }
 
-            if (!isValidJson(json)) {
-                // encode to valid JSON escape otherwise we will lose quotes
-                json = MAPPER.writeValueAsString(json);
-            }
+            json = MAPPER.writeValueAsString(json);
 
             try {
                 JsonNode node = null;
