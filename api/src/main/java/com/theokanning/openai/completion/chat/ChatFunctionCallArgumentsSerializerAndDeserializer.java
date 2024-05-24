@@ -30,6 +30,7 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
     }
 
     public static class Deserializer extends JsonDeserializer<JsonNode> {
+        private static final ObjectMapper objectMapper = new ObjectMapper();
 
         private Deserializer() {
         }
@@ -63,7 +64,6 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
         }
 
         private boolean isValidJson(String jsonString) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
                 JsonNode tree = objectMapper.readTree(jsonString);
                 return tree != null && (tree.isObject() || tree.isArray());
