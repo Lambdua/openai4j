@@ -1,8 +1,7 @@
 package com.theokanning.openai.service.assistant_stream;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.assistants.StreamEvent;
+import com.theokanning.openai.utils.JsonUtil;
 import lombok.Getter;
 
 /**
@@ -13,9 +12,6 @@ import lombok.Getter;
 public class AssistantSSE {
     private StreamEvent event;
     private String data;
-
-    private static final ObjectMapper mapper = new ObjectMapper();
-
 
     public AssistantSSE(StreamEvent event, String data) {
         this.event = event;
@@ -28,11 +24,7 @@ public class AssistantSSE {
     }
 
     public <T> T getPojo() {
-        try {
-            return (T) mapper.readValue(data, event.dataClass);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return (T) JsonUtil.readValue(data, event.dataClass);
     }
 
     @Override

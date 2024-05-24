@@ -11,6 +11,7 @@ import com.theokanning.openai.assistants.run.ToolCall;
 import com.theokanning.openai.assistants.run.ToolCallFunction;
 import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.run_step.RunStepDelta;
+import com.theokanning.openai.utils.JsonUtil;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class AssistantStreamManager {
     private final List<MessageDelta> msgDeltas;
     private final List<RunStepDelta> runStepDeltas;
     private final List<AssistantSSE> eventMsgsHolder;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = JsonUtil.getInstance();
     private MessageDelta accumulatedMessageDelta;
 
     private RunStepDelta accumulatedRsd;

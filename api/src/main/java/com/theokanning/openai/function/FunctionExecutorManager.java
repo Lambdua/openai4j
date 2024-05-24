@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.assistants.run.SubmitToolOutputRequestItem;
 import com.theokanning.openai.completion.chat.FunctionMessage;
 import com.theokanning.openai.completion.chat.ToolMessage;
+import com.theokanning.openai.utils.JsonUtil;
 import lombok.Getter;
 
 import java.util.*;
@@ -24,11 +25,11 @@ public class FunctionExecutorManager {
     private final ExecutorService executorService;
 
     public FunctionExecutorManager() {
-        this(new ObjectMapper(), Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()), Collections.emptyList());
+        this(JsonUtil.getInstance(), Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()), Collections.emptyList());
     }
 
     public FunctionExecutorManager(List<FunctionDefinition> functionDefinitionList) {
-        this(new ObjectMapper(), Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()), functionDefinitionList);
+        this(JsonUtil.getInstance(), Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()), functionDefinitionList);
     }
 
     public FunctionExecutorManager(ObjectMapper mapper, ExecutorService executorService) {

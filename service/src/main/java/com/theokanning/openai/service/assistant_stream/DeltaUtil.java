@@ -11,6 +11,7 @@ import com.theokanning.openai.assistants.run.ToolCallCodeInterpreter;
 import com.theokanning.openai.assistants.run.ToolCallFunction;
 import com.theokanning.openai.assistants.run_step.RunStepDelta;
 import com.theokanning.openai.assistants.run_step.StepDetails;
+import com.theokanning.openai.utils.JsonUtil;
 import lombok.SneakyThrows;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.Optional;
  * @date 2024年05月02 15:56
  **/
 public class DeltaUtil {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = JsonUtil.getInstance();
 
     /**
      * merge delta msg to accumulated delta msg

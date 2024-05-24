@@ -7,13 +7,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.kjetland.jackson.jsonSchema.JsonSchemaConfig;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
+import com.theokanning.openai.utils.JsonUtil;
 
 import java.io.IOException;
 
 @Deprecated
 public class ChatFunctionParametersSerializer extends JsonSerializer<Class<?>> {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = JsonUtil.getInstance();
     private final JsonSchemaConfig config = JsonSchemaConfig.vanillaJsonSchemaDraft4();
     private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper, config);
 
