@@ -10,6 +10,7 @@ import com.theokanning.openai.completion.chat.ChatFunction;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
 import com.theokanning.openai.completion.chat.FunctionMessage;
 import com.theokanning.openai.completion.chat.ToolMessage;
+import com.theokanning.openai.utils.JsonUtil;
 
 import java.util.*;
 
@@ -20,7 +21,7 @@ import java.util.*;
 @Deprecated
 public class FunctionExecutor {
 
-    private ObjectMapper MAPPER = new ObjectMapper();
+    private ObjectMapper MAPPER = JsonUtil.getInstance();
     private final Map<String, ChatFunction> FUNCTIONS = new HashMap<>();
 
     public FunctionExecutor(List<ChatFunction> functions) {

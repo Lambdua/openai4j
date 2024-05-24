@@ -2,19 +2,18 @@ package com.theokanning.openai.function;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.kjetland.jackson.jsonSchema.JsonSchemaConfig;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
+import com.theokanning.openai.utils.JsonUtil;
 
 import java.io.IOException;
 
 public class FunctionParametersSerializer extends JsonSerializer<FunctionDefinition> {
-
-    private final ObjectMapper mapper = new ObjectMapper();
     private final JsonSchemaConfig config = JsonSchemaConfig.vanillaJsonSchemaDraft4();
-    private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(mapper, config);
+
+    private final JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(JsonUtil.getInstance(), config);
 
     @Override
     public void serialize(FunctionDefinition value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -27,10 +26,10 @@ public class FunctionParametersSerializer extends JsonSerializer<FunctionDefinit
             parameterSchema.remove("$schema");
             parameterSchema.remove("title");
             parameterSchema.remove("additionalProperties");
-            gen.writeRawValue(mapper.writeValueAsString(parameterSchema));
+            gen.writeRawValue(JsonUtil.writeValueAsString(parameterSchema));
         } else {
             gen.writeFieldName("parameters");
-            gen.writeRawValue(mapper.writeValueAsString(value.getParametersDefinition()));
+            gen.writeRawValue(JsonUtil.writeValueAsString(value.getParametersDefinition()));
         }
         gen.writeEndObject();
     }
