@@ -28,7 +28,7 @@ public class FunctionsWithStreamExample {
                     .model("gpt-3.5-turbo")
                     .messages(messages)
                     .functions(functionExecutor.getFunctionDefinitions())
-                    .functionCall("auto")
+                    .functionCall(ChatCompletionRequestFunctionCall.AUTO)
                     .n(1)
                     .maxTokens(256)
                     .logitBias(new HashMap<>())

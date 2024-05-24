@@ -57,7 +57,7 @@ public class DynamicFunctionExample {
                     .model("gpt-3.5-turbo-0613")
                     .messages(messages)
                     .functions(Collections.singletonList(weatherFunction))
-                    .functionCall("auto")
+                    .functionCall(ChatCompletionRequestFunctionCall.AUTO)
                     .n(1)
                     .maxTokens(100)
                     .logitBias(new HashMap<>())

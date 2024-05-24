@@ -55,7 +55,7 @@ public class ChatExample {
                 .model("gpt-3.5-turbo")
                 .messages(messages)
                 .functions(Collections.singletonList(ToolUtil.weatherFunction()))
-                .functionCall("auto")
+                .functionCall(ChatCompletionRequestFunctionCall.AUTO)
                 .n(1)
                 .maxTokens(100)
                 .build();
