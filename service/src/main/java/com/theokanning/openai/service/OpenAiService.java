@@ -3,7 +3,6 @@ package com.theokanning.openai.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -769,10 +768,11 @@ public class OpenAiService {
      * @param accumulatedMessage 累加的消息对象
      */
     private void processFunctionCall(AssistantMessage messageChunk, ChatFunctionCall functionCall, AssistantMessage accumulatedMessage) {
-        if (messageChunk.getFunctionCall() != null) {
-            updateFunctionCall(messageChunk.getFunctionCall(), functionCall);
-            accumulatedMessage.setFunctionCall(functionCall);
-        }
+        Optional.ofNullable(messageChunk.getFunctionCall())
+                .ifPresent(messageFunctionCall -> {
+                    updateFunctionCall(messageFunctionCall, functionCall);
+                    accumulatedMessage.setFunctionCall(functionCall);
+                });
     }
 
     /**
@@ -782,18 +782,18 @@ public class OpenAiService {
      * @param functionCall        要更新的函数调用对象
      */
     private void updateFunctionCall(ChatFunctionCall messageFunctionCall, ChatFunctionCall functionCall) {
-        if (messageFunctionCall.getName() != null) {
-            functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + messageFunctionCall.getName());
-        }
-        JsonNode argNode = messageFunctionCall.getArguments();
-        if (argNode != null) {
+        Optional.ofNullable(messageFunctionCall.getName()).ifPresent(name ->
+                functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + name)
+        );
+
+        Optional.ofNullable(messageFunctionCall.getArguments()).ifPresent(argNode -> {
             if (argNode instanceof ObjectNode) {
                 functionCall.setArguments(argNode);
             } else if (argNode instanceof TextNode) {
                 String argumentsPart = argNode.asText();
                 functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
             }
-        }
+        });
     }
 
     /**
@@ -803,24 +803,23 @@ public class OpenAiService {
      * @param accumulatedMessage 累加的消息对象
      */
     private void processToolCalls(AssistantMessage messageChunk, AssistantMessage accumulatedMessage) {
-        if (messageChunk.getToolCalls() == null) {
-            return;
-        }
-        List<ChatToolCall> toolCalls = messageChunk.getToolCalls();
-        ChatToolCall partToolCall = toolCalls.get(0);
-        ChatFunctionCall partFunction = partToolCall.getFunction();
-        int index = partToolCall.getIndex();
-        List<ChatToolCall> accumulatedChatTools = getOrInitializeToolCalls(accumulatedMessage);
+        Optional.ofNullable(messageChunk.getToolCalls()).ifPresent(toolCalls -> {
+            ChatToolCall partToolCall = toolCalls.get(0);
+            ChatFunctionCall partFunction = partToolCall.getFunction();
+            int index = partToolCall.getIndex();
+            List<ChatToolCall> accumulatedChatTools = getOrInitializeToolCalls(accumulatedMessage);
 
-        ChatToolCall accumulatedToolCall = accumulatedChatTools.stream()
-                .filter(chatToolCall -> chatToolCall.getIndex() == index)
-                .findFirst()
-                .orElseGet(() -> {
-                    ChatToolCall newToolCall = new ChatToolCall(index, partToolCall.getId(), partToolCall.getType());
-                    accumulatedChatTools.add(newToolCall);
-                    return newToolCall;
-                });
-        updateFunctionCall(partFunction, accumulatedToolCall.getFunction());
+            ChatToolCall accumulatedToolCall = accumulatedChatTools.stream()
+                    .filter(chatToolCall -> chatToolCall.getIndex() == index)
+                    .findFirst()
+                    .orElseGet(() -> {
+                        ChatToolCall newToolCall = new ChatToolCall(index, partToolCall.getId(), partToolCall.getType());
+                        accumulatedChatTools.add(newToolCall);
+                        return newToolCall;
+                    });
+
+            updateFunctionCall(partFunction, accumulatedToolCall.getFunction());
+        });
     }
 
     /**
@@ -830,35 +829,12 @@ public class OpenAiService {
      * @return 工具调用列表
      */
     private List<ChatToolCall> getOrInitializeToolCalls(AssistantMessage accumulatedMessage) {
-        List<ChatToolCall> accumulatedChatTools = accumulatedMessage.getToolCalls();
-        if (accumulatedChatTools == null) {
-            accumulatedChatTools = new ArrayList<>();
-            accumulatedMessage.setToolCalls(accumulatedChatTools);
-        }
-        return accumulatedChatTools;
+        return Optional.ofNullable(accumulatedMessage.getToolCalls()).orElseGet(() -> {
+            List<ChatToolCall> newToolCalls = new ArrayList<>();
+            accumulatedMessage.setToolCalls(newToolCalls);
+            return newToolCalls;
+        });
     }
-
-    /**
-     * 更新工具调用中的函数对象。
-     *
-     * @param partFunction 部分函数调用对象
-     * @param function     要更新的函数对象
-     */
-    private void updateToolCallFunction(ChatFunctionCall partFunction, ChatFunctionCall function) {
-        if (partFunction.getName() != null) {
-            function.setName((function.getName() == null ? "" : function.getName()) + partFunction.getName());
-        }
-        JsonNode argNode = partFunction.getArguments();
-        if (argNode != null && !argNode.isEmpty()) {
-            if (argNode instanceof ObjectNode) {
-                function.setArguments(argNode);
-            } else if (argNode instanceof TextNode) {
-                String argumentsPart = argNode.asText();
-                function.setArguments(new TextNode((function.getArguments() == null ? "" : function.getArguments().asText()) + argumentsPart));
-            }
-        }
-    }
-
 
     /**
      * 追加消息内容。
@@ -867,8 +843,8 @@ public class OpenAiService {
      * @param accumulatedMessage 累加的消息对象
      */
     private void appendContent(AssistantMessage messageChunk, AssistantMessage accumulatedMessage) {
-        accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) +
-                (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
+        accumulatedMessage.setContent(Optional.ofNullable(accumulatedMessage.getContent()).orElse("") +
+                Optional.ofNullable(messageChunk.getContent()).orElse(""));
     }
 
     /**
@@ -880,19 +856,21 @@ public class OpenAiService {
      * @throws IOException 可能抛出的IO异常
      */
     private void handleFinishReason(String finishReason, ChatFunctionCall functionCall, AssistantMessage accumulatedMessage) throws IOException {
-        if ("function_call".equals(finishReason) && functionCall.getArguments() != null && functionCall.getArguments() instanceof TextNode) {
+        if ("function_call".equals(finishReason) && functionCall.getArguments() instanceof TextNode) {
             functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
             accumulatedMessage.setFunctionCall(functionCall);
         }
-        if ("tool_calls".equals(finishReason) && accumulatedMessage.getToolCalls() != null) {
-            accumulatedMessage.getToolCalls().sort(Comparator.comparingInt(ChatToolCall::getIndex));
-            for (ChatToolCall chatToolCall : accumulatedMessage.getToolCalls()) {
-                if (chatToolCall.getFunction().getArguments() != null) {
-                    chatToolCall.getFunction().setArguments(mapper.readTree(chatToolCall.getFunction().getArguments().asText()));
+        if ("tool_calls".equals(finishReason)) {
+            List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
+            if (toolCalls != null) {
+                toolCalls.sort(Comparator.comparingInt(ChatToolCall::getIndex));
+                for (ChatToolCall chatToolCall : toolCalls) {
+                    if (chatToolCall.getFunction().getArguments() instanceof TextNode) {
+                        chatToolCall.getFunction().setArguments(mapper.readTree(chatToolCall.getFunction().getArguments().asText()));
+                    }
                 }
             }
         }
     }
-
 
 }
