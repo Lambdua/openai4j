@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.MissingNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.assistants.run.ToolChoice;
 import com.theokanning.openai.completion.chat.*;
@@ -275,7 +274,7 @@ class ChatCompletionTest {
         ChatToolCall chatToolCall = toolCalls.get(0);
         ChatFunctionCall functionCall = chatToolCall.getFunction();
         assertEquals("get_today", functionCall.getName());
-        assertInstanceOf(MissingNode.class, functionCall.getArguments());
+        assertInstanceOf(ObjectNode.class, functionCall.getArguments());
     }
 
     @Test
