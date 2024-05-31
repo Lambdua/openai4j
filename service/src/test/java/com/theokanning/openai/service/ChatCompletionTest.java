@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.MissingNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.assistants.run.ToolChoice;
 import com.theokanning.openai.completion.chat.*;
@@ -13,6 +14,7 @@ import com.theokanning.openai.service.util.ToolUtil;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -219,6 +221,61 @@ class ChatCompletionTest {
         assertInstanceOf(ObjectNode.class, choice.getMessage().getFunctionCall().getArguments());
         assertNotNull(choice.getMessage().getFunctionCall().getArguments().get("location"));
         assertNotNull(choice.getMessage().getFunctionCall().getArguments().get("unit"));
+    }
+
+    @Test
+    void zeroArgStreamFunctionTest() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("今天是几号?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .functions(Collections.singletonList(FunctionDefinition.builder().name("get_today").description("Get the current date").executor((o) -> LocalDate.now()).build()))
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast().getAccumulatedMessage();
+        ChatFunctionCall functionCall = accumulatedMessage.getFunctionCall();
+        assertNotNull(functionCall);
+        assertEquals("get_today", functionCall.getName());
+        assertInstanceOf(ObjectNode.class, functionCall.getArguments());
+    }
+
+    @Test
+    void zeroArgStreamToolTest() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("今天是几号?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .tools(Collections.singletonList(
+                        new ChatTool(FunctionDefinition.builder().name("get_today").description("Get the current date").executor((o) -> LocalDate.now()).build())
+                ))
+                .n(1)
+                .maxTokens(100)
+                .logitBias(new HashMap<>())
+                .build();
+        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast().getAccumulatedMessage();
+        List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
+        assertNotNull(toolCalls);
+        assertEquals(1, toolCalls.size());
+        ChatToolCall chatToolCall = toolCalls.get(0);
+        ChatFunctionCall functionCall = chatToolCall.getFunction();
+        assertEquals("get_today", functionCall.getName());
+        assertInstanceOf(MissingNode.class, functionCall.getArguments());
     }
 
     @Test

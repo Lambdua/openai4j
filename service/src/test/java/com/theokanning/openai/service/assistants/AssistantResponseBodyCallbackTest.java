@@ -85,7 +85,6 @@ public class AssistantResponseBodyCallbackTest {
     }
 
 
-
     @Test
     void testServerError() {
         String errorBody = "{\n" +
@@ -168,5 +167,4 @@ public class AssistantResponseBodyCallbackTest {
             assertEquals(convertToJsonNodeAndRemoveNulls(sse.getData()), objectMapper.readTree(actual));
         }
     }
-
 }
