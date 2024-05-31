@@ -3,7 +3,9 @@ package com.theokanning.openai.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.theokanning.openai.*;
 import com.theokanning.openai.assistants.assistant.Assistant;
@@ -736,71 +738,160 @@ public class OpenAiService {
                 .build();
     }
 
+    /**
+     * 将流映射到累加器。支持content/function call/tool call的累加
+     *
+     * @param flowable 流对象
+     * @return 累加器流
+     */
     public Flowable<ChatMessageAccumulator> mapStreamToAccumulator(Flowable<ChatCompletionChunk> flowable) {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
         AssistantMessage accumulatedMessage = new AssistantMessage();
-
         return flowable.map(chunk -> {
             ChatCompletionChoice firstChoice = chunk.getChoices().get(0);
             AssistantMessage messageChunk = firstChoice.getMessage();
-            if (messageChunk.getFunctionCall() != null) {
-                if (messageChunk.getFunctionCall().getName() != null) {
-                    String namePart = messageChunk.getFunctionCall().getName();
-                    functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
-                }
-                if (messageChunk.getFunctionCall().getArguments() != null) {
-                    String argumentsPart = messageChunk.getFunctionCall().getArguments().asText();
-                    if (!argumentsPart.isEmpty()) {
-                        functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
-                    }
-                }
-                accumulatedMessage.setFunctionCall(functionCall);
-            } else if (messageChunk.getToolCalls() != null) {
-                List<ChatToolCall> toolCalls = messageChunk.getToolCalls();
-                ChatToolCall partToolCall = toolCalls.get(0);
-                ChatFunctionCall partFunction = partToolCall.getFunction();
-                int index = partToolCall.getIndex();
-                List<ChatToolCall> accumulatedChatTools = accumulatedMessage.getToolCalls();
-                if (accumulatedChatTools == null) {
-                    accumulatedChatTools = new ArrayList<>();
-                    accumulatedMessage.setToolCalls(accumulatedChatTools);
-                }
-                ChatToolCall accumelatedToolCall = accumulatedChatTools.stream().filter(chatToolCall -> chatToolCall.getIndex() == index).findFirst().orElse(null);
-                if (accumelatedToolCall == null) {
-                    accumelatedToolCall = new ChatToolCall(index, partToolCall.getId(), partToolCall.getType());
-                    accumulatedChatTools.add(accumelatedToolCall);
-                }
-                ChatFunctionCall function = accumelatedToolCall.getFunction();
-                if (partFunction.getName() != null) {
-                    function.setName((function.getName() == null ? "" : function.getName()) + partFunction.getName());
-                }
-                if (partFunction.getArguments() != null) {
-                    function.setArguments(new TextNode((function.getArguments() == null ? "" : function.getArguments().asText()) + partFunction.getArguments().asText()));
-                }
-                accumelatedToolCall.setFunction(function);
-            } else {
-                accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) + (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
+            appendContent(messageChunk, accumulatedMessage);
+            processFunctionCall(messageChunk, functionCall, accumulatedMessage);
+            processToolCalls(messageChunk, accumulatedMessage);
+            if (firstChoice.getFinishReason() != null) {
+                handleFinishReason(firstChoice.getFinishReason(), functionCall, accumulatedMessage);
             }
-
-            if (firstChoice.getFinishReason() != null) { // last
-                if ("function_call".equals(firstChoice.getFinishReason()) && functionCall.getArguments() != null) {
-                    functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
-                    accumulatedMessage.setFunctionCall(functionCall);
-                }
-                if ("tool_calls".equals(firstChoice.getFinishReason()) && accumulatedMessage.getToolCalls() != null) {
-                    //按照index重新排序
-                    accumulatedMessage.getToolCalls().sort(Comparator.comparingInt(ChatToolCall::getIndex));
-                    for (ChatToolCall chatToolCall : accumulatedMessage.getToolCalls()) {
-                        if (chatToolCall.getFunction().getArguments() != null) {
-                            chatToolCall.getFunction().setArguments(mapper.readTree(chatToolCall.getFunction().getArguments().asText()));
-                        }
-                    }
-                }
-
-            }
-
             return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
         });
+    }
+
+
+    /**
+     * 处理消息块中的函数调用。
+     *
+     * @param messageChunk       消息块
+     * @param functionCall       函数调用对象
+     * @param accumulatedMessage 累加的消息对象
+     */
+    private void processFunctionCall(AssistantMessage messageChunk, ChatFunctionCall functionCall, AssistantMessage accumulatedMessage) {
+        if (messageChunk.getFunctionCall() != null) {
+            updateFunctionCall(messageChunk.getFunctionCall(), functionCall);
+            accumulatedMessage.setFunctionCall(functionCall);
+        }
+    }
+
+    /**
+     * 更新函数调用对象。
+     *
+     * @param messageFunctionCall 消息中的函数调用对象
+     * @param functionCall        要更新的函数调用对象
+     */
+    private void updateFunctionCall(ChatFunctionCall messageFunctionCall, ChatFunctionCall functionCall) {
+        if (messageFunctionCall.getName() != null) {
+            functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + messageFunctionCall.getName());
+        }
+        JsonNode argNode = messageFunctionCall.getArguments();
+        if (argNode != null) {
+            if (argNode instanceof ObjectNode) {
+                functionCall.setArguments(argNode);
+            } else if (argNode instanceof TextNode) {
+                String argumentsPart = argNode.asText();
+                functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+            }
+        }
+    }
+
+    /**
+     * 处理消息块中的工具调用。
+     *
+     * @param messageChunk       消息块
+     * @param accumulatedMessage 累加的消息对象
+     */
+    private void processToolCalls(AssistantMessage messageChunk, AssistantMessage accumulatedMessage) {
+        if (messageChunk.getToolCalls() == null) {
+            return;
+        }
+        List<ChatToolCall> toolCalls = messageChunk.getToolCalls();
+        ChatToolCall partToolCall = toolCalls.get(0);
+        ChatFunctionCall partFunction = partToolCall.getFunction();
+        int index = partToolCall.getIndex();
+        List<ChatToolCall> accumulatedChatTools = getOrInitializeToolCalls(accumulatedMessage);
+
+        ChatToolCall accumulatedToolCall = accumulatedChatTools.stream()
+                .filter(chatToolCall -> chatToolCall.getIndex() == index)
+                .findFirst()
+                .orElseGet(() -> {
+                    ChatToolCall newToolCall = new ChatToolCall(index, partToolCall.getId(), partToolCall.getType());
+                    accumulatedChatTools.add(newToolCall);
+                    return newToolCall;
+                });
+        updateFunctionCall(partFunction, accumulatedToolCall.getFunction());
+    }
+
+    /**
+     * 获取或初始化工具调用列表。
+     *
+     * @param accumulatedMessage 累加的消息对象
+     * @return 工具调用列表
+     */
+    private List<ChatToolCall> getOrInitializeToolCalls(AssistantMessage accumulatedMessage) {
+        List<ChatToolCall> accumulatedChatTools = accumulatedMessage.getToolCalls();
+        if (accumulatedChatTools == null) {
+            accumulatedChatTools = new ArrayList<>();
+            accumulatedMessage.setToolCalls(accumulatedChatTools);
+        }
+        return accumulatedChatTools;
+    }
+
+    /**
+     * 更新工具调用中的函数对象。
+     *
+     * @param partFunction 部分函数调用对象
+     * @param function     要更新的函数对象
+     */
+    private void updateToolCallFunction(ChatFunctionCall partFunction, ChatFunctionCall function) {
+        if (partFunction.getName() != null) {
+            function.setName((function.getName() == null ? "" : function.getName()) + partFunction.getName());
+        }
+        JsonNode argNode = partFunction.getArguments();
+        if (argNode != null && !argNode.isEmpty()) {
+            if (argNode instanceof ObjectNode) {
+                function.setArguments(argNode);
+            } else if (argNode instanceof TextNode) {
+                String argumentsPart = argNode.asText();
+                function.setArguments(new TextNode((function.getArguments() == null ? "" : function.getArguments().asText()) + argumentsPart));
+            }
+        }
+    }
+
+
+    /**
+     * 追加消息内容。
+     *
+     * @param messageChunk       消息块
+     * @param accumulatedMessage 累加的消息对象
+     */
+    private void appendContent(AssistantMessage messageChunk, AssistantMessage accumulatedMessage) {
+        accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) +
+                (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
+    }
+
+    /**
+     * 处理最后的完成
+     *
+     * @param finishReason       完成原因
+     * @param functionCall       函数调用对象
+     * @param accumulatedMessage 累加的消息对象
+     * @throws IOException 可能抛出的IO异常
+     */
+    private void handleFinishReason(String finishReason, ChatFunctionCall functionCall, AssistantMessage accumulatedMessage) throws IOException {
+        if ("function_call".equals(finishReason) && functionCall.getArguments() != null && functionCall.getArguments() instanceof TextNode) {
+            functionCall.setArguments(mapper.readTree(functionCall.getArguments().asText()));
+            accumulatedMessage.setFunctionCall(functionCall);
+        }
+        if ("tool_calls".equals(finishReason) && accumulatedMessage.getToolCalls() != null) {
+            accumulatedMessage.getToolCalls().sort(Comparator.comparingInt(ChatToolCall::getIndex));
+            for (ChatToolCall chatToolCall : accumulatedMessage.getToolCalls()) {
+                if (chatToolCall.getFunction().getArguments() != null) {
+                    chatToolCall.getFunction().setArguments(mapper.readTree(chatToolCall.getFunction().getArguments().asText()));
+                }
+            }
+        }
     }
 
 
