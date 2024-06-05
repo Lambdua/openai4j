@@ -1,3 +1,10 @@
 {
-  "file_id": "file-abc123"
+  "file_id": "fileid_here",
+  "chunking_strategy": {
+    "type": "static",
+    "static": {
+      "max_chunk_size_tokens": 800,
+      "chunk_overlap_tokens": 400
+    }
+  }
 }

@@ -14,4 +14,8 @@ public class VectorStoreFileRequest {
 
     @JsonProperty("file_id")
     String fileId;
+
+    @JsonProperty("chunking_strategy")
+    ChunkingStrategy chunkingStrategy;
+
 }
