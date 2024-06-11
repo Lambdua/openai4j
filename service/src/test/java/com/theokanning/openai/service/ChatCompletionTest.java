@@ -715,4 +715,42 @@ class ChatCompletionTest {
     }
 
 
+    @Test
+    public void parallelToolCallTest() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        final ChatMessage userMessage = new UserMessage("What's the weather like in San Francisco, Tokyo, and Paris?");
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(messages)
+                .tools(Arrays.asList(new ChatTool(ToolUtil.weatherFunction())))
+                .toolChoice(ToolChoice.AUTO)
+                .parallelToolCalls(false)
+                .n(1)
+                .maxTokens(200)
+                .build();
+
+        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast()
+                .getAccumulatedMessage();
+
+        List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
+        assertEquals(1, toolCalls.size());
+        assertEquals("get_weather", toolCalls.get(0).getFunction().getName());
+        assertInstanceOf(ObjectNode.class, toolCalls.get(0).getFunction().getArguments());
+
+
+        chatCompletionRequest.setParallelToolCalls(true);
+        AssistantMessage accumulatedMessage2 = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast()
+                .getAccumulatedMessage();
+        List<ChatToolCall> toolCalls2 = accumulatedMessage2.getToolCalls();
+        assertEquals(3, toolCalls2.size());
+        assertEquals("get_weather", toolCalls2.get(0).getFunction().getName());
+    }
+
 }
