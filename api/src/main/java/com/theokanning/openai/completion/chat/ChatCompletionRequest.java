@@ -157,5 +157,12 @@ public class ChatCompletionRequest {
     @JsonProperty("tool_choice")
     ToolChoice toolChoice;
 
+    /**
+     * Whether to enable parallel function calling during tool use.
+     * {@see https://platform.openai.com/docs/guides/function-calling/parallel-function-calling}
+     */
+    @JsonProperty("parallel_tool_calls")
+    Boolean parallelToolCalls;
+
 
 }

@@ -96,6 +96,13 @@ public class CreateThreadAndRunRequest {
     ToolChoice toolChoice;
 
     /**
+     * Whether to enable parallel function calling during tool use.
+     */
+    @JsonProperty("parallel_tool_calls")
+    Boolean parallelToolCalls;
+
+
+    /**
      * Specifies the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models since gpt-3.5-turbo-1106.
      * Setting to { "type": "json_object" } enables JSON mode, which guarantees the message the model generates is valid JSON.
      * <p>
