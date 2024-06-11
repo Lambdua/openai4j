@@ -36,5 +36,6 @@
       }
     }
   ],
-  "stream": true
+  "stream": true,
+  "parallel_tool_calls": true
 }
