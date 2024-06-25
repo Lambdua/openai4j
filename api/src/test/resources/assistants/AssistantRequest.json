@@ -3,7 +3,8 @@
   "name": "Math Tutor",
   "tools": [
     {
-      "type": "file_search"
+      "type": "file_search",
+      "max_num_results": 1
     }
   ],
   "tool_resources": {
