@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.assistants.message.content.ImageFile;
 import com.theokanning.openai.assistants.message.content.Text;
+import com.theokanning.openai.completion.chat.ImageUrl;
 import lombok.Data;
 
 
@@ -33,4 +34,11 @@ public class MessageContent {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     ImageFile imageFile;
 
+
+    /**
+     * References an Image URL in the content of a message.
+     */
+    @JsonProperty("image_url")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    ImageUrl imageUrl;
 }
