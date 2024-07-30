@@ -18,6 +18,7 @@ import java.io.IOException;
  * see {@link ChatCompletionRequest} documentation.
  */
 @Data
+@NoArgsConstructor
 public class ChatResponseFormat {
     /**
      * auto/text/json_object
