@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * chat 接口的请求message 接口
  * @see <a href="https://platform.openai.com/docs/api-reference/chat/completion/create">Chat Completion</a>
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role", defaultImpl = AssistantMessage.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "role", defaultImpl = AssistantMessage.class)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AssistantMessage.class, name = "assistant"),
         @JsonSubTypes.Type(value = ToolMessage.class, name = "tool"),
