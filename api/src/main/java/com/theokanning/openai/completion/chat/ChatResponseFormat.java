@@ -62,7 +62,7 @@ public class ChatResponseFormat {
 	    ChatResponseFormat jsonSchemaFormat = new ChatResponseFormat("json_schema");
 	    jsonSchemaFormat.setJson_schema(jsonSchema);
 	    return jsonSchemaFormat;
-	}
+    }
 
     @NoArgsConstructor
     public static class ChatResponseFormatSerializer extends JsonSerializer<ChatResponseFormat> {
