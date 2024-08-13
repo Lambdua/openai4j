@@ -38,6 +38,7 @@ public class ChatResponseFormat {
 
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
 
+	public static final ChatResponseFormat JSON_SCHEMA = new ChatResponseFormat("json_schema");
 
     @NoArgsConstructor
     public static class ChatResponseFormatSerializer extends JsonSerializer<ChatResponseFormat> {

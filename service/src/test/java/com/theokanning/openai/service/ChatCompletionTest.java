@@ -10,6 +10,8 @@ import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.function.FunctionDefinition;
 import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.util.ToolUtil;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -106,7 +108,7 @@ class ChatCompletionTest {
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
     }
-
+    
     private boolean isValidJson(String jsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -115,6 +117,26 @@ class ChatCompletionTest {
         } catch (JsonProcessingException e) {
             return false;
         }
+    }
+    
+    @Test
+    @Disabled
+    void createChatCompletionWithStructuredOutput() {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You will generate a random name and return it in JSON format.");
+        messages.add(systemMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4o-2024-05-13")
+                .messages(messages)
+                .responseFormat(ChatResponseFormat.JSON_SCHEMA)
+                .maxTokens(50)
+                .logitBias(new HashMap<>())
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
     }
 
     @Test
@@ -131,7 +153,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-05-13")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -163,7 +185,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-05-13")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -205,7 +227,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-05-13")
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
@@ -290,7 +312,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-05-13")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -324,7 +346,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-05-13")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
