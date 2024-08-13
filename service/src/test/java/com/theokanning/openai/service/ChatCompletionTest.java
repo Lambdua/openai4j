@@ -156,9 +156,9 @@ class ChatCompletionTest {
         messages.add(userMessage);
 
         Class<MathReasoning> rootClass = MathReasoning.class;
-		ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(rootClass);
+        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(rootClass);
         
-		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
                 .model("gpt-4o-2024-08-06")
                 .messages(messages)
@@ -166,27 +166,27 @@ class ChatCompletionTest {
                 .maxTokens(1000)
                 .build();
 
-		ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-		MathReasoning mathReasoning = choice.getMessage().parsed(rootClass);
-
-		String finalAnswer = mathReasoning.getFinal_answer();
-		assertTrue(finalAnswer.contains("x"));
-		assertTrue(finalAnswer.contains("="));
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        MathReasoning mathReasoning = choice.getMessage().parsed(rootClass);
+        
+        String finalAnswer = mathReasoning.getFinal_answer();
+        assertTrue(finalAnswer.contains("x"));
+        assertTrue(finalAnswer.contains("="));
     }
     
     @Data
     @NoArgsConstructor
 	private static class MathReasoning {
-		@NotNull private List<Step> steps;
-		@NotNull private String final_answer;
-	}
+        @NotNull private List<Step> steps;
+        @NotNull private String final_answer;
+    }
     
     @Data
     @NoArgsConstructor
     private static class Step {
-    	@NotNull private String explanation;
-		@NotNull private String output;
-	}
+        @NotNull private String explanation;
+        @NotNull private String output;
+    }
     
     @Test
     void createChatCompletionWithFunctions() {
