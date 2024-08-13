@@ -52,12 +52,12 @@ public class AssistantMessage implements ChatMessage {
         return content;
     }
 
-	/**
-	 * Deserializes the message to an object of the specified target class.
-	 * 
-	 * @param targetClass the type of the object
-	 * @return the deserialized object
-+	 */
+    /**
+     * Deserializes the message to an object of the specified target class.
+     * 
+     * @param targetClass the type of the object
+     * @return the deserialized object
+     **/
     public <T> T parsed(Class<T> targetClass) {
         try {
             return JsonUtil.getInstance().readValue(getTextContent(), targetClass);

@@ -81,7 +81,7 @@ public class ChatResponseFormat {
                     gen.writeStringField("name", "ChatResponseFormat");
                     gen.writeBooleanField("strict", true);
                     gen.writeFieldName("schema");
-					gen.writeTree(jsonSchema);
+                    gen.writeTree(jsonSchema);
                     gen.writeEndObject();
                 }
                 
