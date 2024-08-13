@@ -155,7 +155,8 @@ class ChatCompletionTest {
         messages.add(systemMessage);
         messages.add(userMessage);
 
-        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(MathReasoning.class);
+        Class<MathReasoning> rootClass = MathReasoning.class;
+		ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(rootClass);
         
 		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
@@ -166,9 +167,7 @@ class ChatCompletionTest {
                 .build();
 
 		ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-		String content = choice.getMessage().getContent();
-
-		MathReasoning mathReasoning = new ObjectMapper().readValue(content, MathReasoning.class);
+		MathReasoning mathReasoning = choice.getMessage().parsed(rootClass);
 
 		String finalAnswer = mathReasoning.getFinal_answer();
 		assertTrue(finalAnswer.contains("x"));
