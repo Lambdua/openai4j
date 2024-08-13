@@ -78,7 +78,7 @@ public class ChatResponseFormat {
                     JsonNode jsonSchema = value.getJson_schema();
 
                     gen.writeObjectFieldStart("json_schema");
-					gen.writeStringField("name", "ChatResponseFormat");
+                    gen.writeStringField("name", "ChatResponseFormat");
                     gen.writeBooleanField("strict", true);
                     gen.writeFieldName("schema");
 					gen.writeTree(jsonSchema);
