@@ -1,0 +1,37 @@
+{
+	 "name": "MathReasoning",
+	 "strict": true,
+	 "schema":{
+	  "$schema" : "http://json-schema.org/draft-04/schema#",
+	  "title" : "Math Reasoning",
+	  "type" : "object",
+	  "additionalProperties" : false,
+	  "properties" : {
+		"steps" : {
+		  "type" : "array",
+		  "items" : {
+			"$ref" : "#/definitions/Step"
+		  }
+		},
+		"final_answer" : {
+		  "type" : "string"
+		}
+	  },
+	  "required" : [ "steps", "final_answer" ],
+	  "definitions" : {
+		"Step" : {
+		  "type" : "object",
+		  "additionalProperties" : false,
+		  "properties" : {
+			"explanation" : {
+			  "type" : "string"
+			},
+			"output" : {
+			  "type" : "string"
+			}
+		  },
+		  "required" : [ "explanation", "output" ]
+		}
+	  }
+	}
+}

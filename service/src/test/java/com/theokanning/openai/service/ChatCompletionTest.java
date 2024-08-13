@@ -1,24 +1,53 @@
 package com.theokanning.openai.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.assistants.run.ToolChoice;
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.AssistantMessage;
+import com.theokanning.openai.completion.chat.ChatCompletionChoice;
+import com.theokanning.openai.completion.chat.ChatCompletionChunk;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatFunctionCall;
+import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
+import com.theokanning.openai.completion.chat.ChatFunctionProperty;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatResponseFormat;
+import com.theokanning.openai.completion.chat.ChatTool;
+import com.theokanning.openai.completion.chat.ChatToolCall;
+import com.theokanning.openai.completion.chat.StreamOption;
+import com.theokanning.openai.completion.chat.SystemMessage;
+import com.theokanning.openai.completion.chat.ToolMessage;
+import com.theokanning.openai.completion.chat.UserMessage;
 import com.theokanning.openai.function.FunctionDefinition;
 import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.util.ToolUtil;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 class ChatCompletionTest {
 
@@ -120,25 +149,64 @@ class ChatCompletionTest {
     }
     
     @Test
-    @Disabled
-    void createChatCompletionWithStructuredOutput() {
+    void createChatCompletionWithStructuredOutput() throws JsonProcessingException {
         final List<ChatMessage> messages = new ArrayList<>();
-        final ChatMessage systemMessage = new SystemMessage("You will generate a random name and return it in JSON format.");
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful math tutor. Guide the user through the solution step by step.");
+        final ChatMessage userMessage = new UserMessage("how can I solve 8x + 7 = -23");
         messages.add(systemMessage);
+        messages.add(userMessage);
 
-        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+        ObjectMapper mapper = new ObjectMapper();
+        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(createMathReasoningSchema(mapper));
+        
+		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-4o-2024-05-13")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
-                .responseFormat(ChatResponseFormat.JSON_SCHEMA)
-                .maxTokens(50)
+                .responseFormat(responseFormat)
+                .maxTokens(1000)
                 .logitBias(new HashMap<>())
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-        assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
+        String content = choice.getMessage().getContent();
+        MathReasoning mathReasoning = mapper.readValue(content, MathReasoning.class);
+        String finalAnswer = mathReasoning.getFinal_answer();
+		assertTrue(finalAnswer.contains("x"));
+		assertTrue(finalAnswer.contains("="));
     }
-
+    
+    private JsonNode createMathReasoningSchema(ObjectMapper mapper) {
+    	ClassLoader classLoader = getClass().getClassLoader();
+    	File jsonSchemaFile = new File(classLoader.getResource("math-reasoning-json-schema.json").getFile());
+    	
+        JsonNode jsonSchemaNode;
+		try {
+			jsonSchemaNode = mapper.readTree(jsonSchemaFile);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    	return jsonSchemaNode;
+    }
+    
+    @Data
+    @NoArgsConstructor
+	private static class MathReasoning {
+		@JsonProperty(required = true)
+		public List<Step> steps;
+		@JsonProperty(required = true)
+		public String final_answer;
+	}
+    
+    @Data
+    @NoArgsConstructor
+    private static class Step {
+		@JsonProperty(required = true)
+		public String explanation;
+		@JsonProperty(required = true)
+		public String output;
+	}
+    
     @Test
     void createChatCompletionWithFunctions() {
         final List<FunctionDefinition> functions = Collections.singletonList(ToolUtil.weatherFunction());

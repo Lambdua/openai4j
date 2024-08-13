@@ -1,18 +1,20 @@
 package com.theokanning.openai.completion.chat;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.IOException;
 
 /**
  * see {@link ChatCompletionRequest} documentation.
@@ -24,6 +26,16 @@ public class ChatResponseFormat {
      * auto/text/json_object
      */
     private String type;
+    
+    /**
+     * This is used together with type field set to "json_schema"
+     * to enable structured outputs.
+     * 
+     * @see https://openai.com/index/introducing-structured-outputs-in-the-api/
+     * 
+     * @author BertilMuth
+     */
+    private JsonNode json_schema;
 
     /**
      * 构造私有,只允许从静态变量获取
@@ -37,8 +49,12 @@ public class ChatResponseFormat {
     public static final ChatResponseFormat TEXT = new ChatResponseFormat("text");
 
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
-
-	public static final ChatResponseFormat JSON_SCHEMA = new ChatResponseFormat("json_schema");
+	
+	public static ChatResponseFormat jsonSchema(JsonNode jsonSchema) {
+		ChatResponseFormat structuredOutputFormat = new ChatResponseFormat("json_schema");
+		structuredOutputFormat.setJson_schema(jsonSchema);
+		return structuredOutputFormat;
+	}
 
     @NoArgsConstructor
     public static class ChatResponseFormatSerializer extends JsonSerializer<ChatResponseFormat> {
@@ -48,7 +64,20 @@ public class ChatResponseFormat {
                 gen.writeString(value.getType());
             } else {
                 gen.writeStartObject();
-                gen.writeObjectField("type", (value).getType());
+                
+                if (value.getType().equals("json_schema")) {
+                    String schemaName = "SchemaName";
+
+                    gen.writeObjectFieldStart("json_schema");
+					gen.writeStringField("name", schemaName);
+                    gen.writeBooleanField("strict", true);
+
+                    JsonNode jsonSchema = value.getJson_schema();
+					if (jsonSchema != null) {                    	
+                        gen.writeTree(jsonSchema);
+                    }
+                }
+                
                 gen.writeEndObject();
             }
         }
