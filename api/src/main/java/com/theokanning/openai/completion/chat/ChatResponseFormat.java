@@ -41,7 +41,6 @@ public class ChatResponseFormat {
      * 
      * @see https://openai.com/index/introducing-structured-outputs-in-the-api/
      * 
-     * @author BertilMuth
      */
     private JsonNode json_schema;
 

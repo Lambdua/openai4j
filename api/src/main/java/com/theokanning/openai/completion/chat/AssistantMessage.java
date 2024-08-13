@@ -57,8 +57,7 @@ public class AssistantMessage implements ChatMessage {
 	 * 
 	 * @param targetClass the type of the object
 	 * @return the deserialized object
-	 * @author BertilMuth
-	 */
++	 */
 	public <T> T parsed(Class<T> targetClass) {
 		try {
 			return JsonUtil.getInstance().readValue(getTextContent(), targetClass);
