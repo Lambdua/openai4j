@@ -203,7 +203,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-4o-2024-05-13")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -235,7 +235,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-4o-2024-05-13")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -277,7 +277,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-4o-2024-05-13")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
@@ -362,7 +362,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-4o-2024-05-13")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -396,7 +396,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-4o-2024-05-13")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
