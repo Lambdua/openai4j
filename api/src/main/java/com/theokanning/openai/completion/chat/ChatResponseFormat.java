@@ -56,12 +56,12 @@ public class ChatResponseFormat {
     public static final ChatResponseFormat TEXT = new ChatResponseFormat("text");
 
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
-	
-	public static ChatResponseFormat jsonSchema(Class<?> rootClass) {
-		JsonNode jsonSchema = JSON_SCHEMA_GENERATOR.generateJsonSchema(rootClass);
-		ChatResponseFormat jsonSchemaFormat = new ChatResponseFormat("json_schema");
-		jsonSchemaFormat.setJson_schema(jsonSchema);
-		return jsonSchemaFormat;
+    
+    public static ChatResponseFormat jsonSchema(Class<?> rootClass) {
+	    JsonNode jsonSchema = JSON_SCHEMA_GENERATOR.generateJsonSchema(rootClass);
+	    ChatResponseFormat jsonSchemaFormat = new ChatResponseFormat("json_schema");
+	    jsonSchemaFormat.setJson_schema(jsonSchema);
+	    return jsonSchemaFormat;
 	}
 
     @NoArgsConstructor
