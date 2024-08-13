@@ -36,7 +36,6 @@ public class ChatCompletionRequest {
      * When specifying 'json_object' as the request format it's still necessary to instruct the model to return JSON.
      */
     @JsonProperty("response_format")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
     ChatResponseFormat responseFormat;
 
