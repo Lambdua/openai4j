@@ -26,9 +26,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ChatResponseFormat {
-	private static final ObjectMapper MAPPER = JsonUtil.getInstance();
-	private static final JsonSchemaConfig CONFIG = JsonSchemaConfig.vanillaJsonSchemaDraft4();
-	private static final JsonSchemaGenerator JSON_SCHEMA_GENERATOR = new JsonSchemaGenerator(MAPPER, CONFIG);
+    private static final ObjectMapper MAPPER = JsonUtil.getInstance();
+    private static final JsonSchemaConfig CONFIG = JsonSchemaConfig.vanillaJsonSchemaDraft4();
+    private static final JsonSchemaGenerator JSON_SCHEMA_GENERATOR = new JsonSchemaGenerator(MAPPER, CONFIG);
 	
     /**
      * auto/text/json_object
