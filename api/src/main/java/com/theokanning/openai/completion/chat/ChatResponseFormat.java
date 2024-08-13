@@ -54,9 +54,7 @@ public class ChatResponseFormat {
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
 	
 	public static ChatResponseFormat jsonSchema(Class<?> rootClass) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-		
+		ObjectMapper mapper = new ObjectMapper();		
 		JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
 		JsonNode jsonSchema = schemaGen.generateJsonSchema(rootClass);
 		
