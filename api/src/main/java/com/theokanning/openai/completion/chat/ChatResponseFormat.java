@@ -2,6 +2,7 @@ package com.theokanning.openai.completion.chat;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -10,8 +11,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,10 +53,17 @@ public class ChatResponseFormat {
 
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
 	
-	public static ChatResponseFormat jsonSchema(JsonNode jsonSchema) {
-		ChatResponseFormat structuredOutputFormat = new ChatResponseFormat("json_schema");
-		structuredOutputFormat.setJson_schema(jsonSchema);
-		return structuredOutputFormat;
+	public static ChatResponseFormat jsonSchema(Class<?> rootClass) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+		
+		JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
+		JsonNode jsonSchema = schemaGen.generateJsonSchema(rootClass);
+		
+		ChatResponseFormat jsonSchemaFormat = new ChatResponseFormat("json_schema");
+		jsonSchemaFormat.setJson_schema(jsonSchema);
+
+		return jsonSchemaFormat;
 	}
 
     @NoArgsConstructor
@@ -64,6 +74,7 @@ public class ChatResponseFormat {
                 gen.writeString(value.getType());
             } else {
                 gen.writeStartObject();
+                gen.writeObjectField("type", (value).getType());
                 
                 if (value.getType().equals("json_schema")) {
                     String schemaName = "SchemaName";
@@ -71,11 +82,9 @@ public class ChatResponseFormat {
                     gen.writeObjectFieldStart("json_schema");
 					gen.writeStringField("name", schemaName);
                     gen.writeBooleanField("strict", true);
-
-                    JsonNode jsonSchema = value.getJson_schema();
-					if (jsonSchema != null) {                    	
-                        gen.writeTree(jsonSchema);
-                    }
+                    gen.writeFieldName("schema");
+                    gen.writeTree(value.getJson_schema());
+                    gen.writeEndObject();
                 }
                 
                 gen.writeEndObject();

@@ -1,7 +1,11 @@
 package com.theokanning.openai.completion.chat;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.theokanning.openai.assistants.run.ToolChoice;
+import com.theokanning.openai.completion.chat.ChatResponseFormat.ChatResponseFormatSerializer;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,10 +33,12 @@ public class ChatCompletionRequest {
     List<ChatMessage> messages;
 
     /**
-     * Must be either 'text' or 'json_object'. <br>
+     * Must be either 'text', 'json_object' or 'json_schema'. <br>
      * When specifying 'json_object' as the request format it's still necessary to instruct the model to return JSON.
      */
     @JsonProperty("response_format")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using = ChatResponseFormat.ChatResponseFormatSerializer.class)
     ChatResponseFormat responseFormat;
 
     /**

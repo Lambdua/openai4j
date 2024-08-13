@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -149,15 +147,14 @@ class ChatCompletionTest {
     }
     
     @Test
-    void createChatCompletionWithStructuredOutput() throws JsonProcessingException {
+    void createChatCompletionWithJsonSchema() throws JsonProcessingException {
         final List<ChatMessage> messages = new ArrayList<>();
         final ChatMessage systemMessage = new SystemMessage("You are a helpful math tutor. Guide the user through the solution step by step.");
         final ChatMessage userMessage = new UserMessage("how can I solve 8x + 7 = -23");
         messages.add(systemMessage);
         messages.add(userMessage);
 
-        ObjectMapper mapper = new ObjectMapper();
-        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(createMathReasoningSchema(mapper));
+        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(MathReasoning.class);
         
 		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
@@ -165,28 +162,16 @@ class ChatCompletionTest {
                 .messages(messages)
                 .responseFormat(responseFormat)
                 .maxTokens(1000)
-                .logitBias(new HashMap<>())
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         String content = choice.getMessage().getContent();
-        MathReasoning mathReasoning = mapper.readValue(content, MathReasoning.class);
+    	
+		MathReasoning mathReasoning = new ObjectMapper().readValue(content, MathReasoning.class);
+        
         String finalAnswer = mathReasoning.getFinal_answer();
 		assertTrue(finalAnswer.contains("x"));
 		assertTrue(finalAnswer.contains("="));
-    }
-    
-    private JsonNode createMathReasoningSchema(ObjectMapper mapper) {
-    	ClassLoader classLoader = getClass().getClassLoader();
-    	File jsonSchemaFile = new File(classLoader.getResource("math-reasoning-json-schema.json").getFile());
-    	
-        JsonNode jsonSchemaNode;
-		try {
-			jsonSchemaNode = mapper.readTree(jsonSchemaFile);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-    	return jsonSchemaNode;
     }
     
     @Data
