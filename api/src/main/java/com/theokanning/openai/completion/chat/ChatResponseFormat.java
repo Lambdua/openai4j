@@ -2,7 +2,6 @@ package com.theokanning.openai.completion.chat;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,7 +13,9 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.kjetland.jackson.jsonSchema.JsonSchemaConfig;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
+import com.theokanning.openai.utils.JsonUtil;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ChatResponseFormat {
+	private static final ObjectMapper MAPPER = JsonUtil.getInstance();
+	private static final JsonSchemaConfig CONFIG = JsonSchemaConfig.vanillaJsonSchemaDraft4();
+	private static final JsonSchemaGenerator JSON_SCHEMA_GENERATOR = new JsonSchemaGenerator(MAPPER, CONFIG);
+	
     /**
      * auto/text/json_object
      */
@@ -54,13 +59,9 @@ public class ChatResponseFormat {
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
 	
 	public static ChatResponseFormat jsonSchema(Class<?> rootClass) {
-		ObjectMapper mapper = new ObjectMapper();		
-		JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(mapper);
-		JsonNode jsonSchema = schemaGen.generateJsonSchema(rootClass);
-		
+		JsonNode jsonSchema = JSON_SCHEMA_GENERATOR.generateJsonSchema(rootClass);
 		ChatResponseFormat jsonSchemaFormat = new ChatResponseFormat("json_schema");
 		jsonSchemaFormat.setJson_schema(jsonSchema);
-
 		return jsonSchemaFormat;
 	}
 
