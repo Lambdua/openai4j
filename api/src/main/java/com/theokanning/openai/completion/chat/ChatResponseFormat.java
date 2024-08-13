@@ -68,7 +68,7 @@ public class ChatResponseFormat {
     @NoArgsConstructor
     public static class ChatResponseFormatSerializer extends JsonSerializer<ChatResponseFormat> {
         @Override
-        public void serialize(ChatResponseFormat value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(ChatResponseFormat value, JsonGenerator gen, SerializerProvider serializers) throws IOException {        	
             if (value.getType().equals("auto")) {
                 gen.writeString(value.getType());
             } else {
@@ -76,13 +76,13 @@ public class ChatResponseFormat {
                 gen.writeObjectField("type", (value).getType());
                 
                 if (value.getType().equals("json_schema")) {
-                    String schemaName = "SchemaName";
+                    JsonNode jsonSchema = value.getJson_schema();
 
                     gen.writeObjectFieldStart("json_schema");
-					gen.writeStringField("name", schemaName);
+					gen.writeStringField("name", "ChatResponseFormat");
                     gen.writeBooleanField("strict", true);
                     gen.writeFieldName("schema");
-                    gen.writeTree(value.getJson_schema());
+					gen.writeTree(jsonSchema);
                     gen.writeEndObject();
                 }
                 

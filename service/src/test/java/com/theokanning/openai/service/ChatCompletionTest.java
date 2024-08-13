@@ -16,9 +16,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -164,12 +165,12 @@ class ChatCompletionTest {
                 .maxTokens(1000)
                 .build();
 
-        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-        String content = choice.getMessage().getContent();
-    	
+		ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+		String content = choice.getMessage().getContent();
+
 		MathReasoning mathReasoning = new ObjectMapper().readValue(content, MathReasoning.class);
-        
-        String finalAnswer = mathReasoning.getFinal_answer();
+
+		String finalAnswer = mathReasoning.getFinal_answer();
 		assertTrue(finalAnswer.contains("x"));
 		assertTrue(finalAnswer.contains("="));
     }
@@ -177,19 +178,15 @@ class ChatCompletionTest {
     @Data
     @NoArgsConstructor
 	private static class MathReasoning {
-		@JsonProperty(required = true)
-		public List<Step> steps;
-		@JsonProperty(required = true)
-		public String final_answer;
+		@NotNull private List<Step> steps;
+		@NotNull private String final_answer;
 	}
     
     @Data
     @NoArgsConstructor
     private static class Step {
-		@JsonProperty(required = true)
-		public String explanation;
-		@JsonProperty(required = true)
-		public String output;
+    	@NotNull private String explanation;
+		@NotNull private String output;
 	}
     
     @Test
