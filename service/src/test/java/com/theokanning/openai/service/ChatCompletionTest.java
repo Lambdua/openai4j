@@ -928,13 +928,21 @@ class ChatCompletionTest {
                 .tools(Arrays.asList(tool))
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
                 .build();
         AssistantMessage assistantMessage=service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+        assertNotNull(assistantMessage.getToolCalls());
 
-        System.out.println(assistantMessage);
-
-
+        JsonNode arguments = assistantMessage.getToolCalls().get(0).getFunction().getArguments();
+        assertNotNull(arguments);
+        assertEquals("orders",arguments.get("table_name").asText());
+        assertEquals("id",arguments.get("columns").get(0).asText());
+        assertEquals("status",arguments.get("columns").get(1).asText());
+        assertEquals("expected_delivery_date",arguments.get("columns").get(2).asText());
+        assertEquals("delivered_at",arguments.get("columns").get(3).asText());
+        assertEquals("shipped_at",arguments.get("columns").get(4).asText());
+        assertEquals("ordered_at",arguments.get("columns").get(5).asText());
+        assertEquals("canceled_at",arguments.get("columns").get(6).asText());
+        assertEquals("asc",arguments.get("order_by").asText());
     }
 
 

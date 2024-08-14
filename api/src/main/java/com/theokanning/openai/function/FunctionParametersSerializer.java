@@ -20,6 +20,9 @@ public class FunctionParametersSerializer extends JsonSerializer<FunctionDefinit
         gen.writeStartObject();
         gen.writeStringField("name", value.getName());
         gen.writeStringField("description", value.getDescription());
+        if (value.getStrict()!=null){
+            gen.writeBooleanField("strict", value.getStrict());
+        }
         if (value.getParametersDefinitionClass() != null) {
             gen.writeFieldName("parameters");
             ObjectNode parameterSchema = (ObjectNode) jsonSchemaGenerator.generateJsonSchema(value.getParametersDefinitionClass());

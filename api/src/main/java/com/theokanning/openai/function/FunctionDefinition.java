@@ -34,6 +34,14 @@ public class FunctionDefinition {
     private String description;
 
     /**
+     *  This feature works with all models that support tools, including all models gpt-4-0613 and gpt-3.5-turbo-0613 and later. When Structured Outputs are enabled, model outputs will match the supplied tool definition.
+     */
+    private Boolean strict;
+
+
+
+
+    /**
      * parameters definition by class schema ,will use {@link JsonSchemaGenerator} to generate json schema
      */
     private Class<?> parametersDefinitionClass;
@@ -64,6 +72,8 @@ public class FunctionDefinition {
 
         private Function<T, Object> executor;
 
+        private Boolean strict;
+
         public FunctionDefinition.Builder<T> name(String name) {
             this.name = name;
             return this;
@@ -71,6 +81,11 @@ public class FunctionDefinition {
 
         public FunctionDefinition.Builder<T> description(String description) {
             this.description = description;
+            return this;
+        }
+
+        public FunctionDefinition.Builder<T> strict(Boolean strict) {
+            this.strict = strict;
             return this;
         }
 
