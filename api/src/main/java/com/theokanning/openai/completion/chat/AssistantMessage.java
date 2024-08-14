@@ -1,12 +1,14 @@
 package com.theokanning.openai.completion.chat;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.theokanning.openai.utils.JsonUtil;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * @author LiangTao
@@ -48,5 +50,19 @@ public class AssistantMessage implements ChatMessage {
     @JsonIgnore
     public String getTextContent() {
         return content;
+    }
+
+    /**
+     * Deserializes the message to an object of the specified target class.
+     * 
+     * @param targetClass the type of the object
+     * @return the deserialized object
+     **/
+    public <T> T parsed(Class<T> targetClass) {
+        try {
+            return JsonUtil.getInstance().readValue(getTextContent(), targetClass);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

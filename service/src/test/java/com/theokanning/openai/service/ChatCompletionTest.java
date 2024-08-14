@@ -1,22 +1,52 @@
 package com.theokanning.openai.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.junit.jupiter.api.Test;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.assistants.run.ToolChoice;
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.AssistantMessage;
+import com.theokanning.openai.completion.chat.ChatCompletionChoice;
+import com.theokanning.openai.completion.chat.ChatCompletionChunk;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatFunctionCall;
+import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
+import com.theokanning.openai.completion.chat.ChatFunctionProperty;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatResponseFormat;
+import com.theokanning.openai.completion.chat.ChatTool;
+import com.theokanning.openai.completion.chat.ChatToolCall;
+import com.theokanning.openai.completion.chat.StreamOption;
+import com.theokanning.openai.completion.chat.SystemMessage;
+import com.theokanning.openai.completion.chat.ToolMessage;
+import com.theokanning.openai.completion.chat.UserMessage;
 import com.theokanning.openai.function.FunctionDefinition;
 import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.util.ToolUtil;
-import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 class ChatCompletionTest {
 
@@ -106,7 +136,7 @@ class ChatCompletionTest {
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
     }
-
+    
     private boolean isValidJson(String jsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -116,7 +146,48 @@ class ChatCompletionTest {
             return false;
         }
     }
+    
+    @Test
+    void createChatCompletionWithJsonSchema() throws JsonProcessingException {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful math tutor. Guide the user through the solution step by step.");
+        final ChatMessage userMessage = new UserMessage("how can I solve 8x + 7 = -23");
+        messages.add(systemMessage);
+        messages.add(userMessage);
 
+        Class<MathReasoning> rootClass = MathReasoning.class;
+        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(rootClass);
+        
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4o-2024-08-06")
+                .messages(messages)
+                .responseFormat(responseFormat)
+                .maxTokens(1000)
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        MathReasoning mathReasoning = choice.getMessage().parsed(rootClass);
+        
+        String finalAnswer = mathReasoning.getFinal_answer();
+        assertTrue(finalAnswer.contains("x"));
+        assertTrue(finalAnswer.contains("="));
+    }
+    
+    @Data
+    @NoArgsConstructor
+	private static class MathReasoning {
+        @NotNull private List<Step> steps;
+        @NotNull private String final_answer;
+    }
+    
+    @Data
+    @NoArgsConstructor
+    private static class Step {
+        @NotNull private String explanation;
+        @NotNull private String output;
+    }
+    
     @Test
     void createChatCompletionWithFunctions() {
         final List<FunctionDefinition> functions = Collections.singletonList(ToolUtil.weatherFunction());
@@ -131,7 +202,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -163,7 +234,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -205,7 +276,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
@@ -290,7 +361,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
@@ -324,7 +395,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo-0613")
+                .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .functions(functions)
                 .n(1)
