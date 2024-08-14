@@ -29,10 +29,17 @@ public class FunctionParametersSerializer extends JsonSerializer<FunctionDefinit
             gen.writeRawValue(JsonUtil.writeValueAsString(parameterSchema));
         } else {
             gen.writeFieldName("parameters");
-            gen.writeRawValue(JsonUtil.writeValueAsString(value.getParametersDefinition()));
+            Object parametersDefinition = value.getParametersDefinition();
+            if (parametersDefinition instanceof String && JsonUtil.isValidJson((String) parametersDefinition)){
+                String prettyString = JsonUtil.getInstance().readTree((String) parametersDefinition).toPrettyString();
+                gen.writeRawValue(prettyString);
+            }else {
+                gen.writeRawValue(JsonUtil.writeValueAsString(parametersDefinition));
+            }
         }
         gen.writeEndObject();
     }
+
 
 
 
