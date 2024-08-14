@@ -41,7 +41,7 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
                 return null;
             }
 
-            if (!isValidJson(json)) {
+            if (!JsonUtil.isValidJson(json)) {
                 // encode to valid JSON escape otherwise we will lose quotes
                 json = MAPPER.writeValueAsString(json);
             }
@@ -57,14 +57,6 @@ public class ChatFunctionCallArgumentsSerializerAndDeserializer {
             return node;
         }
 
-        private boolean isValidJson(String jsonString) {
-            try {
-                JsonNode tree = MAPPER.readTree(jsonString);
-                return tree != null && (tree.isObject() || tree.isArray());
-            } catch (JsonProcessingException e) {
-                return false;
-            }
-        }
     }
 
 }

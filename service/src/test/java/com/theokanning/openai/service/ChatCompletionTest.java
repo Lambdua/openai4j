@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.theokanning.openai.utils.JsonUtil;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -134,18 +135,9 @@ class ChatCompletionTest {
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
-        assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
+        assertTrue(JsonUtil.isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
     }
 
-    private boolean isValidJson(String jsonString) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            objectMapper.readTree(jsonString);
-            return true;
-        } catch (JsonProcessingException e) {
-            return false;
-        }
-    }
 
     @Test
     void createChatCompletionWithJsonSchema() throws JsonProcessingException {
@@ -823,5 +815,127 @@ class ChatCompletionTest {
         assertEquals(3, toolCalls2.size());
         assertEquals("get_weather", toolCalls2.get(0).getFunction().getName());
     }
+
+    /**
+     * tool calling strict参数的使用对比
+     *
+     */
+    @Test
+    void toolCallingStrictTest(){
+        String parmDefinition="{\n" +
+                "    \"type\": \"object\",\n" +
+                "    \"properties\": {\n" +
+                "        \"table_name\": {\n" +
+                "            \"type\": \"string\",\n" +
+                "            \"enum\": [\n" +
+                "                \"orders\"\n" +
+                "            ]\n" +
+                "        },\n" +
+                "        \"columns\": {\n" +
+                "            \"type\": \"array\",\n" +
+                "            \"items\": {\n" +
+                "                \"type\": \"string\",\n" +
+                "                \"enum\": [\n" +
+                "                    \"id\",\n" +
+                "                    \"status\",\n" +
+                "                    \"expected_delivery_date\",\n" +
+                "                    \"delivered_at\",\n" +
+                "                    \"shipped_at\",\n" +
+                "                    \"ordered_at\",\n" +
+                "                    \"canceled_at\"\n" +
+                "                ]\n" +
+                "            }\n" +
+                "        },\n" +
+                "        \"conditions\": {\n" +
+                "            \"type\": \"array\",\n" +
+                "            \"items\": {\n" +
+                "                \"type\": \"object\",\n" +
+                "                \"properties\": {\n" +
+                "                    \"column\": {\n" +
+                "                        \"type\": \"string\"\n" +
+                "                    },\n" +
+                "                    \"operator\": {\n" +
+                "                        \"type\": \"string\",\n" +
+                "                        \"enum\": [\n" +
+                "                            \"=\",\n" +
+                "                            \">\",\n" +
+                "                            \"<\",\n" +
+                "                            \">=\",\n" +
+                "                            \"<=\",\n" +
+                "                            \"!=\"\n" +
+                "                        ]\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                        \"anyOf\": [\n" +
+                "                            {\n" +
+                "                                \"type\": \"string\"\n" +
+                "                            },\n" +
+                "                            {\n" +
+                "                                \"type\": \"number\"\n" +
+                "                            },\n" +
+                "                            {\n" +
+                "                                \"type\": \"object\",\n" +
+                "                                \"properties\": {\n" +
+                "                                    \"column_name\": {\n" +
+                "                                        \"type\": \"string\"\n" +
+                "                                    }\n" +
+                "                                },\n" +
+                "                                \"required\": [\n" +
+                "                                    \"column_name\"\n" +
+                "                                ],\n" +
+                "                                \"additionalProperties\": false\n" +
+                "                            }\n" +
+                "                        ]\n" +
+                "                    }\n" +
+                "                },\n" +
+                "                \"required\": [\n" +
+                "                    \"column\",\n" +
+                "                    \"operator\",\n" +
+                "                    \"value\"\n" +
+                "                ],\n" +
+                "                \"additionalProperties\": false\n" +
+                "            }\n" +
+                "        },\n" +
+                "        \"order_by\": {\n" +
+                "            \"type\": \"string\",\n" +
+                "            \"enum\": [\n" +
+                "                \"asc\",\n" +
+                "                \"desc\"\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"required\": [\n" +
+                "        \"table_name\",\n" +
+                "        \"columns\",\n" +
+                "        \"conditions\",\n" +
+                "        \"order_by\"\n" +
+                "    ],\n" +
+                "    \"additionalProperties\": false\n" +
+                "}";
+        SystemMessage systemMessage=new SystemMessage("You are a helpful assistant. The current date is August 6, 2024. You help users query for the data they are looking for by calling the query function.");
+        UserMessage userMessage=new UserMessage("look up all my orders in may of last year that were fulfilled but not delivered on time");
+        FunctionDefinition fd = FunctionDefinition.builder().name("query").description("Execute a query")
+                .strict(true)
+                .parametersDefinition(parmDefinition).build();
+        ChatTool tool = new ChatTool(fd);
+        List<ChatMessage> messages = new ArrayList<>();
+        messages.add(systemMessage);
+        messages.add(userMessage);
+
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+                .model("gpt-4o-mini")
+                .messages(messages)
+                .tools(Arrays.asList(tool))
+                .toolChoice(ToolChoice.AUTO)
+                .n(1)
+                .maxTokens(100)
+                .build();
+        AssistantMessage assistantMessage=service.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+
+        System.out.println(assistantMessage);
+
+
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.theokanning.openai.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -24,6 +25,16 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
     }
+
+    public static  boolean isValidJson(String jsonString) {
+        try {
+            JsonNode tree = MAPPER.readTree(jsonString);
+            return tree != null && (tree.isObject() || tree.isArray());
+        } catch (JsonProcessingException e) {
+            return false;
+        }
+    }
+
 
     public static <T> T readValue(String content, Class<T> valueType) {
         try {
