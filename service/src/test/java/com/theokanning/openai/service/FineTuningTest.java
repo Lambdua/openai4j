@@ -44,7 +44,7 @@ public class FineTuningTest {
                 .build();
         FineTuningJobRequest request = FineTuningJobRequest.builder()
                 .trainingFile(fileId)
-                .model("gpt-4o-mini")
+                .model("gpt-3.5-turbo")
                 .hyperparameters(hyperparameters)
                 .build();
 
@@ -74,7 +74,7 @@ public class FineTuningTest {
     void retrieveFineTuningJob() {
         FineTuningJob fineTune = service.retrieveFineTuningJob(fineTuningJobId);
 
-        assertTrue(fineTune.getModel().startsWith("gpt-4o-mini"));
+        assertTrue(fineTune.getModel().startsWith("gpt-3.5-turbo"));
     }
 
     @Test
