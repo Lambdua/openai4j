@@ -30,8 +30,6 @@ import com.theokanning.openai.batch.Batch;
 import com.theokanning.openai.batch.BatchRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
-import com.theokanning.openai.edit.EditRequest;
-import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
@@ -59,8 +57,6 @@ public class JsonTest {
             ChatCompletionRequest.class,
             ChatCompletionResult.class,
             DeleteResult.class,
-            EditRequest.class,
-            EditResult.class,
             EmbeddingRequest.class,
             EmbeddingResult.class,
             File.class,

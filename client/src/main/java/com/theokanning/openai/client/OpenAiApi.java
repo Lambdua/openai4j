@@ -30,8 +30,6 @@ import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
-import com.theokanning.openai.edit.EditRequest;
-import com.theokanning.openai.edit.EditResult;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.file.File;
@@ -77,10 +75,6 @@ public interface OpenAiApi {
     @Streaming
     @POST("chat/completions")
     Call<ResponseBody> createChatCompletionStream(@Body ChatCompletionRequest request);
-
-
-    @POST("edits")
-    Single<EditResult> createEdit(@Body EditRequest request);
 
 
     @POST("embeddings")
