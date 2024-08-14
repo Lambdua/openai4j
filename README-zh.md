@@ -42,7 +42,7 @@ static void simpleChat() {
     ChatMessage systemMessage = new SystemMessage("你是一只可爱的猫，会这样说话。");
     messages.add(systemMessage);
     ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
+            .model("gpt-4o-mini")
             .messages(messages)
             .n(1)
             .maxTokens(50)
@@ -146,7 +146,7 @@ OpenAiService openAiService3 = new OpenAiService(openAiApi);
     ChatMessage systemMessage = new SystemMessage("You are a cute cat and will speak as such.");
     messages.add(systemMessage);
     ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
+            .model("gpt-4o-mini")
             .messages(messages)
             .n(1)
             .maxTokens(50)
@@ -213,7 +213,7 @@ static void toolChat() {
   messages.add(userMessage);
 
   ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-          .model("gpt-3.5-turbo")
+          .model("gpt-4o-mini")
           .messages(messages)
           //Tools is a list; multiple tools can be included
           .tools(Collections.singletonList(tool))
@@ -232,7 +232,7 @@ static void toolChat() {
 
   //submit tool call
   ChatCompletionRequest toolCallRequest = ChatCompletionRequest.builder()
-          .model("gpt-3.5-turbo")
+          .model("gpt-4o-mini")
           .messages(messages)
           .n(1)
           .maxTokens(100)
@@ -257,7 +257,7 @@ static void functionChat() {
     messages.add(userMessage);
 
     ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
+            .model("gpt-4o-mini")
             .messages(messages)
             .functions(Collections.singletonList(ToolUtil.weatherFunction()))
             .functionCall("auto")
@@ -275,7 +275,7 @@ static void functionChat() {
 
     //submit tool call
     ChatCompletionRequest toolCallRequest = ChatCompletionRequest.builder()
-            .model("gpt-3.5-turbo")
+            .model("gpt-4o-mini")
             .messages(messages)
             .n(1)
             .maxTokens(100)
@@ -327,7 +327,7 @@ void streamChatMultipleToolCalls() {
 
   ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
           .builder()
-          .model("gpt-3.5-turbo")
+          .model("gpt-4o-mini")
           .messages(messages)
           .tools(tools)
           .toolChoice(ToolChoice.AUTO)
@@ -349,8 +349,7 @@ void streamChatMultipleToolCalls() {
   messages.add(toolMessage);
   ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
           .builder()
-          //3.5 there may be logical issues
-          .model("gpt-3.5-turbo-0125")
+          .model("gpt-4o-mini")
           .messages(messages)
           .tools(tools)
           .toolChoice(ToolChoice.AUTO)
@@ -372,7 +371,7 @@ void streamChatMultipleToolCalls() {
 
   ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
           .builder()
-          .model("gpt-3.5-turbo")
+          .model("gpt-4o-mini")
           .messages(messages)
           .tools(tools)
           .toolChoice(ToolChoice.AUTO)
@@ -414,7 +413,7 @@ static void assistantToolCall() {
   OpenAiService service = new OpenAiService();
   FunctionExecutorManager executor = new FunctionExecutorManager(Collections.singletonList(ToolUtil.weatherFunction()));
   AssistantRequest assistantRequest = AssistantRequest.builder()
-          .model("gpt-3.5-turbo").name("weather assistant")
+          .model("gpt-4o-mini").name("weather assistant")
           .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
           .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
           .temperature(0D)
@@ -532,7 +531,7 @@ private static class LogHandler implements AssistantEventHandler {
   OpenAiService service = new OpenAiService();
   //1. create assistant
   AssistantRequest assistantRequest = AssistantRequest.builder()
-          .model("gpt-3.5-turbo").name("weather assistant")
+          .model("gpt-4o-mini").name("weather assistant")
           .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
           .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
           .temperature(0D)
@@ -595,7 +594,7 @@ static void assistantStream() throws JsonProcessingException {
     String threadId;
 
     AssistantRequest assistantRequest = AssistantRequest.builder()
-            .model("gpt-3.5-turbo").name("weather assistant")
+            .model("gpt-4o-mini").name("weather assistant")
             .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
             .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
             .temperature(0D)

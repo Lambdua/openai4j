@@ -34,7 +34,7 @@ public class ChatExample {
         ChatMessage systemMessage = new SystemMessage("You are a cute cat and will speak as such.");
         messages.add(systemMessage);
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(50)
@@ -52,7 +52,7 @@ public class ChatExample {
         messages.add(userMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .functions(Collections.singletonList(ToolUtil.weatherFunction()))
                 .functionCall(ChatCompletionRequestFunctionCall.AUTO)
@@ -70,7 +70,7 @@ public class ChatExample {
 
         //submit tool call
         ChatCompletionRequest toolCallRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(100)
@@ -89,7 +89,7 @@ public class ChatExample {
         messages.add(userMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 //Tools is a list; multiple tools can be included
                 .tools(Collections.singletonList(tool))
@@ -108,7 +108,7 @@ public class ChatExample {
 
         //submit tool call
         ChatCompletionRequest toolCallRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(100)
@@ -124,7 +124,7 @@ public class ChatExample {
         ChatMessage systemMessage = new SystemMessage("You are a cute cat and will speak as such.");
         messages.add(systemMessage);
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(50)
@@ -210,7 +210,7 @@ public class ChatExample {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -235,7 +235,7 @@ public class ChatExample {
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
                 //3.5 there may be logical issues
-                .model("gpt-3.5-turbo-0125")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -256,7 +256,7 @@ public class ChatExample {
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)

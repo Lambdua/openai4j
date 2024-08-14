@@ -25,7 +25,7 @@ public class FunctionsWithStreamExample {
         while (true) {
             ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                     .builder()
-                    .model("gpt-3.5-turbo")
+                    .model("gpt-4o-mini")
                     .messages(messages)
                     .functions(functionExecutor.getFunctionDefinitions())
                     .functionCall(ChatCompletionRequestFunctionCall.AUTO)

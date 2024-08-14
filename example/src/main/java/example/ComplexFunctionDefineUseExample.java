@@ -87,7 +87,7 @@ public class ComplexFunctionDefineUseExample {
         messages.add(new UserMessage("What is the current time?"));
 
         ChatCompletionResult chatCompletion = openAiService.createChatCompletion(ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(Arrays.asList(new ChatTool(fd)))
                 .temperature(1D)
@@ -126,7 +126,7 @@ public class ComplexFunctionDefineUseExample {
         messages.add(new UserMessage("Search for components with a width of 12 and a name of hot return water pipe"));
 
         ChatCompletionResult chatCompletion = openAiService.createChatCompletion(ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(Arrays.asList(new ChatTool(fd)))
                 .temperature(1D)

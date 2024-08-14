@@ -41,7 +41,7 @@ class RunAndRunStepTest {
     @BeforeAll
     static void initial() {
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .name("文字检索")
                 .instructions("你是一个中国传统音乐教授,负责根据用户的需求解答问题")
                 .tools(Collections.singletonList(new FileSearchTool()))

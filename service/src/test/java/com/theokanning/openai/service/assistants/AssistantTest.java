@@ -63,7 +63,7 @@ public class AssistantTest {
                         .build()).build();
 
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .name("Math Tutor")
                 .description("the personal Math Tutor")
                 .instructions("You are a personal Math Tutor.")

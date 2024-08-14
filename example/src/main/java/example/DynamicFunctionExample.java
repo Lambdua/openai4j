@@ -54,7 +54,7 @@ public class DynamicFunctionExample {
         while (true) {
             ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                     .builder()
-                    .model("gpt-3.5-turbo-0613")
+                    .model("gpt-4o-mini")
                     .messages(messages)
                     .functions(Collections.singletonList(weatherFunction))
                     .functionCall(ChatCompletionRequestFunctionCall.AUTO)

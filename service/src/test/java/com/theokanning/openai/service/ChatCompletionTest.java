@@ -60,7 +60,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(5)
                 .maxTokens(50)
@@ -79,7 +79,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(50)
@@ -101,7 +101,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(50)
@@ -126,7 +126,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .responseFormat(ChatResponseFormat.JSON_OBJECT)
                 .maxTokens(50)
@@ -136,7 +136,7 @@ class ChatCompletionTest {
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertTrue(isValidJson(choice.getMessage().getContent()), "Response is not valid JSON");
     }
-    
+
     private boolean isValidJson(String jsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -146,7 +146,7 @@ class ChatCompletionTest {
             return false;
         }
     }
-    
+
     @Test
     void createChatCompletionWithJsonSchema() throws JsonProcessingException {
         final List<ChatMessage> messages = new ArrayList<>();
@@ -157,7 +157,7 @@ class ChatCompletionTest {
 
         Class<MathReasoning> rootClass = MathReasoning.class;
         ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(rootClass);
-        
+
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
                 .model("gpt-4o-2024-08-06")
@@ -168,26 +168,26 @@ class ChatCompletionTest {
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         MathReasoning mathReasoning = choice.getMessage().parsed(rootClass);
-        
+
         String finalAnswer = mathReasoning.getFinal_answer();
         assertTrue(finalAnswer.contains("x"));
         assertTrue(finalAnswer.contains("="));
     }
-    
+
     @Data
     @NoArgsConstructor
 	private static class MathReasoning {
         @NotNull private List<Step> steps;
         @NotNull private String final_answer;
     }
-    
+
     @Data
     @NoArgsConstructor
     private static class Step {
         @NotNull private String explanation;
         @NotNull private String output;
     }
-    
+
     @Test
     void createChatCompletionWithFunctions() {
         final List<FunctionDefinition> functions = Collections.singletonList(ToolUtil.weatherFunction());
@@ -303,7 +303,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .functions(Collections.singletonList(FunctionDefinition.builder().name("get_today").description("Get the current date").executor((o) -> LocalDate.now()).build()))
                 .n(1)
@@ -328,7 +328,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(Collections.singletonList(
                         new ChatTool(FunctionDefinition.builder().name("get_today").description("Get the current date").executor((o) -> LocalDate.now()).build())
@@ -437,7 +437,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
@@ -468,7 +468,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 //这里的tools是一个list,可以传入多个tool
                 .tools(Arrays.asList(tool))
@@ -503,7 +503,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(Arrays.asList(tool))
                 .toolChoice(ToolChoice.AUTO)
@@ -557,7 +557,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -592,7 +592,7 @@ class ChatCompletionTest {
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
                 //3.5 there may be logical issues
-                .model("gpt-3.5-turbo-0125")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -620,7 +620,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -702,7 +702,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -739,7 +739,7 @@ class ChatCompletionTest {
         ChatCompletionRequest chatCompletionRequest2 = ChatCompletionRequest
                 .builder()
                 //3.5 there may be logical issues
-                .model("gpt-3.5-turbo-0125")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
@@ -769,7 +769,7 @@ class ChatCompletionTest {
 
         ChatCompletionRequest chatCompletionRequest3 = ChatCompletionRequest
                 .builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)

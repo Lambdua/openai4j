@@ -46,7 +46,7 @@ public class AssistantExample {
         OpenAiService service = new OpenAiService();
         FunctionExecutorManager executor = new FunctionExecutorManager(Collections.singletonList(ToolUtil.weatherFunction()));
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo").name("weather assistant")
+                .model("gpt-4o-mini").name("weather assistant")
                 .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
                 .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
                 .temperature(0D)
@@ -110,7 +110,7 @@ public class AssistantExample {
         String threadId;
 
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo").name("weather assistant")
+                .model("gpt-4o-mini").name("weather assistant")
                 .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
                 .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
                 .temperature(0D)
@@ -188,7 +188,7 @@ public class AssistantExample {
         OpenAiService service = new OpenAiService();
 
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .name("file search assistant")
                 .instructions("你是一个中国传统音乐教授,负责根据用户的需求解答问题")
                 //add file search tool to assistant
@@ -248,7 +248,7 @@ public class AssistantExample {
     static void codeInterpreterExample() {
         OpenAiService service = new OpenAiService();
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o-mini")
                 .name("code interpreter assistant")
                 .instructions("You are a code interpreter assistant.Using code interpreter tools for result calculation")
                 .tools(Collections.singletonList(new CodeInterpreterTool()))

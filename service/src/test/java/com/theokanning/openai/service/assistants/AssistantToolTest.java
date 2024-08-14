@@ -42,7 +42,7 @@ class AssistantToolTest {
     static void initial() {
         executor = new FunctionExecutorManager(Collections.singletonList(ToolUtil.weatherFunction()));
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-3.5-turbo").name("weather assistant")
+                .model("gpt-4o-mini").name("weather assistant")
                 .instructions("You are a weather assistant responsible for calling the weather API to return weather information based on the location entered by the user")
                 .tools(Collections.singletonList(new FunctionTool(ToolUtil.weatherFunction())))
                 .temperature(0D)
