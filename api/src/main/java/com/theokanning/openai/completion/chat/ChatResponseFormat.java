@@ -2,6 +2,7 @@ package com.theokanning.openai.completion.chat;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.kjetland.jackson.jsonSchema.JsonSchemaConfig;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
+import com.theokanning.openai.function.FunctionDefinition;
 import com.theokanning.openai.utils.JsonUtil;
 
 import lombok.Data;
@@ -29,20 +31,20 @@ public class ChatResponseFormat {
     private static final ObjectMapper MAPPER = JsonUtil.getInstance();
     private static final JsonSchemaConfig CONFIG = JsonSchemaConfig.vanillaJsonSchemaDraft4();
     private static final JsonSchemaGenerator JSON_SCHEMA_GENERATOR = new JsonSchemaGenerator(MAPPER, CONFIG);
-	
+
     /**
-     * auto/text/json_object
+     * auto/text/json_object/json_schema
      */
     private String type;
-    
+
     /**
      * This is used together with type field set to "json_schema"
      * to enable structured outputs.
-     * 
+     *
      * @see https://openai.com/index/introducing-structured-outputs-in-the-api/
-     * 
      */
-    private JsonNode json_schema;
+    private ResponseJsonSchema jsonSchema;
+
 
     /**
      * 构造私有,只允许从静态变量获取
@@ -51,17 +53,17 @@ public class ChatResponseFormat {
         this.type = type;
     }
 
+
     public static final ChatResponseFormat AUTO = new ChatResponseFormat("auto");
 
     public static final ChatResponseFormat TEXT = new ChatResponseFormat("text");
 
     public static final ChatResponseFormat JSON_OBJECT = new ChatResponseFormat("json_object");
-    
-    public static ChatResponseFormat jsonSchema(Class<?> rootClass) {
-	    JsonNode jsonSchema = JSON_SCHEMA_GENERATOR.generateJsonSchema(rootClass);
-	    ChatResponseFormat jsonSchemaFormat = new ChatResponseFormat("json_schema");
-	    jsonSchemaFormat.setJson_schema(jsonSchema);
-	    return jsonSchemaFormat;
+
+    public static ChatResponseFormat jsonSchema(ResponseJsonSchema jsonSchema) {
+        ChatResponseFormat chatResponseFormat = new ChatResponseFormat("json_schema");
+        chatResponseFormat.setJsonSchema(jsonSchema);
+        return chatResponseFormat;
     }
 
     @NoArgsConstructor
@@ -73,18 +75,10 @@ public class ChatResponseFormat {
             } else {
                 gen.writeStartObject();
                 gen.writeObjectField("type", (value).getType());
-                
                 if (value.getType().equals("json_schema")) {
-                    JsonNode jsonSchema = value.getJson_schema();
-
-                    gen.writeObjectFieldStart("json_schema");
-                    gen.writeStringField("name", "ChatResponseFormat");
-                    gen.writeBooleanField("strict", true);
-                    gen.writeFieldName("schema");
-                    gen.writeTree(jsonSchema);
-                    gen.writeEndObject();
+                    gen.writeObjectField("json_schema", value.getJsonSchema());
                 }
-                
+
                 gen.writeEndObject();
             }
         }
@@ -107,13 +101,16 @@ public class ChatResponseFormat {
                 while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
                     if (jsonParser.getCurrentName().equals("type")) {
                         jsonParser.nextToken();
-                        switch (jsonParser.getText()){
+                        switch (jsonParser.getText()) {
                             case "auto":
                                 return AUTO;
                             case "text":
                                 return TEXT;
                             case "json_object":
                                 return JSON_OBJECT;
+                            case "json_schema":
+                                jsonParser.nextToken();
+                                return jsonSchema(MAPPER.readValue(jsonParser, ResponseJsonSchema.class));
                             default:
                                 throw new InvalidFormatException(jsonParser, "Invalid response format", jsonParser.getCurrentToken().toString(), ChatResponseFormat.class);
                         }

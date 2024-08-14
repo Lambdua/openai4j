@@ -36,6 +36,12 @@ public class AssistantMessage implements ChatMessage {
     @JsonProperty("function_call")
     ChatFunctionCall functionCall;
 
+    /**
+     * when response_format is json_schema, the assistant can return a refusal message.
+     */
+    private String refusal;
+
+
 
     public AssistantMessage(String content) {
         this.content = content;
@@ -54,7 +60,7 @@ public class AssistantMessage implements ChatMessage {
 
     /**
      * Deserializes the message to an object of the specified target class.
-     * 
+     *
      * @param targetClass the type of the object
      * @return the deserialized object
      **/

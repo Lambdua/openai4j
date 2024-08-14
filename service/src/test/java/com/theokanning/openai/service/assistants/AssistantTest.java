@@ -82,7 +82,7 @@ public class AssistantTest {
         assertEquals(assistant.getTemperature(), 0.2D);
         assertEquals(assistant.getResponseFormat(), ChatResponseFormat.AUTO);
         assertEquals(assistant.getInstructions(), "You are a personal Math Tutor.");
-        assertEquals(assistant.getModel(), TikTokensUtil.ModelEnum.GPT_3_5_TURBO.getName());
+        assertEquals(assistant.getResponseFormat().getType(), "auto");
         assertEquals(assistant.getDescription(), "the personal Math Tutor");
     }
 

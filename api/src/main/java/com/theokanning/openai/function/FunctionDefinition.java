@@ -39,8 +39,6 @@ public class FunctionDefinition {
     private Boolean strict;
 
 
-
-
     /**
      * parameters definition by class schema ,will use {@link JsonSchemaGenerator} to generate json schema
      */

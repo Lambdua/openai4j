@@ -13,7 +13,9 @@ import java.util.*;
 
 /**
  * Token calculation tool class
+ * @deprecated  openai support token use the official api,will be removed in the future
  */
+@Deprecated
 public class TikTokensUtil {
     /**
      * Model name corresponds to Encoding

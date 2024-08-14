@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.utils.JsonUtil;
 import org.junit.jupiter.api.Test;
 
@@ -27,21 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theokanning.openai.assistants.run.ToolChoice;
-import com.theokanning.openai.completion.chat.AssistantMessage;
-import com.theokanning.openai.completion.chat.ChatCompletionChoice;
-import com.theokanning.openai.completion.chat.ChatCompletionChunk;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatFunctionCall;
-import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
-import com.theokanning.openai.completion.chat.ChatFunctionProperty;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.completion.chat.ChatResponseFormat;
-import com.theokanning.openai.completion.chat.ChatTool;
-import com.theokanning.openai.completion.chat.ChatToolCall;
-import com.theokanning.openai.completion.chat.StreamOption;
-import com.theokanning.openai.completion.chat.SystemMessage;
-import com.theokanning.openai.completion.chat.ToolMessage;
-import com.theokanning.openai.completion.chat.UserMessage;
 import com.theokanning.openai.function.FunctionDefinition;
 import com.theokanning.openai.function.FunctionExecutorManager;
 import com.theokanning.openai.service.util.ToolUtil;
@@ -148,7 +134,11 @@ class ChatCompletionTest {
         messages.add(userMessage);
 
         Class<MathReasoning> rootClass = MathReasoning.class;
-        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(rootClass);
+        ChatResponseFormat responseFormat = ChatResponseFormat.jsonSchema(ResponseJsonSchema.<MathReasoning>builder()
+                        .name("math_reasoning")
+                        .schemaClass(rootClass)
+                        .strict(true)
+                .build());
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
