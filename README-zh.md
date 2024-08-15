@@ -21,14 +21,14 @@ OpenAi4J是一个非官方的Java库，旨在帮助java开发者与OpenAI的GPT�
 ## 导入依赖
 ### Gradle
 
-`implementation 'io.github.lambdua:<api|client|service>:0.22.0'`
+`implementation 'io.github.lambdua:<api|client|service>:0.22.1'`
 ### Maven
 ```xml
 
 <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>service</artifactId>
-    <version>0.22.0</version>
+    <version>0.22.1</version>
 </dependency>
 ```
 
@@ -61,7 +61,7 @@ static void simpleChat() {
 <dependency>
     <groupId>io.github.lambdua</groupId>
     <artifactId>api</artifactId>
-    <version>0.22.0</version>
+    <version>0.22.1</version>
 </dependency>
 ```
 
