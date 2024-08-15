@@ -55,6 +55,12 @@ public enum StreamEvent {
     THREAD_RUN_COMPLETED("thread.run.completed", Run.class),
 
     /**
+     * Occurs when a run ends with status incomplete.
+     * data: {@link com.theokanning.openai.assistants.run.Run}
+     */
+    THREAD_RUN_INCOMPLETE("thread.run.incomplete", Run.class),
+
+    /**
      * Occurs when a run fails.
      * data: {@link com.theokanning.openai.assistants.run.Run}
      */
