@@ -7,14 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -634,6 +632,27 @@ class ChatCompletionTest {
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
                 .model("gpt-4-turbo")
+                .messages(messages)
+                .n(1)
+                .maxTokens(200)
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        assertNotNull(choice.getMessage().getContent());
+    }
+
+    @Test
+    void createLocalImageChatCompletion() throws URISyntaxException {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        Path imagePath= Paths.get(Objects.requireNonNull(ChatCompletionTest.class.getClassLoader().getResource("vanter.jpg")).toURI());
+
+        final ChatMessage imageMessage = UserMessage.buildImageMessage("What'\''s in this image?", imagePath);
+        messages.add(systemMessage);
+        messages.add(imageMessage);
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
                 .maxTokens(200)

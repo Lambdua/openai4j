@@ -7,10 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,16 +62,32 @@ public class UserMessage implements ChatMessage {
     /**
      * 构件一个图片识别请求消息,支持多个图片
      *
-     * @param text      query text
+     * @param prompt      query text
      * @param imageUrls image urls
      * @return com.theokanning.openai.completion.chat.UserMessage
      * @author liangtao
      * @date 2024/4/12
      **/
-    public static UserMessage buildImageMessage(String text, String... imageUrls) {
+    public static UserMessage buildImageMessage(String prompt, String... imageUrls) {
         List<ImageContent> imageContents = Arrays.stream(imageUrls).map(url -> new ImageContent(new ImageUrl(url))).collect(Collectors.toList());
-        imageContents.add(0, new ImageContent(text));
+        imageContents.add(0, new ImageContent(prompt));
         return new UserMessage(imageContents);
     }
+
+    /**
+     * 构件一个图片识别请求消息,支持多个图片
+     * @author liangtao
+     * @date 2024/8/15
+     * @param prompt query text
+     * @param imagePaths 文件本地路径
+     * @return com.theokanning.openai.completion.chat.UserMessage
+     **/
+    public  static UserMessage buildImageMessage(String prompt, Path... imagePaths) {
+        List<ImageContent> imageContents = Arrays.stream(imagePaths).map(ImageContent::new).collect(Collectors.toList());
+        imageContents.add(0, new ImageContent(prompt));
+        return new UserMessage(imageContents);
+    }
+
+
 }
 

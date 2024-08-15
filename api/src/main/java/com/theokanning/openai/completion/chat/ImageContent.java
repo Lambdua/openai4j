@@ -8,6 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
+
 /**
  * @author LiangTao
  * @date 2024年04月10 10:26
@@ -43,6 +48,23 @@ public class ImageContent {
     public ImageContent(ImageUrl imageUrl) {
         this.type = "image_url";
         this.imageUrl = imageUrl;
+    }
+
+    public ImageContent(Path imagePath){
+        this.type = "image_url";
+        String imagePathString = imagePath.toAbsolutePath().toString();
+        String extension = imagePathString.substring(imagePathString.lastIndexOf('.') + 1);
+        this.imageUrl=new ImageUrl( "data:image/" + extension + ";base64," + encodeImage(imagePath));
+    }
+
+    private String encodeImage(Path imagePath) {
+        byte[] fileContent;
+        try {
+            fileContent = Files.readAllBytes(imagePath);
+            return Base64.getEncoder().encodeToString(fileContent);
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
     }
 
 }
