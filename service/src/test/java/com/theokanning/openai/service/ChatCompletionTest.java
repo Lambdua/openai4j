@@ -957,4 +957,18 @@ class ChatCompletionTest {
         assertEquals("asc",arguments.get("order_by").asText());
     }
 
+    @Test
+    void  o1ModelTest(){
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
+                .model("o1-mini")
+                .messages(Arrays.asList(new UserMessage("9.11和9.8比较，那个大")))
+                .build();
+        ChatCompletionResult chatCompletion = service.createChatCompletion(chatCompletionRequest);
+        assertNotNull(chatCompletion);
+        assertNotNull(chatCompletion.getChoices());
+        ChatCompletionChoice choice = chatCompletion.getChoices().get(0);
+        assertNotNull(choice);
+        assertNotNull(choice.getMessage());
+        assertNotNull(choice.getMessage().getContent());
+    }
 }
