@@ -742,15 +742,19 @@ public class OpenAiService {
         ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
         AssistantMessage accumulatedMessage = new AssistantMessage();
         return flowable.map(chunk -> {
-            ChatCompletionChoice firstChoice = chunk.getChoices().get(0);
-            AssistantMessage messageChunk = firstChoice.getMessage();
-            appendContent(messageChunk, accumulatedMessage);
-            processFunctionCall(messageChunk, functionCall, accumulatedMessage);
-            processToolCalls(messageChunk, accumulatedMessage);
-            if (firstChoice.getFinishReason() != null) {
-                handleFinishReason(firstChoice.getFinishReason(), functionCall, accumulatedMessage);
+            List<ChatCompletionChoice> choices = chunk.getChoices();
+            AssistantMessage messageChunk=new AssistantMessage();
+            if (choices!=null && !choices.isEmpty()){
+                ChatCompletionChoice firstChoice = choices.get(0);
+                messageChunk = firstChoice.getMessage();
+                appendContent(messageChunk, accumulatedMessage);
+                processFunctionCall(messageChunk, functionCall, accumulatedMessage);
+                processToolCalls(messageChunk, accumulatedMessage);
+                if (firstChoice.getFinishReason() != null) {
+                    handleFinishReason(firstChoice.getFinishReason(), functionCall, accumulatedMessage);
+                }
             }
-            return new ChatMessageAccumulator(messageChunk, accumulatedMessage);
+            return new ChatMessageAccumulator(messageChunk, accumulatedMessage,chunk.getUsage());
         });
     }
 

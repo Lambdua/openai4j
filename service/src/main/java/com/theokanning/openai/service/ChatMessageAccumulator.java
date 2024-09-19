@@ -1,5 +1,6 @@
 package com.theokanning.openai.service;
 
+import com.theokanning.openai.Usage;
 import com.theokanning.openai.completion.chat.AssistantMessage;
 import com.theokanning.openai.completion.chat.ChatFunctionCall;
 
@@ -15,15 +16,18 @@ public class ChatMessageAccumulator {
     private final AssistantMessage messageChunk;
     private final AssistantMessage accumulatedMessage;
 
+    private final Usage usage;
+
     /**
      * Constructor that initializes the message chunk and accumulated message.
      *
      * @param messageChunk       The message chunk.
      * @param accumulatedMessage The accumulated message.
      */
-    public ChatMessageAccumulator(AssistantMessage messageChunk, AssistantMessage accumulatedMessage) {
+    public ChatMessageAccumulator(AssistantMessage messageChunk, AssistantMessage accumulatedMessage,Usage usage) {
         this.messageChunk = messageChunk;
         this.accumulatedMessage = accumulatedMessage;
+        this.usage=usage;
     }
 
     /**
@@ -62,6 +66,14 @@ public class ChatMessageAccumulator {
      */
     public AssistantMessage getAccumulatedMessage() {
         return accumulatedMessage;
+    }
+
+
+    /**
+     *  只有{@link  com.theokanning.openai.completion.chat.StreamOption#INCLUDE} 时，usage才不为null
+     */
+    public Usage getUsage() {
+        return usage;
     }
 
     /**
