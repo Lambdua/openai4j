@@ -192,7 +192,7 @@ public class AssistantExample {
                 .name("file search assistant")
                 .instructions("你是一个中国传统音乐教授,负责根据用户的需求解答问题")
                 //add file search tool to assistant
-                .tools(Collections.singletonList(new FileSearchTool(1)))
+                .tools(Collections.singletonList(new FileSearchTool()))
                 .temperature(0D)
                 .build();
         Assistant assistant = service.createAssistant(assistantRequest);

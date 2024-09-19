@@ -1,9 +1,7 @@
 package com.theokanning.openai.service.assistants;
 
 import com.theokanning.openai.ListSearchParameters;
-import com.theokanning.openai.assistants.assistant.Assistant;
-import com.theokanning.openai.assistants.assistant.AssistantRequest;
-import com.theokanning.openai.assistants.assistant.FileSearchTool;
+import com.theokanning.openai.assistants.assistant.*;
 import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.run.Run;
@@ -49,7 +47,7 @@ public class AssistantFileSearchTest {
                 .name("file search assistant")
                 .instructions("你是一个中国传统音乐教授,负责根据用户的需求解答问题")
                 //add file search tool to assistant
-                .tools(Collections.singletonList(new FileSearchTool()))
+                .tools(Collections.singletonList(new FileSearchTool(new FileSearch(1,new FileSearchRankingOptions("auto", 0.5D)))))
                 .temperature(0.3D)
                 .build();
         Assistant assistant = service.createAssistant(assistantRequest);
