@@ -316,12 +316,15 @@ class ChatCompletionTest {
                 .n(1)
                 .maxTokens(100)
                 .logitBias(new HashMap<>())
+                .streamOptions(StreamOption.INCLUDE)
                 .build();
-        AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
-                .blockingLast().getAccumulatedMessage();
+        ChatMessageAccumulator chatMessageAccumulator = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
+                .blockingLast();
+        AssistantMessage accumulatedMessage =  chatMessageAccumulator.getAccumulatedMessage();
         List<ChatToolCall> toolCalls = accumulatedMessage.getToolCalls();
         assertNotNull(toolCalls);
         assertEquals(1, toolCalls.size());
+        assertNotNull(chatMessageAccumulator.getUsage());
         ChatToolCall chatToolCall = toolCalls.get(0);
         ChatFunctionCall functionCall = chatToolCall.getFunction();
         assertEquals("get_today", functionCall.getName());
@@ -953,6 +956,5 @@ class ChatCompletionTest {
         assertEquals("canceled_at",arguments.get("columns").get(6).asText());
         assertEquals("asc",arguments.get("order_by").asText());
     }
-
 
 }
