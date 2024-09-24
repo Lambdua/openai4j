@@ -1,6 +1,5 @@
 package com.theokanning.openai.completion.chat;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,7 +16,7 @@ import java.util.List;
  **/
 public class ContentDeserializer extends JsonDeserializer<Object> {
     @Override
-    public Object deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public Object deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         if (jsonParser.getCurrentToken() == JsonToken.VALUE_STRING) {
             return jsonParser.getText();
         }

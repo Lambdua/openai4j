@@ -1,26 +1,17 @@
 package com.theokanning.openai.completion.chat;
 
-import java.io.IOException;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.kjetland.jackson.jsonSchema.JsonSchemaConfig;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
-import com.theokanning.openai.function.FunctionDefinition;
 import com.theokanning.openai.utils.JsonUtil;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.IOException;
 
 /**
  * see {@link ChatCompletionRequest} documentation.
@@ -88,7 +79,7 @@ public class ChatResponseFormat {
     @NoArgsConstructor
     public static class ChatResponseFormatDeserializer extends JsonDeserializer<ChatResponseFormat> {
         @Override
-        public ChatResponseFormat deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+        public ChatResponseFormat deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
             if (jsonParser.getCurrentToken() == JsonToken.VALUE_STRING) {
                 String text = jsonParser.getText();
                 if (!"auto".equals(text)) {
