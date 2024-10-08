@@ -39,7 +39,7 @@ public class ToolCall {
      * For now, this is always going to be an empty object.
      */
     @JsonProperty("file_search")
-    Map<String, String> fileSearch;
+    ToolCallFileSearch fileSearch;
 
     ToolCallFunction function;
 }
