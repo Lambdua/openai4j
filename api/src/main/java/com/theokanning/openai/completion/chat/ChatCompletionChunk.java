@@ -1,5 +1,6 @@
 package com.theokanning.openai.completion.chat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.Usage;
 import lombok.Data;
@@ -51,4 +52,13 @@ public class ChatCompletionChunk {
      */
     Usage usage;
 
+    /**
+     * The original data packet returned by chat completion.
+     * the value like this:
+     * <pre>
+     * data:{"id":"chatcmpl-A0QiHfuacgBSbvd8Ld1Por1HojY31","object":"chat.completion.chunk","created":1724666049,"model":"gpt-3.5-turbo-0125","system_fingerprint":null,"choices":[{"index":0,"delta":{"role":"assistant","content":"","refusal":null},"logprobs":null,"finish_reason":null}]}
+     * </pre>
+     */
+    @JsonIgnore
+    String source;
 }

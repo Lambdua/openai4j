@@ -1,6 +1,7 @@
 package com.theokanning.openai.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,6 +73,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 public class OpenAiService {
 
@@ -190,7 +193,17 @@ public class OpenAiService {
 
     public Flowable<ChatCompletionChunk> streamChatCompletion(ChatCompletionRequest request) {
         request.setStream(true);
-        return stream(api.createChatCompletionStream(request), ChatCompletionChunk.class);
+        return stream(api.createChatCompletionStream(request), ChatCompletionChunk.class, new BiConsumer<ChatCompletionChunk, SSE>() {
+            @Override
+            public void accept(ChatCompletionChunk chatCompletionChunk, SSE sse) {
+                chatCompletionChunk.setSource(sse.getData());
+            }
+        }, new Supplier<ChatCompletionChunk>() {
+            @Override
+            public ChatCompletionChunk get() {
+                return new ChatCompletionChunk();
+            }
+        });
     }
 
 
@@ -693,6 +706,31 @@ public class OpenAiService {
     }
 
     /**
+     * Calls the Open AI api and returns a Flowable of type T for streaming
+     * omitting the last message.
+     * @param apiCall The api call
+     * @param cl Class of type T to return
+     * @param consumer After the instance creation is complete
+     * @param newInstance If the serialization fails, call this interface to get an instance
+     */
+    public static <T> Flowable<T> stream(Call<ResponseBody> apiCall, Class<T> cl, BiConsumer<T, SSE> consumer,
+                                         Supplier<T> newInstance) {
+        return stream(apiCall, true).map(sse -> {
+            try {
+                T t = mapper.readValue(sse.getData(), cl);
+                if (Objects.nonNull(consumer)) {
+                    consumer.accept(t, sse);
+                }
+                return t;
+            } catch (JsonProcessingException e) {
+                T t = newInstance.get();
+                consumer.accept(t, sse);
+                return t;
+            }
+        });
+    }
+
+    /**
      * Shuts down the OkHttp ExecutorService.
      * The default behaviour of OkHttp's ExecutorService (ConnectionPool)
      * is to shut down after an idle timeout of 60s.
@@ -758,6 +796,26 @@ public class OpenAiService {
         });
     }
 
+    public Flowable<ChatMessageAccumulatorWrapper> mapStreamToAccumulatorWrapper(Flowable<ChatCompletionChunk> flowable) {
+        ChatFunctionCall functionCall = new ChatFunctionCall(null, null);
+        AssistantMessage accumulatedMessage = new AssistantMessage();
+        return flowable.map(chunk -> {
+            List<ChatCompletionChoice> choices = chunk.getChoices();
+            AssistantMessage messageChunk = null;
+            if (null != choices && !choices.isEmpty()) {
+                ChatCompletionChoice firstChoice = choices.get(0);
+                messageChunk = firstChoice.getMessage();
+                appendContent(messageChunk, accumulatedMessage);
+                processFunctionCall(messageChunk, functionCall, accumulatedMessage);
+                processToolCalls(messageChunk, accumulatedMessage);
+                if (firstChoice.getFinishReason() != null) {
+                    handleFinishReason(firstChoice.getFinishReason(), functionCall, accumulatedMessage);
+                }
+            }
+            ChatMessageAccumulator chatMessageAccumulator = new ChatMessageAccumulator(messageChunk, accumulatedMessage, chunk.getUsage());
+            return new ChatMessageAccumulatorWrapper(chatMessageAccumulator, chunk);
+        });
+    }
 
     /**
      * 处理消息块中的函数调用。
