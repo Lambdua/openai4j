@@ -35,6 +35,9 @@ public class ContentSerializer extends JsonSerializer<Object> {
                 if (ic.getType().equals("image_file")) {
                     jsonGenerator.writeObjectField("image_file", ic.getImageFile());
                 }
+                if (ic.getType().equals("input_audio")) {
+                    jsonGenerator.writeObjectField("input_audio", ic.getInputAudio());
+                }
                 jsonGenerator.writeEndObject();
             }
             jsonGenerator.writeEndArray();

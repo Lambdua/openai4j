@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.lambdua</groupId>
         <artifactId>openai-java</artifactId>
-        <version>0.22.4</version>
+        <version>0.22.5</version>
     </parent>
     <packaging>jar</packaging>
 

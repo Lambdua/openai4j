@@ -83,11 +83,23 @@ public class UserMessage implements ChatMessage {
      * @return com.theokanning.openai.completion.chat.UserMessage
      **/
     public  static UserMessage buildImageMessage(String prompt, Path... imagePaths) {
-        List<ImageContent> imageContents = Arrays.stream(imagePaths).map(ImageContent::new).collect(Collectors.toList());
+        List<ImageContent> imageContents = Arrays.stream(imagePaths).map(ImageContent::ofImagePath).collect(Collectors.toList());
         imageContents.add(0, new ImageContent(prompt));
         return new UserMessage(imageContents);
     }
 
-
+    /**
+     * 构建一个音频识别请求消息,支持多个音频
+     * @param prompt query text
+     * @param inputAudioPaths 音频文件本地路径
+     * @return com.theokanning.openai.completion.chat.UserMessage
+     * @author Allen Hu
+     * @date 2024/11/6
+     */
+    public static UserMessage buildInputAudioMessage(String prompt, Path... inputAudioPaths) {
+        List<ImageContent> imageContents = Arrays.stream(inputAudioPaths).map(ImageContent::ofAudioPath).collect(Collectors.toList());
+        imageContents.add(0, new ImageContent(prompt));
+        return new UserMessage(imageContents);
+    }
 }
 

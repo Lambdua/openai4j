@@ -25,14 +25,14 @@ applications effortlessly.
 ## Import
 ### Gradle
 
-`implementation 'io.github.lambdua:<api|client|service>:0.22.4'`
+`implementation 'io.github.lambdua:<api|client|service>:0.22.5'`
 ### Maven
 ```xml
 
 <dependency>
   <groupId>io.github.lambdua</groupId>
   <artifactId>service</artifactId>
-    <version>0.22.4</version>
+    <version>0.22.5</version>
 </dependency>
 ```
 
@@ -67,7 +67,7 @@ To utilize pojos, import the api module:
 <dependency>
   <groupId>io.github.lambdua</groupId>
   <artifactId>api</artifactId>
-    <version>0.22.4</version>
+    <version>0.22.5</version>
 </dependency>
 ```
 

@@ -23,7 +23,7 @@ import java.util.Base64;
 public class ImageContent {
 
     /**
-     * The type of the content. Either "text" or "image_url".
+     * The type of the content. Either "text", "image_url" or "input_audio".
      */
     @NonNull
     private String type;
@@ -39,6 +39,10 @@ public class ImageContent {
     @JsonProperty("image_file")
     private ImageFile imageFile;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("input_audio")
+    private InputAudio inputAudio;
+
 
     public ImageContent(String text) {
         this.type = "text";
@@ -50,6 +54,10 @@ public class ImageContent {
         this.imageUrl = imageUrl;
     }
 
+    /**
+     * @deprecated {@link #ofImagePath(Path)}
+     */
+    @Deprecated
     public ImageContent(Path imagePath){
         this.type = "image_url";
         String imagePathString = imagePath.toAbsolutePath().toString();
@@ -57,7 +65,31 @@ public class ImageContent {
         this.imageUrl=new ImageUrl( "data:image/" + extension + ";base64," + encodeImage(imagePath));
     }
 
-    private String encodeImage(Path imagePath) {
+    public ImageContent(InputAudio inputAudio) {
+        this.type = "input_audio";
+        this.inputAudio = inputAudio;
+    }
+
+    public static ImageContent ofImagePath(Path imagePath){
+        String imagePathString = imagePath.toAbsolutePath().toString();
+        String extension = imagePathString.substring(imagePathString.lastIndexOf('.') + 1);
+        ImageUrl imageUrl = new ImageUrl("data:image/" + extension + ";base64," + encode2base64(imagePath));
+        return new ImageContent(imageUrl);
+    }
+
+    public static ImageContent ofAudioPath(Path inputAudioPath) {
+        String inputAudioPathString = inputAudioPath.toAbsolutePath().toString();
+        String extension = inputAudioPathString.substring(inputAudioPathString.lastIndexOf('.') + 1);
+        String base64 = encode2base64(inputAudioPath);
+        InputAudio inputAudio = new InputAudio(base64, extension);
+        return new ImageContent(inputAudio);
+    }
+
+    /**
+     * @deprecated use {@link #encode2base64(Path)}
+     */
+    @Deprecated
+    private static String encodeImage(Path imagePath) {
         byte[] fileContent;
         try {
             fileContent = Files.readAllBytes(imagePath);
@@ -67,4 +99,13 @@ public class ImageContent {
         }
     }
 
+    private static String encode2base64(Path path) {
+        byte[] fileContent;
+        try {
+            fileContent = Files.readAllBytes(path);
+            return Base64.getEncoder().encodeToString(fileContent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
