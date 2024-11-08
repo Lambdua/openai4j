@@ -665,6 +665,29 @@ class ChatCompletionTest {
         assertNotNull(choice.getMessage().getContent());
     }
 
+    @Test
+    void createInputAudioChatCompletion() throws URISyntaxException {
+        final List<ChatMessage> messages = new ArrayList<>();
+        final ChatMessage systemMessage = new SystemMessage("You are a helpful assistant.");
+        Path audioPath= Paths.get(Objects.requireNonNull(ChatCompletionTest.class.getClassLoader().getResource("hello-world.mp3")).toURI());
+
+        final ChatMessage audioMessage = UserMessage.buildInputAudioMessage("What'\''s in this audio?", audioPath);
+        messages.add(systemMessage);
+        messages.add(audioMessage);
+        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-4o-audio-preview")
+                .messages(messages)
+                .n(1)
+                .maxTokens(200)
+                .modalities(Arrays.asList("text", "audio"))
+                .audio(new Audio("alloy", "wav"))
+                .build();
+
+        ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
+        assertNotNull(choice.getMessage().getAudio());
+    }
+
 
     /**
      * 流式请求中使用多个tool调用场景下的测试

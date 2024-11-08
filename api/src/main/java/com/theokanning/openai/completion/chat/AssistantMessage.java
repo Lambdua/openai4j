@@ -1,14 +1,13 @@
 package com.theokanning.openai.completion.chat;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theokanning.openai.utils.JsonUtil;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @author LiangTao
@@ -41,6 +40,10 @@ public class AssistantMessage implements ChatMessage {
      */
     private String refusal;
 
+    /**
+     * Data about a previous audio response from the model.
+     */
+    private AssistantMessageAudio audio;
 
 
     public AssistantMessage(String content) {

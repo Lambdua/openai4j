@@ -49,6 +49,8 @@ public class ContentDeserializer extends JsonDeserializer<Object> {
                 content.setImageUrl(parseImageUrl(jsonParser));
             } else if ("image_file".equals(fieldName)) {
                 content.setImageFile(parseImageFile(jsonParser));
+            } else if ("input_audio".equals(fieldName)) {
+                content.setInputAudio(parseInputAudio(jsonParser));
             }
         }
         return content;
@@ -82,5 +84,20 @@ public class ContentDeserializer extends JsonDeserializer<Object> {
             }
         }
         return new ImageUrl(url, detail);
+    }
+
+    private InputAudio parseInputAudio(JsonParser jsonParser) throws IOException {
+        String data = null;
+        String format = null;
+        while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonParser.getCurrentName();
+            jsonParser.nextToken();
+            if ("data".equals(fieldName)) {
+                data = jsonParser.getText();
+            } else if ("format".equals(fieldName)) {
+                format = jsonParser.getText();
+            }
+        }
+        return new InputAudio(data, format);
     }
 }
