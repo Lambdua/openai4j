@@ -65,55 +65,55 @@ public class Batch {
      * The Unix timestamp (in seconds) for when the batch was created.
      */
     @JsonProperty("created_at")
-    Integer createdAt;
+    Long createdAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch started processing.
      */
     @JsonProperty("in_progress_at")
-    Integer inProgressAt;
+    Long inProgressAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch will expire.
      */
     @JsonProperty("expires_at")
-    Integer expiresAt;
+    Long expiresAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch started finalizing.
      */
     @JsonProperty("finalizing_at")
-    Integer finalizingAt;
+    Long finalizingAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch was completed.
      */
     @JsonProperty("completed_at")
-    Integer completedAt;
+    Long completedAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch failed.
      */
     @JsonProperty("failed_at")
-    Integer failedAt;
+    Long failedAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch expired.
      */
     @JsonProperty("expired_at")
-    Integer expiredAt;
+    Long expiredAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch started cancelling.
      */
     @JsonProperty("cancelling_at")
-    Integer cancellingAt;
+    Long cancellingAt;
 
     /**
      * The Unix timestamp (in seconds) for when the batch was cancelled.
      */
     @JsonProperty("cancelled_at")
-    Integer cancelledAt;
+    Long cancelledAt;
 
     /**
      * The request counts for different statuses within the batch.
