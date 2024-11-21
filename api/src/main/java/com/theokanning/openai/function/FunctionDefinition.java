@@ -113,6 +113,7 @@ public class FunctionDefinition {
             }
             FunctionDefinition functionDefinition = new FunctionDefinition();
             functionDefinition.name = name;
+            functionDefinition.strict = strict;
             functionDefinition.description = description;
             functionDefinition.parametersDefinitionClass = parametersDefinitionClass;
             functionDefinition.parametersDefinition = parametersDefinition;
