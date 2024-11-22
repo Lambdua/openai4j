@@ -29,6 +29,9 @@ public class FunctionParametersSerializer extends JsonSerializer<FunctionDefinit
             parameterSchema.remove("$schema");
             parameterSchema.remove("title");
             parameterSchema.remove("additionalProperties");
+            if (Boolean.TRUE == value.getStrict()) {
+              parameterSchema.put("additionalProperties", Boolean.FALSE);
+            }
             gen.writeRawValue(JsonUtil.writeValueAsString(parameterSchema));
         } else {
             gen.writeFieldName("parameters");
