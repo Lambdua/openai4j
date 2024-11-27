@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,6 +55,31 @@ public class UserMessage implements ChatMessage {
             }
         }
         return null;
+    }
+
+    /**
+     * Set the level of detail the images should be processed at.<br>
+     * This can either be {@code "high"} or {@code "low"}.
+     * 
+     * @param detailLevel the level of detail the images should be processed at
+     * @return com.theokanning.openai.completion.chat.UserMessage
+     * @author MightyElemental
+     * @see OpenAI: <a 
+     * href="https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding">
+     * Low or high fidelity image understanding</a>
+     * @date 2024/11/27
+     * */
+    @JsonIgnore
+    public UserMessage setImageDetail(String detailLevel) {
+        if (content == null || !(content instanceof Collection)) return this;
+        Collection<?> collection = (Collection<?>) content;
+        collection.stream().filter(item -> item instanceof ImageContent)
+                .filter(item -> ((ImageContent) item).getType().equals("image_url"))
+                .forEach(item -> {
+                    ImageUrl imgUrl = ((ImageContent) item).getImageUrl();
+                    imgUrl.setDetail(detailLevel);
+                });
+        return this;
     }
 
     /**

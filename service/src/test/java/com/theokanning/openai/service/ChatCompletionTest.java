@@ -664,6 +664,26 @@ class ChatCompletionTest {
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
         assertNotNull(choice.getMessage().getContent());
     }
+    
+    @Test
+    void setImageMessageDetail() {
+        final UserMessage imageMessage = UserMessage.buildImageMessage("What'\''s in this image?",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg");
+        
+        imageMessage.setImageDetail("high");
+        ((Collection<ImageContent>)imageMessage.getContent()).forEach(ic -> {
+            if (ic.getType().equals("image_url")) {
+                assertEquals("high", ic.getImageUrl().getDetail());
+            }
+        });
+        
+        imageMessage.setImageDetail("low");
+        ((Collection<ImageContent>)imageMessage.getContent()).forEach(ic -> {
+            if (ic.getType().equals("image_url")) {
+                assertEquals("low", ic.getImageUrl().getDetail());
+            }
+        });
+    }
 
     @Test
     void createInputAudioChatCompletion() throws URISyntaxException {
