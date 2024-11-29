@@ -16,13 +16,11 @@ import java.util.Base64;
 /**
  * @author LiangTao
  * @date 2024年04月10 10:26
- * @deprecated use {@link MultiMediaContent},the name is not accurate,use new class {@link MultiMediaContent} instead and the refactoring is done
  **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Deprecated
-public class ImageContent {
+public class MultiMediaContent {
 
     /**
      * The type of the content. Either "text", "image_url" or "input_audio".
@@ -45,61 +43,70 @@ public class ImageContent {
     @JsonProperty("input_audio")
     private InputAudio inputAudio;
 
-
-    public ImageContent(String text) {
+    public MultiMediaContent(String text) {
         this.type = "text";
         this.text = text;
     }
 
-    public ImageContent(ImageUrl imageUrl) {
+    public MultiMediaContent(ImageUrl imageUrl) {
         this.type = "image_url";
         this.imageUrl = imageUrl;
     }
 
-    /**
-     * @deprecated {@link #ofImagePath(Path)}
-     */
-    @Deprecated
-    public ImageContent(Path imagePath){
-        this.type = "image_url";
-        String imagePathString = imagePath.toAbsolutePath().toString();
-        String extension = imagePathString.substring(imagePathString.lastIndexOf('.') + 1);
-        this.imageUrl=new ImageUrl( "data:image/" + extension + ";base64," + encodeImage(imagePath));
-    }
-
-    public ImageContent(InputAudio inputAudio) {
+    public MultiMediaContent(InputAudio inputAudio) {
         this.type = "input_audio";
         this.inputAudio = inputAudio;
     }
 
-    public static ImageContent ofImagePath(Path imagePath){
-        String imagePathString = imagePath.toAbsolutePath().toString();
-        String extension = imagePathString.substring(imagePathString.lastIndexOf('.') + 1);
-        ImageUrl imageUrl = new ImageUrl("data:image/" + extension + ";base64," + encode2base64(imagePath));
-        return new ImageContent(imageUrl);
+    /**
+     * build an image content from a file path, detail is auto
+     * @author liangtao
+     * @date 2024/11/28
+     * @param imagePath
+     * @return com.theokanning.openai.completion.chat.ImageContent
+     **/
+    public static MultiMediaContent ofImagePath(Path imagePath){
+        return ofImagePath(imagePath,"auto");
     }
 
-    public static ImageContent ofAudioPath(Path inputAudioPath) {
+    /**
+     * build an image content from a file path,Specify detail
+     * @author liangtao
+     * @date 2024/11/28
+     * @param imagePath
+     * @param detail level: "auto", "low", "high"
+     * @return com.theokanning.openai.completion.chat.ImageContent
+     **/
+    public static MultiMediaContent ofImagePath(Path imagePath, String detail){
+        String imagePathString = imagePath.toAbsolutePath().toString();
+        String extension = imagePathString.substring(imagePathString.lastIndexOf('.') + 1);
+        ImageUrl imageUrl = new ImageUrl("data:image/" + extension + ";base64," + encode2base64(imagePath),detail);
+        return new MultiMediaContent(imageUrl);
+    }
+
+    /**
+     * build an image content from a url
+     * @param imageUrl url
+     * @param detail level: "auto", "low", "high"
+     */
+    public static MultiMediaContent ofImageUrl(String imageUrl, String detail) {
+        return new MultiMediaContent(new ImageUrl(imageUrl, detail));
+    }
+
+    public static MultiMediaContent ofImageUrl(String imageUrl) {
+        return ofImageUrl(imageUrl, "auto");
+    }
+
+
+
+    public static MultiMediaContent ofAudioPath(Path inputAudioPath) {
         String inputAudioPathString = inputAudioPath.toAbsolutePath().toString();
         String extension = inputAudioPathString.substring(inputAudioPathString.lastIndexOf('.') + 1);
         String base64 = encode2base64(inputAudioPath);
         InputAudio inputAudio = new InputAudio(base64, extension);
-        return new ImageContent(inputAudio);
+        return new MultiMediaContent(inputAudio);
     }
 
-    /**
-     * @deprecated use {@link #encode2base64(Path)}
-     */
-    @Deprecated
-    private static String encodeImage(Path imagePath) {
-        byte[] fileContent;
-        try {
-            fileContent = Files.readAllBytes(imagePath);
-            return Base64.getEncoder().encodeToString(fileContent);
-        } catch (IOException e){
-            throw new RuntimeException(e);
-        }
-    }
 
     private static String encode2base64(Path path) {
         byte[] fileContent;
