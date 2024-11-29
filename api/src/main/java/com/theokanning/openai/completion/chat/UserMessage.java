@@ -7,10 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,10 +35,18 @@ public class UserMessage implements ChatMessage {
         this.content = content;
     }
 
+    public static UserMessageBuilder builder() {
+        return new UserMessageBuilder();
+    }
+
+    /**
+     *
+     * @param imageContents
+     */
+    @Deprecated
     public UserMessage(List<ImageContent> imageContents) {
         this.content = imageContents;
     }
-
 
 
 
@@ -61,13 +70,14 @@ public class UserMessage implements ChatMessage {
 
     /**
      * 构件一个图片识别请求消息,支持多个图片
-     *
+     * @deprecated use {@link UserMessageBuilder#buildImageMessage(String, String...)} instead
      * @param prompt      query text
      * @param imageUrls image urls
      * @return com.theokanning.openai.completion.chat.UserMessage
      * @author liangtao
      * @date 2024/4/12
      **/
+    @Deprecated
     public static UserMessage buildImageMessage(String prompt, String... imageUrls) {
         List<ImageContent> imageContents = Arrays.stream(imageUrls).map(url -> new ImageContent(new ImageUrl(url))).collect(Collectors.toList());
         imageContents.add(0, new ImageContent(prompt));
@@ -75,31 +85,41 @@ public class UserMessage implements ChatMessage {
     }
 
     /**
-     * 构件一个图片识别请求消息,支持多个图片
+     * 构件一个图片识别请求消息,支持多个图片,detail默认为auto
+     * @deprecated use {@link UserMessageBuilder#buildImageMessage(String, String...)} instead
      * @author liangtao
      * @date 2024/8/15
      * @param prompt query text
      * @param imagePaths 文件本地路径
      * @return com.theokanning.openai.completion.chat.UserMessage
      **/
+    @Deprecated
     public  static UserMessage buildImageMessage(String prompt, Path... imagePaths) {
         List<ImageContent> imageContents = Arrays.stream(imagePaths).map(ImageContent::ofImagePath).collect(Collectors.toList());
         imageContents.add(0, new ImageContent(prompt));
         return new UserMessage(imageContents);
     }
 
+
+
     /**
      * 构建一个音频识别请求消息,支持多个音频
+     * @deprecated use {@link UserMessageBuilder#buildAudioMessage(String, Path...)} instead
      * @param prompt query text
      * @param inputAudioPaths 音频文件本地路径
      * @return com.theokanning.openai.completion.chat.UserMessage
      * @author Allen Hu
      * @date 2024/11/6
      */
+    @Deprecated
     public static UserMessage buildInputAudioMessage(String prompt, Path... inputAudioPaths) {
         List<ImageContent> imageContents = Arrays.stream(inputAudioPaths).map(ImageContent::ofAudioPath).collect(Collectors.toList());
         imageContents.add(0, new ImageContent(prompt));
         return new UserMessage(imageContents);
+    }
+
+    public static void main(String[] args) {
+        // UserMessage.builder().withMultiMediaContent()
     }
 }
 

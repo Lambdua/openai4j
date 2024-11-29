@@ -21,6 +21,4 @@ public class ImageUrl {
     public ImageUrl(String url) {
         this.url = url;
     }
-
-
 }
