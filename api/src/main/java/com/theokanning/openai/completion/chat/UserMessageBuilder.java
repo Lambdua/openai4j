@@ -59,6 +59,7 @@ public class UserMessageBuilder {
         }else {
             if (content instanceof String){
                 log.error("The content of the message is text, can not add image content");
+                //maybe throw exception
                 return this;
             }
         }

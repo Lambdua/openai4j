@@ -118,8 +118,5 @@ public class UserMessage implements ChatMessage {
         return new UserMessage(imageContents);
     }
 
-    public static void main(String[] args) {
-        // UserMessage.builder().withMultiMediaContent()
-    }
 }
 
