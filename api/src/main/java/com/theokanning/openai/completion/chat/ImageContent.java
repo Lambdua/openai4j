@@ -44,7 +44,11 @@ public class ImageContent {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("input_audio")
     private InputAudio inputAudio;
-
+    
+    public ImageContent(ImageFile imageFile) {
+        this.type = "image_file";
+        this.imageFile = imageFile;
+    }
 
     public ImageContent(String text) {
         this.type = "text";
