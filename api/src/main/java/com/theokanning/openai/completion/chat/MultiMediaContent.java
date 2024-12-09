@@ -58,6 +58,11 @@ public class MultiMediaContent {
         this.inputAudio = inputAudio;
     }
 
+    public MultiMediaContent(ImageFile imageFile) {
+        this.type = "image_file";
+        this.imageFile = imageFile;
+    }
+
     /**
      * build an image content from a file path, detail is auto
      * @author liangtao

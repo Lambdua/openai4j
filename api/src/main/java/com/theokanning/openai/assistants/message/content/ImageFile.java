@@ -1,7 +1,6 @@
 package com.theokanning.openai.assistants.message.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ImageFile {
 
     /**
@@ -22,4 +20,13 @@ public class ImageFile {
     String fileId;
 
     String detail;
+
+    public ImageFile(String fileId) {
+        this(fileId,"low");
+    }
+
+    public ImageFile(String fileId, String detail) {
+        this.fileId = fileId;
+        this.detail = detail;
+    }
 }
