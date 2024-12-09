@@ -10,8 +10,8 @@ import com.theokanning.openai.assistants.message.MessageRequest;
 import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
 import com.theokanning.openai.assistants.run.Run;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
-import com.theokanning.openai.completion.chat.ImageContent;
 import com.theokanning.openai.completion.chat.ImageUrl;
+import com.theokanning.openai.completion.chat.MultiMediaContent;
 import com.theokanning.openai.service.OpenAiService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -61,14 +61,27 @@ public class AssistantImageTest {
 
     @Test
     void test() {
+        //recommend to use MultiMediaContent instead of ImageContent
+        // Run run = service.createThreadAndRun(CreateThreadAndRunRequest.builder()
+        //         .assistantId(assistantId)
+        //         .thread(ThreadRequest.builder()
+        //                 .messages(Collections.singletonList(
+        //                         MessageRequest.builder()
+        //                                 .content(Arrays.asList(
+        //                                         new ImageContent("这个图片里面描述了什么?"),
+        //                                         new ImageContent(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
+        //                                 ))
+        //                                 .build()))
+        //                 .build())
+        //         .build());
         Run run = service.createThreadAndRun(CreateThreadAndRunRequest.builder()
                 .assistantId(assistantId)
                 .thread(ThreadRequest.builder()
                         .messages(Collections.singletonList(
                                 MessageRequest.builder()
-                                        .content(Arrays.asList(
-                                                new ImageContent("这个图片里面描述了什么?"),
-                                                new ImageContent(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
+                                        .mediaContent(Arrays.asList(
+                                                new MultiMediaContent("这个图片里面描述了什么?"),
+                                                new MultiMediaContent(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
                                         ))
                                         .build()))
                         .build())

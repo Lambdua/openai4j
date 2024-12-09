@@ -6,6 +6,7 @@ import com.theokanning.openai.assistants.thread.Attachment;
 import com.theokanning.openai.completion.chat.ContentDeserializer;
 import com.theokanning.openai.completion.chat.ContentSerializer;
 import com.theokanning.openai.completion.chat.ImageContent;
+import com.theokanning.openai.completion.chat.MultiMediaContent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -66,10 +67,22 @@ public class MessageRequest {
             this.content = content;
             return this;
         }
+
+        /**
+         * @deprecated use {@link #mediaContent(List)},{@link ImageContent} is deprecated
+         */
+        @Deprecated
         public MessageRequestBuilder content(List<ImageContent> imageContents) {
             this.content = imageContents;
             return this;
         }
+        public MessageRequestBuilder mediaContent(List<MultiMediaContent> contents) {
+            this.content = contents;
+            return this;
+        }
+
+
+
         public MessageRequestBuilder role(String role) {
             this.role = role;
             return this;

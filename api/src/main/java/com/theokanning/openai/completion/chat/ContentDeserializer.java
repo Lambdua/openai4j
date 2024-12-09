@@ -22,10 +22,10 @@ public class ContentDeserializer extends JsonDeserializer<Object> {
         }
         if (jsonParser.getCurrentToken() == JsonToken.START_ARRAY) {
             // 处理数组的情况
-            List<ImageContent> contents = new ArrayList<>();
+            List<MultiMediaContent> contents = new ArrayList<>();
             while (jsonParser.nextToken() != JsonToken.END_ARRAY) {
                 // 判断数组内元素类型并进行相应的反序列化
-                ImageContent content = parseContent(jsonParser);
+                MultiMediaContent content = parseContent(jsonParser);
                 if (content != null) {
                     contents.add(content);
                 }
@@ -36,8 +36,8 @@ public class ContentDeserializer extends JsonDeserializer<Object> {
         return null;
     }
 
-    ImageContent parseContent(JsonParser jsonParser) throws IOException {
-        ImageContent content = new ImageContent();
+    MultiMediaContent parseContent(JsonParser jsonParser) throws IOException {
+        MultiMediaContent content = new MultiMediaContent();
         while (jsonParser.nextToken() != JsonToken.END_OBJECT) {
             String fieldName = jsonParser.getCurrentName();
             jsonParser.nextToken();
