@@ -7,18 +7,15 @@ import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
-import com.theokanning.openai.assistants.message.content.ImageFile;
 import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
 import com.theokanning.openai.assistants.run.Run;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
-import com.theokanning.openai.completion.chat.ImageUrl;
-import com.theokanning.openai.completion.chat.MultiMediaContent;
+import com.theokanning.openai.file.File;
 import com.theokanning.openai.service.OpenAiService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,10 +64,7 @@ public class AssistantImageTest {
                 .thread(ThreadRequest.builder()
                         .messages(Collections.singletonList(
                                 MessageRequest.builder()
-                                        .medisContentS(Arrays.asList(
-                                                new MultiMediaContent("这个图片里面描述了什么?"),
-                                                new MultiMediaContent(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
-                                        ))
+                                        .urlImageMessage("这个图片里面描述了什么?","https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg")
                                         .build()))
                         .build())
                 .build());
@@ -90,16 +84,13 @@ public class AssistantImageTest {
 
     @Test
    void  testImageByImageFile(){
-
+        File file = service.uploadFile("assistants", "src/test/resources/penguin.png");
         Run run = service.createThreadAndRun(CreateThreadAndRunRequest.builder()
                 .assistantId(assistantId)
                 .thread(ThreadRequest.builder()
                         .messages(Collections.singletonList(
                                 MessageRequest.builder()
-                                        .medisContentS(Arrays.asList(
-                                                new MultiMediaContent("这个图片里面描述了什么?"),
-                                                new MultiMediaContent(new ImageFile("src/test/resources/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
-                                        ))
+                                        .fileImageMessageWithDetail("这个图片里面描述了什么?","high", file.getId())
                                         .build()))
                         .build())
                 .build());
@@ -115,6 +106,6 @@ public class AssistantImageTest {
         OpenAiResponse<Message> response = service.listMessages(threadId, MessageListSearchParameters.builder().runId(retrievedRun.getId()).build());
         List<Message> data = response.getData();
         assertTrue(!data.isEmpty());
-
+        service.deleteFile(file.getId());
     }
 }
