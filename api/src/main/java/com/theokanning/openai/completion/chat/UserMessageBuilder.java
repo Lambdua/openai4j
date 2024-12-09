@@ -58,9 +58,7 @@ public class UserMessageBuilder {
             userMessage.setContent(multiMediaContentList);
         }else {
             if (content instanceof String){
-                log.error("The content of the message is text, can not add image content");
-                //maybe throw exception
-                return this;
+                throw new IllegalStateException("The user current content of the message is text type, can not add image content!");
             }
         }
         List<MultiMediaContent> multiMediaContentList = (List<MultiMediaContent>) content;
