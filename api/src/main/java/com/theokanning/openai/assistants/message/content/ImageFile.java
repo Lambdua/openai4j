@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ImageFile {
 
     /**
@@ -22,4 +21,14 @@ public class ImageFile {
     String fileId;
 
     String detail;
+    
+    public ImageFile(String fileId) {
+    	this.fileId = fileId;
+    	this.detail = "low";
+    }
+    
+    public ImageFile(String fileId, String detail) {
+    	this.fileId = fileId;
+    	this.detail = detail;
+    }
 }

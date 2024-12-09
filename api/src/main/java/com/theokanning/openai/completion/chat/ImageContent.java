@@ -45,7 +45,6 @@ public class ImageContent {
     @JsonProperty("input_audio")
     private InputAudio inputAudio;
 
-
     public ImageContent(String text) {
         this.type = "text";
         this.text = text;
@@ -54,6 +53,11 @@ public class ImageContent {
     public ImageContent(ImageUrl imageUrl) {
         this.type = "image_url";
         this.imageUrl = imageUrl;
+    }
+
+    public ImageContent(ImageFile imageFile) {
+        this.type = "image_file";
+        this.imageFile = imageFile;
     }
 
     /**
