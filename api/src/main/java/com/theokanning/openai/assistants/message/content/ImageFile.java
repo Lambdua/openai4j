@@ -22,7 +22,7 @@ public class ImageFile {
     String detail;
 
     public ImageFile(String fileId) {
-        this(fileId,"low");
+        this(fileId,"auto");
     }
 
     public ImageFile(String fileId, String detail) {

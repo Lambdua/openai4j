@@ -85,7 +85,7 @@ class RunAndRunStepTest {
     @Order(1)
     void createRun() {
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
+                .textMessage("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
                 .attachments(Collections.singletonList(
                         new Attachment(fileId, Collections.singletonList(new FileSearchTool()))
                 ))
@@ -140,7 +140,7 @@ class RunAndRunStepTest {
                         ThreadRequest.builder()
                                 .messages(Collections.singletonList(
                                         MessageRequest.builder()
-                                                .content("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
+                                                .textMessage("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
                                                 .attachments(Collections.singletonList(
                                                         new Attachment(fileId, Collections.singletonList(new FileSearchTool()))
                                                 ))

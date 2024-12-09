@@ -7,6 +7,7 @@ import com.theokanning.openai.assistants.assistant.AssistantRequest;
 import com.theokanning.openai.assistants.message.Message;
 import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
+import com.theokanning.openai.assistants.message.content.ImageFile;
 import com.theokanning.openai.assistants.run.CreateThreadAndRunRequest;
 import com.theokanning.openai.assistants.run.Run;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
@@ -35,7 +36,7 @@ public class AssistantImageTest {
     @BeforeAll
     static void initial() {
         AssistantRequest assistantRequest = AssistantRequest.builder()
-                .model("gpt-4-turbo").name("weather assistant")
+                .model("gpt-4o-mini").name("weather assistant")
                 .instructions("你乐于助人,帮助用户")
                 .temperature(1D)
                 .build();
@@ -60,26 +61,13 @@ public class AssistantImageTest {
     }
 
     @Test
-    void test() {
-        //recommend to use MultiMediaContent instead of ImageContent
-        // Run run = service.createThreadAndRun(CreateThreadAndRunRequest.builder()
-        //         .assistantId(assistantId)
-        //         .thread(ThreadRequest.builder()
-        //                 .messages(Collections.singletonList(
-        //                         MessageRequest.builder()
-        //                                 .content(Arrays.asList(
-        //                                         new ImageContent("这个图片里面描述了什么?"),
-        //                                         new ImageContent(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
-        //                                 ))
-        //                                 .build()))
-        //                 .build())
-        //         .build());
+    void testImageByImageUrl() {
         Run run = service.createThreadAndRun(CreateThreadAndRunRequest.builder()
                 .assistantId(assistantId)
                 .thread(ThreadRequest.builder()
                         .messages(Collections.singletonList(
                                 MessageRequest.builder()
-                                        .mediaContent(Arrays.asList(
+                                        .medisContentS(Arrays.asList(
                                                 new MultiMediaContent("这个图片里面描述了什么?"),
                                                 new MultiMediaContent(new ImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
                                         ))
@@ -100,4 +88,33 @@ public class AssistantImageTest {
         assertTrue(!data.isEmpty());
     }
 
+    @Test
+   void  testImageByImageFile(){
+
+        Run run = service.createThreadAndRun(CreateThreadAndRunRequest.builder()
+                .assistantId(assistantId)
+                .thread(ThreadRequest.builder()
+                        .messages(Collections.singletonList(
+                                MessageRequest.builder()
+                                        .medisContentS(Arrays.asList(
+                                                new MultiMediaContent("这个图片里面描述了什么?"),
+                                                new MultiMediaContent(new ImageFile("src/test/resources/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"))
+                                        ))
+                                        .build()))
+                        .build())
+                .build());
+        threadId= run.getThreadId();
+        Run retrievedRun = service.retrieveRun(run.getThreadId(), run.getId());
+        while (!(retrievedRun.getStatus().equals("completed"))
+                && !(retrievedRun.getStatus().equals("failed"))
+                && !(retrievedRun.getStatus().equals("expired"))
+                && !(retrievedRun.getStatus().equals("incomplete"))
+                && !(retrievedRun.getStatus().equals("requires_action"))) {
+            retrievedRun = service.retrieveRun(threadId, run.getId());
+        }
+        OpenAiResponse<Message> response = service.listMessages(threadId, MessageListSearchParameters.builder().runId(retrievedRun.getId()).build());
+        List<Message> data = response.getData();
+        assertTrue(!data.isEmpty());
+
+    }
 }

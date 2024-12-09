@@ -72,7 +72,7 @@ class AssistantToolTest {
     @Test
     void weatherFunctionCallTest() {
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("What's the weather of Xiamen?")
+                .textMessage("What's the weather of Xiamen?")
                 .build();
         //add message to thread
         service.createMessage(threadId, messageRequest);

@@ -144,7 +144,7 @@ public class ChatExample {
         messages.add(imageMessage);
 
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder()
-                .model("gpt-4-turbo")
+                .model("gpt-4o")
                 .messages(messages)
                 .n(1)
                 .maxTokens(200)

@@ -61,7 +61,7 @@ public class MessageTest {
         metadata.put("key", "value");
 
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("Hello")
+                .textMessage("Hello")
                 .metadata(metadata)
                 .attachments(Arrays.asList(new Attachment(fileId, Arrays.asList(new CodeInterpreterTool()))))
                 .build();
@@ -115,7 +115,7 @@ public class MessageTest {
 
     Message createTestMessage(String threadId) {
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("Hello")
+                .textMessage("Hello")
                 .build();
 
         return service.createMessage(threadId, messageRequest);

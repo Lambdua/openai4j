@@ -1,13 +1,9 @@
 package com.theokanning.openai.service.assistants;
 
-import com.theokanning.openai.ListSearchParameters;
 import com.theokanning.openai.assistants.assistant.*;
-import com.theokanning.openai.assistants.message.MessageListSearchParameters;
 import com.theokanning.openai.assistants.message.MessageRequest;
-import com.theokanning.openai.assistants.run.Run;
 import com.theokanning.openai.assistants.run.RunCreateRequest;
 import com.theokanning.openai.assistants.run.ToolChoice;
-import com.theokanning.openai.assistants.run_step.RunStep;
 import com.theokanning.openai.assistants.thread.Attachment;
 import com.theokanning.openai.assistants.thread.Thread;
 import com.theokanning.openai.assistants.thread.ThreadRequest;
@@ -18,16 +14,7 @@ import io.reactivex.Flowable;
 import io.reactivex.subscribers.TestSubscriber;
 import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -68,7 +55,7 @@ public class AssistantFileSearchTest {
 
         MessageRequest messageRequest = MessageRequest.builder()
                 //query user to search file
-                .content("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
+                .textMessage("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
                 .attachments(Collections.singletonList(
                         //add uploaded file to message with file search tool
                         new Attachment(fileId, Collections.singletonList(new FileSearchTool()))

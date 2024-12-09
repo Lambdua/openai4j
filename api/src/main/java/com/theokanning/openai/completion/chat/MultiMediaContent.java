@@ -102,6 +102,13 @@ public class MultiMediaContent {
         return ofImageUrl(imageUrl, "auto");
     }
 
+    public static MultiMediaContent ofImageFile(String fileId,String detail){
+        return new MultiMediaContent(new ImageFile(fileId,detail));
+    }
+    public static MultiMediaContent ofImageFile(String fileId){
+        return ofImageFile(fileId,"auto");
+    }
+
 
 
     public static MultiMediaContent ofAudioPath(Path inputAudioPath) {

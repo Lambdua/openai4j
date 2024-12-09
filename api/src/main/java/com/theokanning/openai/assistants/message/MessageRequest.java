@@ -11,9 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Creates a Message
@@ -58,43 +58,171 @@ public class MessageRequest {
         return new MessageRequestBuilder();
     }
 
+    @Slf4j
     public static class MessageRequestBuilder {
         private String role = "user";
         private Object content;
         private List<Attachment> attachments;
+
         private Map<String, String> metadata;
+
+
+        /**
+         * set the text content of the message,will override the previous content
+         *
+         * @param content the text content of the message
+         * @deprecated use {@link #textMessage(String)},because the name is not accurate
+         */
+        @Deprecated
         public MessageRequestBuilder content(String content) {
-            this.content = content;
-            return this;
+            return this.textMessage(content);
         }
 
         /**
-         * @deprecated use {@link #mediaContent(List)},{@link ImageContent} is deprecated
+         * set the text content of the message,will override the previous content
+         * @param text
+         * @return
+         */
+        public MessageRequestBuilder textMessage(String text) {
+            this.content = text;
+            return this;
+        }
+
+
+        /**
+         * @deprecated use {@link #medisContentS(List)},{@link ImageContent} is deprecated
          */
         @Deprecated
         public MessageRequestBuilder content(List<ImageContent> imageContents) {
             this.content = imageContents;
             return this;
         }
-        public MessageRequestBuilder mediaContent(List<MultiMediaContent> contents) {
+
+        /**
+         * build the message with multi content,will override the previous content
+         */
+        public MessageRequestBuilder medisContentS(List<MultiMediaContent> contents) {
             this.content = contents;
             return this;
         }
 
+        /**
+         * add multi content to the current message
+         * @param multiMediaContents
+         * @return
+         */
+        public MessageRequestBuilder addMultiMediaContents(MultiMediaContent... multiMediaContents) {
+            if (multiMediaContents == null) {
+                log.warn("The multiMediaContents is null,will ignore it");
+                return this;
+            }
+            if (this.content == null) {
+                this.content = new ArrayList<>();
+            }
+            if (this.content instanceof String) {
+                throw new IllegalStateException("The assistant current content of the message is text type, can not add media content!");
+            }
+            if (!(this.content instanceof List)) {
+                throw new IllegalStateException("The assistant current content of the message is not a list type, can not add media content!");
+
+            }
+            List<MultiMediaContent> multiMediaContentList = (List<MultiMediaContent>) this.content;
+            multiMediaContentList.addAll(Arrays.asList(multiMediaContents));
+            return this;
+        }
+
+        /**
+         * Construct a message containing multiple pictures, detail is auto,THe pictures here are provided according to the url
+         *
+         * @param prompt    prompt
+         * @param imageUrls The external URL of the image, must be a supported image types: jpeg, jpg, png, gif, webp.
+         * @return com.theokanning.openai.assistants.message.MessageRequest.MessageRequestBuilder
+         */
+        public MessageRequestBuilder urlImageMessage(String prompt, String... imageUrls) {
+            return urlImageMessageWithDetail(prompt,"auto",imageUrls);
+        }
 
 
+        /**
+         * Construct a message containing multiple pictures based on detail,The pictures here are provided according to the url
+         * @param prompt prompt
+         * @param detail Specifies the detail level of the image. low uses fewer tokens, you can opt in to high resolution using high. Default value is auto
+         * @param imageUrls The external URL of the image, must be a supported image types: jpeg, jpg, png, gif, webp.
+         * @return com.theokanning.openai.assistants.message.MessageRequest.MessageRequestBuilder
+         */
+        public MessageRequestBuilder urlImageMessageWithDetail(String prompt,String detail,String ...imageUrls){
+            List<MultiMediaContent> multiMediaContents = new ArrayList<>();
+            multiMediaContents.add(new MultiMediaContent(prompt));
+            for (String imageUrl : imageUrls) {
+                multiMediaContents.add(MultiMediaContent.ofImageUrl(imageUrl,detail));
+            }
+            this.content = multiMediaContents;
+            return this;
+        }
+
+
+
+        public MessageRequestBuilder fileImageMessage(String prompt, String...fileIds) {
+            return fileImageMessageWithDetail(prompt,"auto",fileIds);
+        }
+
+        public MessageRequestBuilder fileImageMessageWithDetail(String prompt, String detail,String...fileIds) {
+            List<MultiMediaContent> multiMediaContents = new ArrayList<>();
+            multiMediaContents.add(new MultiMediaContent(prompt));
+            for (String fileId : fileIds) {
+                multiMediaContents.add(MultiMediaContent.ofImageFile(fileId,detail));
+            }
+            this.content = multiMediaContents;
+            return this;
+        }
+
+
+        /**
+         * Set the role of the entity that is creating the message.  Allowed values include:
+         * user: Indicates the message is sent by an actual user and should be used in most cases to represent user-generated messages.
+         * assistant: Indicates the message is generated by the assistant. Use this value to insert messages from the assistant into the conversation.
+         */
         public MessageRequestBuilder role(String role) {
             this.role = role;
             return this;
         }
+
+        /**
+         * set the attachments of the message,will override the previous attachments
+         */
         public MessageRequestBuilder attachments(List<Attachment> attachments) {
             this.attachments = attachments;
             return this;
         }
+
+        /**
+         * Add attachments to the message
+         */
+        public MessageRequestBuilder addAttachments(Attachment... attachments) {
+            if (attachments == null) {
+                log.warn("The attachments is null,will ignore it");
+                return this;
+            }
+            if (this.attachments == null) {
+                this.attachments = new ArrayList<>();
+            }
+            this.attachments.addAll(Arrays.asList(attachments));
+            return this;
+        }
+
         public MessageRequestBuilder metadata(Map<String, String> metadata) {
             this.metadata = metadata;
             return this;
         }
+
+        public MessageRequestBuilder addMetadata(String key, String value) {
+            if (metadata == null) {
+                metadata = new HashMap<>();
+            }
+            metadata.put(key, value);
+            return this;
+        }
+
         public MessageRequest build() {
             return new MessageRequest(role, content, attachments, metadata);
         }

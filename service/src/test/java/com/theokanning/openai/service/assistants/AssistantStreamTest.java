@@ -75,7 +75,7 @@ public class AssistantStreamTest {
                         .thread(ThreadRequest.builder()
                                 .messages(Collections.singletonList(
                                         MessageRequest.builder()
-                                                .content("你好,你可以帮助我做什么?")
+                                                .textMessage("你好,你可以帮助我做什么?")
                                                 .build()
                                 ))
                                 .build())
@@ -98,7 +98,7 @@ public class AssistantStreamTest {
 
         //测试2: 测试函数调用
         threadId = runStep.getThreadId();
-        service.createMessage(threadId, MessageRequest.builder().content("请帮我查询北京天气").build());
+        service.createMessage(threadId, MessageRequest.builder().textMessage("请帮我查询北京天气").build());
         Flowable<AssistantSSE> getWeatherFlowable = service.createRunStream(threadId, RunCreateRequest.builder()
                 //这里强制使用get_weather函数
                 .assistantId(assistantId)

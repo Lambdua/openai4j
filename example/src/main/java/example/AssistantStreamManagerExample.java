@@ -51,7 +51,7 @@ public class AssistantStreamManagerExample {
         String threadId = thread.getId();
         System.out.println("threadId:" + threadId);
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("What can you help me with?")
+                .textMessage("What can you help me with?")
                 .build();
         service.createMessage(threadId, messageRequest);
         RunCreateRequest runCreateRequest = RunCreateRequest.builder()

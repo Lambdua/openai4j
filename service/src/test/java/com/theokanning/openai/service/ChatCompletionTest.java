@@ -1,12 +1,20 @@
 package com.theokanning.openai.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.theokanning.openai.assistants.run.ToolChoice;
+import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.function.FunctionDefinition;
+import com.theokanning.openai.function.FunctionExecutorManager;
+import com.theokanning.openai.service.util.ToolUtil;
+import com.theokanning.openai.utils.JsonUtil;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.junit.jupiter.api.Test;
 
+import javax.validation.constraints.NotNull;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,24 +22,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 
-import javax.validation.constraints.NotNull;
-
-import com.theokanning.openai.completion.chat.*;
-import com.theokanning.openai.utils.JsonUtil;
-import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.theokanning.openai.assistants.run.ToolChoice;
-import com.theokanning.openai.function.FunctionDefinition;
-import com.theokanning.openai.function.FunctionExecutorManager;
-import com.theokanning.openai.service.util.ToolUtil;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ChatCompletionTest {
 
@@ -634,7 +625,7 @@ class ChatCompletionTest {
         messages.add(imageMessage);
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
-                .model("gpt-4-turbo")
+                .model("gpt-4o")
                 .messages(messages)
                 .n(1)
                 .maxTokens(200)

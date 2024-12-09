@@ -27,7 +27,7 @@ public class ThreadTest {
     @Order(1)
     void createThread() {
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("Hello")
+                .textMessage("Hello")
                 .role("user")
                 .build();
 

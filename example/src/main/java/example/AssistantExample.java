@@ -58,7 +58,7 @@ public class AssistantExample {
         String threadId = thread.getId();
 
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("What's the weather of Xiamen?")
+                .textMessage("What's the weather of Xiamen?")
                 .build();
         //add message to thread
         service.createMessage(threadId, messageRequest);
@@ -127,7 +127,7 @@ public class AssistantExample {
                         .thread(ThreadRequest.builder()
                                 .messages(Collections.singletonList(
                                         MessageRequest.builder()
-                                                .content("你好,你可以帮助我做什么?")
+                                                .textMessage("你好,你可以帮助我做什么?")
                                                 .build()
                                 ))
                                 .build())
@@ -148,7 +148,7 @@ public class AssistantExample {
 
         // 函数调用 stream
         threadId = runStep.getThreadId();
-        service.createMessage(threadId, MessageRequest.builder().content("请帮我查询北京天气").build());
+        service.createMessage(threadId, MessageRequest.builder().textMessage("请帮我查询北京天气").build());
         Flowable<AssistantSSE> getWeatherFlowable = service.createRunStream(threadId, RunCreateRequest.builder()
                 //这里强制使用get_weather函数
                 .assistantId(assistantId)
@@ -214,7 +214,7 @@ public class AssistantExample {
 
         MessageRequest messageRequest = MessageRequest.builder()
                 //query user to search file
-                .content("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
+                .textMessage("请你检索我提供的文件然后回答问题: 田山歌体裁中的包容性具体体现在什么地方?")
                 .attachments(Collections.singletonList(
                         //add uploaded file to message with file search tool
                         new Attachment(fileId, Collections.singletonList(new FileSearchTool()))
@@ -263,7 +263,7 @@ public class AssistantExample {
         String threadId = thread.getId();
         System.out.println("threadId:" + threadId);
         MessageRequest messageRequest = MessageRequest.builder()
-                .content("What does the following value : 5+10*(2^3-2)*1```")
+                .textMessage("What does the following value : 5+10*(2^3-2)*1```")
                 .build();
         service.createMessage(threadId, messageRequest);
         RunCreateRequest runCreateRequest = RunCreateRequest.builder()
