@@ -10,7 +10,6 @@ import com.theokanning.openai.completion.chat.ChatFunctionDynamic;
 import com.theokanning.openai.completion.chat.ChatFunctionProperty;
 import com.theokanning.openai.completion.chat.ChatResponseFormat;
 import com.theokanning.openai.service.OpenAiService;
-import com.theokanning.openai.utils.TikTokensUtil;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
