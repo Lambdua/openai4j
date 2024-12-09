@@ -62,6 +62,7 @@ public class MessageRequest {
         private Object content;
         private List<Attachment> attachments;
         private Map<String, String> metadata;
+        @Deprecated
         public MessageRequestBuilder content(String content) {
             this.content = content;
             return this;

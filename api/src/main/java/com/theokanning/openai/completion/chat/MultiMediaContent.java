@@ -53,6 +53,11 @@ public class MultiMediaContent {
         this.imageUrl = imageUrl;
     }
 
+    public MultiMediaContent(ImageFile imageFile) {
+        this.type = "image_file";
+        this.imageFile = imageFile;
+    }
+
     public MultiMediaContent(InputAudio inputAudio) {
         this.type = "input_audio";
         this.inputAudio = inputAudio;
