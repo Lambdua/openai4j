@@ -5,7 +5,7 @@
 
     <groupId>io.github.lambdua</groupId>
     <artifactId>openai-java</artifactId>
-    <version>0.22.7</version>
+    <version>0.22.8</version>
     <packaging>pom</packaging>
     <description>openai java 版本</description>
     <url>https://github.com/Lambdua/openai-java</url>

@@ -6,7 +6,7 @@
 
     <groupId>io.github.lambdua</groupId>
     <artifactId>example</artifactId>
-    <version>0.22.7</version>
+    <version>0.22.8</version>
     <name>example</name>
 
     <properties>
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>io.github.lambdua</groupId>
             <artifactId>service</artifactId>
-            <version>0.22.7</version>
+            <version>0.22.8</version>
         </dependency>
 
     </dependencies>
