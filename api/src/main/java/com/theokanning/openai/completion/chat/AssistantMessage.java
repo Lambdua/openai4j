@@ -22,6 +22,10 @@ public class AssistantMessage implements ChatMessage {
     // The contents of the assistant message. Required unless tool_calls or function_call is specified.
     String content;
 
+    // The contents of the reasoning message. 
+    @JsonProperty("reasoning_content")
+    String reasoningContent;
+
     //An optional name for the participant. Provides the model information to differentiate between participants of the same role.
     String name;
 
