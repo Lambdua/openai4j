@@ -70,9 +70,13 @@ public class ResponseBodyCallback implements Callback<ResponseBody> {
                     }
                     emitter.onNext(sse);
                     sse = null;
-                } else if (line.equals(": keep-alive")) {
+                }
+                else if (line.equals(": keep-alive")) {
                     // deepseek 保持连接的心跳,忽略内容
                     //https://api-docs.deepseek.com/zh-cn/faq/#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B0%83%E7%94%A8-api-%E6%97%B6%E6%8C%81%E7%BB%AD%E8%BF%94%E5%9B%9E%E7%A9%BA%E8%A1%8C
+                    emitter.onNext(new SSE(""));
+                }else if (line.startsWith(":")){
+                    //see https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation
                     emitter.onNext(new SSE(""));
                 }else {
                     // unknown line
