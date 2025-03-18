@@ -43,8 +43,11 @@ class ChatCompletionTest {
                 .logitBias(new HashMap<>())
                 .build();
 
-        List<ChatCompletionChoice> choices = service.createChatCompletion(chatCompletionRequest).getChoices();
-        assertEquals(5, choices.size());
+        ChatCompletionResult chatCompletionResult = service.createChatCompletion(chatCompletionRequest);
+        assertEquals(5, chatCompletionResult.getChoices().size());
+        assertNotNull(chatCompletionResult.getUsage());
+        assertNotNull(chatCompletionResult.getUsage().getPromptTokensDetails());
+        assertNotNull(chatCompletionResult.getUsage().getCompletionTokensDetails());
     }
 
     @Test

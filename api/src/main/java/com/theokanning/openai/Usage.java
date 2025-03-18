@@ -25,4 +25,16 @@ public class Usage {
      */
     @JsonProperty("total_tokens")
     long totalTokens;
+
+    /**
+     * Breakdown of tokens used in the prompt.
+     */
+    @JsonProperty("prompt_tokens_details")
+    PromptTokensDetails promptTokensDetails;
+
+    /**
+     * Breakdown of tokens used in a completion.
+     */
+    @JsonProperty("completion_tokens_details")
+    CompletionTokensDetails completionTokensDetails;
 }
