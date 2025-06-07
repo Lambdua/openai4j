@@ -37,4 +37,6 @@ public class CreateSpeechRequest {
      * The speed of the generated audio. Select a value from 0.25 to 4.0. Defaults to 1.0.
      */
     Double speed;
+
+    String instructions;
 }

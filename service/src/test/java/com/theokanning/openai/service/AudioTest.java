@@ -85,4 +85,19 @@ public class AudioTest {
         assertEquals(MediaType.get("audio/mpeg"), speech.contentType());
         assertTrue(speech.bytes().length > 0);
     }
+
+    @Test
+    void createSpeechWithInstructions() throws IOException {
+        CreateSpeechRequest createSpeechRequest = CreateSpeechRequest.builder()
+                .model("tts-1")
+                .input("Hello World.")
+                .voice("alloy")
+                .instructions("Please read the text in a normal voice.")
+                .build();
+
+        final ResponseBody speech = service.createSpeech(createSpeechRequest);
+        assertNotNull(speech);
+        assertEquals(MediaType.get("audio/mpeg"), speech.contentType());
+        assertTrue(speech.bytes().length > 0);
+    }
 }
