@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit-mock</artifactId>
-            <version>2.9.0</version>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
