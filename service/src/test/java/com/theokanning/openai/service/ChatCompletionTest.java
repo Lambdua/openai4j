@@ -39,7 +39,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-mini")
                 .messages(messages)
                 .n(5)
-                .maxTokens(50)
+                .maxCompletionTokens(50)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -61,7 +61,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
-                .maxTokens(50)
+                .maxCompletionTokens(50)
                 .logitBias(new HashMap<>())
                 .stream(true)
                 .build();
@@ -83,7 +83,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
-                .maxTokens(50)
+                .maxCompletionTokens(50)
                 .logitBias(new HashMap<>())
                 .stream(true)
                 .streamOptions(StreamOption.INCLUDE)
@@ -108,7 +108,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-mini")
                 .messages(messages)
                 .responseFormat(ChatResponseFormat.JSON_OBJECT)
-                .maxTokens(50)
+                .maxCompletionTokens(50)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -137,7 +137,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-2024-08-06")
                 .messages(messages)
                 .responseFormat(responseFormat)
-                .maxTokens(1000)
+                .maxCompletionTokens(1000)
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
@@ -180,7 +180,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(functions)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -212,7 +212,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(functions)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -254,7 +254,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -281,7 +281,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(Collections.singletonList(FunctionDefinition.builder().name("get_today").description("Get the current date").executor((o) -> LocalDate.now()).build()))
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
         AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
@@ -308,7 +308,7 @@ class ChatCompletionTest {
                         new ChatTool(FunctionDefinition.builder().name("get_today").description("Get the current date").executor((o) -> LocalDate.now()).build())
                 ))
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .streamOptions(StreamOption.INCLUDE)
                 .build();
@@ -342,7 +342,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(functions)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -376,7 +376,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(functions)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -418,7 +418,7 @@ class ChatCompletionTest {
                 .messages(messages)
                 .functions(Collections.singletonList(function))
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -451,7 +451,7 @@ class ChatCompletionTest {
                 .tools(Arrays.asList(tool))
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
@@ -485,7 +485,7 @@ class ChatCompletionTest {
                 .tools(Arrays.asList(tool))
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -539,7 +539,7 @@ class ChatCompletionTest {
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -574,7 +574,7 @@ class ChatCompletionTest {
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -602,7 +602,7 @@ class ChatCompletionTest {
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -631,7 +631,7 @@ class ChatCompletionTest {
                 .model("gpt-4o")
                 .messages(messages)
                 .n(1)
-                .maxTokens(200)
+                .maxCompletionTokens(200)
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
@@ -652,7 +652,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-mini")
                 .messages(messages)
                 .n(1)
-                .maxTokens(200)
+                .maxCompletionTokens(200)
                 .build();
 
         ChatCompletionChoice choice = service.createChatCompletion(chatCompletionRequest).getChoices().get(0);
@@ -673,7 +673,7 @@ class ChatCompletionTest {
                 .model("gpt-4o-audio-preview")
                 .messages(messages)
                 .n(1)
-                .maxTokens(200)
+                .maxCompletionTokens(200)
                 .modalities(Arrays.asList("text", "audio"))
                 .audio(new Audio("alloy", "wav"))
                 .build();
@@ -728,7 +728,7 @@ class ChatCompletionTest {
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(200)
+                .maxCompletionTokens(200)
                 .build();
 
         AssistantMessage accumulatedMessage = service.mapStreamToAccumulator(service.streamChatCompletion(chatCompletionRequest))
@@ -765,7 +765,7 @@ class ChatCompletionTest {
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 
@@ -795,7 +795,7 @@ class ChatCompletionTest {
                 .tools(tools)
                 .toolChoice(ToolChoice.AUTO)
                 .n(1)
-                .maxTokens(100)
+                .maxCompletionTokens(100)
                 .logitBias(new HashMap<>())
                 .build();
 

@@ -81,9 +81,19 @@ public class ChatCompletionRequest {
     /**
      * The maximum number of tokens allowed for the generated answer. By default, the number of tokens the model can return will
      * be (4096 - prompt tokens).
+     *
+     * @deprecated use {@link #maxCompletionTokens} on models after GPT-4.
      */
+    @Deprecated
     @JsonProperty("max_tokens")
     Integer maxTokens;
+
+    /**
+     * The maximum number of tokens to generate in the completion.
+     * This is the replacement for {@link #maxTokens} with the new models.
+     */
+    @JsonProperty("max_completion_tokens")
+    Integer maxCompletionTokens;
 
     /**
      * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far,

@@ -41,9 +41,19 @@ public class CompletionRequest {
      * The maximum number of tokens to generate.
      * Requests can use up to 2048 tokens shared between prompt and completion.
      * (One token is roughly 4 characters for normal English text)
+     *
+     * @deprecated use {@link #maxCompletionTokens} on models after GPT-4.
      */
+    @Deprecated
     @JsonProperty("max_tokens")
     Integer maxTokens;
+
+    /**
+     * The maximum number of tokens to generate in the completion.
+     * This is the replacement for {@link #maxTokens} with the new models.
+     */
+    @JsonProperty("max_completion_tokens")
+    Integer maxCompletionTokens;
 
     /**
      * What sampling temperature to use. Higher values means the model will take more risks.
